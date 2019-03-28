@@ -1,0 +1,105 @@
+<h1
+    style="position:absolute !important;overflow:hidden !important;clip:rect(1px, 1px, 1px, 1px) !important;width:1px !important;height:1px !important;border:0 !important;padding:0 !important; margin: 0 !important;">
+    Zawgyi Unicode Converter | Myanmar Tools</h1>
+<header class="app-header" role="banner">
+    <mat-toolbar color="primary">
+        <a mat-button class="nav-img-btn nav-brand" href="/" aria-label="Zawgyi Unicode Converter">
+            <img class="nav-img" src="assets/images/appicons/v1/zg2uni-converter.svg" alt="Zawgyi Unicode Converter"
+                role="presentation" aria-hidden="true" width="26" height="26">
+            <span role="presentation" aria-hidden="true">Zawgyi Unicode Converter</span>
+        </a>
+        <div fxFlex="1 1 auto"></div>
+        <a mat-button class="nav-img-btn" href="https://github.com/DagonMetric/zawgyi-unicode-converter-angular-pwa"
+            aria-label="GitHub Repository">
+            <img class="nav-img" src="assets/images/appicons/v1/github.svg"
+                alt="Myanmar Font Encoding Converter Angular PWA GitHub" role="presentation" aria-hidden="true"
+                width="26" height="26">
+            <span role="presentation" aria-hidden="true" fxHide.xs>GitHub</span>
+        </a>
+    </mat-toolbar>
+</header>
+<main class="container page">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="24px">
+        <div fxLayout="column" fxFlex="1 1 100%">
+            <mat-button-toggle-group aria-label="Source font encoding" [value]="sourceEnc"
+                #sourceEncGroup="matButtonToggleGroup" (change)="onSourceEncChanged(sourceEncGroup.value)">
+                <mat-button-toggle value="auto">{{autoEncText}}</mat-button-toggle>
+                <mat-button-toggle value="zg">ZAWGYI</mat-button-toggle>
+                <mat-button-toggle value="uni">UNICODE</mat-button-toggle>
+            </mat-button-toggle-group>
+            <mat-form-field floatLabel="never">
+                <textarea class="myanmar-text" spellcheck="false" matInput placeholder="Zawgyi or Unicode text"
+                    [value]="sourceText" (input)="sourceText = $event.target.value"
+                    [class.my-uni]="!detectedEnc || detectedEnc == 'uni'" [class.my-zg]="detectedEnc == 'zg'"
+                    cdkTextareaAutosize cdkAutosizeMinRows="10"></textarea>
+            </mat-form-field>
+        </div>
+        <div fxLayout="column" fxFlex="1 1 100%" [fxHide.xs]="!outText">
+            <mat-button-toggle-group aria-label="Target font encoding" [value]="targetEnc"
+                #targetEncGroup="matButtonToggleGroup" (change)="onTargetEncChanged(targetEncGroup.value)">
+                <mat-button-toggle value="zg">ZAWGYI</mat-button-toggle>
+                <mat-button-toggle value="uni">UNICODE</mat-button-toggle>
+            </mat-button-toggle-group>
+            <mat-form-field floatLabel="never">
+                <textarea class="myanmar-text" spellcheck="false" matInput placeholder="Converted text"
+                    [value]="outText" [class.my-uni]="targetEnc == 'uni'"
+                    [class.my-zg]="!targetEnc || targetEnc == 'zg'" cdkTextareaAutosize cdkAutosizeMinRows="10"
+                    #outTextAreaAutosize="cdkTextareaAutosize" [readonly]="!outText"></textarea>
+            </mat-form-field>
+        </div>
+    </div>
+</main>
+<footer class="app-footer">
+    <div class="container">
+        <div class="about-section">
+            <div>Zawgyi Unicode Converter (Myanmar Tools) is an online / offline zawgyi-one to unicode or unicode to
+                zawgyi-one font encoding detector & converter super-powered by DagonMetric ©2019. Also it is an open
+                source project
+                publicily available at <a
+                    href="https://github.com/DagonMetric/zawgyi-unicode-converter-angular-pwa" target="_blank" rel="noopener">GitHub</a> and code is
+                licensed under an <a
+                    href="https://github.com/DagonMetric/zawgyi-unicode-converter-angular-pwa/blob/master/LICENSE" target="_blank" rel="noopener">MIT-style
+                    License</a>.</div>
+            <div class="app-version">version 1.0.0-preview1</div>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column" ngClass="text-left"
+            [ngClass.xs]="{'text-left': false, 'text-center': true}" class="footer-section-grid" fxLayoutGap.xs="24px"
+            fxLayoutGap.sm="48px" fxLayoutGap.md="96px" fxLayoutGap.gt-md="168px">
+            <section class="footer-section">
+                <h3>RESOURCES</h3>
+                <ul>
+                    <li>
+                        <a href="https://blog.myanmartools.com">Blog</a>
+                    </li>
+                    <li>
+                        <a href="https://myanmartools.com">Myanmar Tools Home</a>
+                    </li>
+                </ul>
+            </section>
+            <section class="footer-section">
+                <h3>HELP & FEEDBACK</h3>
+                <ul>
+                    <li>
+                        <a href="https://gitter.im/DagonMetric/myanmartools">Gitter Chat</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/DagonMetric/zawgyi-unicode-converter-angular-pwa/issues">Report
+                            Issues</a>
+                    </li>
+                </ul>
+            </section>
+            <section class="footer-section">
+                <h3>COMMUNITY</h3>
+                <ul>
+                    <li>
+                        <a href="https://github.com/DagonMetric">GitHub</a>
+                    </li>
+                    <li>
+                        <a
+                            href="https://github.com/DagonMetric/zawgyi-unicode-converter-angular-pwa/blob/master/CONTRIBUTING.md">Contribute</a>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </div>
+</footer>

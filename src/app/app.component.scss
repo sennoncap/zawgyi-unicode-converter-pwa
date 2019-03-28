@@ -1,0 +1,104 @@
+@import "shared/constants";
+
+$header-nav-img-height: 26px;
+
+.page {
+    padding-top: $default-gap-width;
+}
+
+textarea.myanmar-text,
+textarea.mat-input-element.myanmar-text {
+    font-size: 1em;
+    line-height: 1.6;
+    font-weight: 400;
+}
+
+.my-zg,
+textarea.mat-input-element.my-zg {
+    font-family: Zawgyi-One;
+}
+
+.my-uni,
+textarea.mat-input-element.my-uni {
+    font-family: "Noto Sans Myanmar UI", "Myanmar Text", Pyidaungsu, Padauk, Myanmar3, sans-serif;
+}
+
+// header
+// ------------------------------------------------------------
+header.app-header {
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.nav-img-btn {
+    &.mat-button {
+        padding-left: 0;
+        padding-right: 0;
+        min-width: 0;
+    }
+
+    img + span {
+        margin-left: $default-gap-width / 2;
+    }
+}
+
+.nav-img {
+    height: $header-nav-img-height;
+    vertical-align: middle;
+}
+
+// Footer
+// ------------------------------------------------------------
+footer.app-footer {
+    position: relative;
+    width: 100%;
+    padding-top: $default-gap-width;
+    padding-bottom: $default-gap-width * 2;
+
+    ul {
+        display: block;
+        list-style-type: disc;
+
+        // important
+        list-style-position: inside;
+        padding: 0;
+        margin: 0;
+
+        li {
+            list-style-type: none;
+            padding: $default-gap-width / 6 0;
+        }
+    }
+}
+
+.about-section {
+    text-align: center;
+    margin-bottom: $default-gap-width;
+
+    .app-version {
+        margin-top: $default-gap-width / 2;
+    }
+}
+
+.footer-section-grid {
+    justify-content: center;
+    // text-align: center;
+}
+
+// TODO: to move app-styles-base
+// ------------------------------------------------------------
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
