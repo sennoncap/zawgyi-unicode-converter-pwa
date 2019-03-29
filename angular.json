@@ -35,8 +35,8 @@
               },
               "src/favicon.ico",
               "src/manifest.json",
-              "robots.txt",
-              "sitemap.xml",
+              "src/robots.txt",
+              "src/sitemap.xml",
               "src/assets"
             ],
             "styles": [
