@@ -11,9 +11,8 @@
     "align": false,
     "eofline": false,
     "linebreak-style": false,
-    "max-line-length": false,
-    "no-consecutive-blank-lines": false,
-    "space-before-function-paren": false,
+    // "no-consecutive-blank-lines": false,
+    // "space-before-function-paren": false,
 
     // Core rules with custom configurations
     "array-type": [true, "array"],
@@ -44,6 +43,10 @@
     ],
     "jsdoc-format": true,
     "label-position": true,
+    "max-line-length": [
+      true,
+      140
+    ],
     "member-access": [
       true,
       "no-public"
@@ -177,7 +180,7 @@
     "no-relative-imports": false,
     "prefer-type-cast": false,
 
-    // angular
+    // codelyzer
     "directive-selector": [
       true,
       "attribute",
