@@ -1,3 +1,4 @@
+[![Build Status](https://dev.azure.com/myanmartools/zawgyi-unicode-converter-angular-pwa/_apis/build/status/myanmartools.zawgyi-unicode-converter-angular-pwa?branchName=master)](https://dev.azure.com/myanmartools/zawgyi-unicode-converter-angular-pwa/_build/latest?definitionId=3&branchName=master)
 [![Build status](https://ci.appveyor.com/api/projects/status/ybu0vcw6y6ilvndm?svg=true)](https://ci.appveyor.com/project/admindagonmetriccom/zawgyi-unicode-converter-angular-pwa)
 
 # Zawgyi Unicode Converter - Angular PWA
