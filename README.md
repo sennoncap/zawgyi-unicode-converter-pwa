@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/ybu0vcw6y6ilvndm?svg=true)](https://ci.appveyor.com/project/admindagonmetriccom/zawgyi-unicode-converter-angular-pwa)
+
 # Zawgyi Unicode Converter - Angular PWA
 
 [![Gitter](https://badges.gitter.im/myanmartools/community.svg)](https://gitter.im/myanmartools/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
