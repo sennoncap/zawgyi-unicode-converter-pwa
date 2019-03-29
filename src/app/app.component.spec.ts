@@ -1,4 +1,23 @@
-import { TestBed, async } from '@angular/core/testing';
+// tslint:disable: no-floating-promises
+
+import { async, TestBed } from '@angular/core/testing';
+
+import { CommonModule } from '@angular/common';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { TextFieldModule } from '@angular/cdk/text-field';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatToolbarModule } from '@angular/material/toolbar';
+
+import { NoopTranslitRuleLoaderModule, TranslitModule } from '@myanmartools/ng-translit';
+import { NoopZgUniRuleLoaderModule, ZawgyiDetectorModule } from '@myanmartools/ng-zawgyi-detector';
+
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
@@ -6,6 +25,25 @@ describe('AppComponent', () => {
         TestBed.configureTestingModule({
             declarations: [
                 AppComponent
+            ],
+            imports: [
+                NoopAnimationsModule,
+                CommonModule,
+
+                TextFieldModule,
+                FlexLayoutModule,
+                MatButtonModule,
+                MatButtonToggleModule,
+                MatCardModule,
+                MatIconModule,
+                MatInputModule,
+                MatToolbarModule,
+
+                TranslitModule,
+                NoopTranslitRuleLoaderModule,
+
+                ZawgyiDetectorModule,
+                NoopZgUniRuleLoaderModule
             ],
         }).compileComponents();
     }));
@@ -16,16 +54,11 @@ describe('AppComponent', () => {
         expect(app).toBeTruthy();
     });
 
-    it(`should have as title 'myanmar-font-converter-web'`, () => {
-        const fixture = TestBed.createComponent(AppComponent);
-        const app = fixture.debugElement.componentInstance;
-        expect(app.title).toEqual('myanmar-font-converter-web');
-    });
-
     it('should render title in a h1 tag', () => {
         const fixture = TestBed.createComponent(AppComponent);
         fixture.detectChanges();
-        const compiled = fixture.debugElement.nativeElement;
-        expect(compiled.querySelector('h1').textContent).toContain('Welcome to myanmar-font-converter-web!');
+        const compiled = fixture.debugElement.nativeElement as HTMLElement;
+        const ele = compiled.querySelector('h1');
+        expect(ele && ele.textContent).toContain('Zawgyi Unicode Converter | Myanmar Tools');
     });
 });
