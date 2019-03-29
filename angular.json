@@ -103,8 +103,19 @@
             "styles": [
               "src/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles",
+                "node_modules/normalize.css"
+              ]
+            },
             "scripts": [],
             "assets": [
+              {
+                "input": "node_modules/@myanmartools/ng-zawgyi-detector/rules/",
+                "glob": "**/*.json",
+                "output": "./assets/zawgyi-detect-rules"
+              },
               {
                 "input": "node_modules/@myanmartools/ng-translit/rules/",
                 "glob": "**/*.json",
