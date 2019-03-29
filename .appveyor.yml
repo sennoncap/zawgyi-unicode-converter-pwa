@@ -11,7 +11,7 @@ matrix:
 install:
   - ps: Install-Product node $env:nodejs_version
   - ps: |
-  - yarn install -g firebase-tools
+  - yarn global add firebase-tools
   - yarn install --frozen-lockfile --network-timeout=500000
   # - npm install
 build_script:
