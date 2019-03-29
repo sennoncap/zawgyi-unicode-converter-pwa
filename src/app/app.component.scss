@@ -64,7 +64,7 @@ footer.app-footer {
     padding-bottom: $default-gap-width * 2;
 
     ul {
-        display: block;
+        display: flex;
         list-style-type: disc;
 
         // important
@@ -72,9 +72,14 @@ footer.app-footer {
         padding: 0;
         margin: 0;
 
+        justify-content: center;
+        text-align: center;
+
         li {
+            display: block;
             list-style-type: none;
-            padding: $default-gap-width / 6 0;
+            padding: 0;
+            // padding: $default-gap-width / 6 0;
         }
     }
 }
@@ -90,15 +95,5 @@ footer.app-footer {
 
 .footer-section-grid {
     justify-content: center;
-    // text-align: center;
-}
-
-// TODO: to move app-styles-base
-// ------------------------------------------------------------
-.text-left {
-    text-align: left;
-}
-
-.text-center {
     text-align: center;
 }

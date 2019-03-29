@@ -63,14 +63,14 @@
                     License</a>.</div>
             <div class="app-version">version 1.0.0-preview1</div>
         </div>
-        <div fxLayout="row" fxLayout.xs="column" ngClass="text-left"
-            [ngClass.xs]="{'text-left': false, 'text-center': true}" class="footer-section-grid" fxLayoutGap.xs="24px"
-            fxLayoutGap.sm="48px" fxLayoutGap.md="96px" fxLayoutGap.gt-md="168px">
-            <section class="footer-section">
-                <h3>RESOURCES</h3>
-                <ul>
+        <div fxLayout="column" class="footer-section-grid">
+            <section class="footer-section" fxLayout="column">
+                <ul fxLayout="row" fxLayout.xs="column" fxLayoutGap="24px">
                     <li>
                         <a href="https://myanmartools.com">Myanmar Tools Home</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/myanmartools">GitHub</a>
                     </li>
                     <li>
                         <a href="https://gitter.im/myanmartools/community">Gitter Chat</a>
@@ -78,9 +78,6 @@
                     <li>
                         <a href="https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa/issues">Report
                             Issues</a>
-                    </li>
-                    <li>
-                        <a href="https://github.com/myanmartools">GitHub</a>
                     </li>
                     <li>
                         <a
