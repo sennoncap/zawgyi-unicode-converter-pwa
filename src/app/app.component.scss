@@ -11,6 +11,9 @@ textarea.mat-input-element.myanmar-text {
     font-size: 1em;
     line-height: 1.6;
     font-weight: 400;
+
+    height: 220px;
+    min-height: 220px;
 }
 
 .my-zg,
@@ -21,6 +24,24 @@ textarea.mat-input-element.my-zg {
 .my-uni,
 textarea.mat-input-element.my-uni {
     font-family: "Noto Sans Myanmar UI", "Myanmar Text", Pyidaungsu, Padauk, Myanmar3, sans-serif;
+}
+
+.flex-spacer {
+    flex: 1 1 auto;
+    box-sizing: border-box;
+}
+
+.form-container {
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+}
+
+.form-field-container {
+    flex-direction: column;
+    box-sizing: border-box;
+    display: flex;
+    flex: 1 1 100%;
 }
 
 // header
@@ -83,15 +104,6 @@ footer.app-footer {
         }
     }
 }
-
-// .about-section {
-//     text-align: center;
-//     margin-bottom: $default-gap-width;
-
-//     .app-version {
-//         margin-top: $default-gap-width / 2;
-//     }
-// }
 
 .footer-section-grid {
     justify-content: center;
