@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/zawgyi-unicode-converter-angular-pwa",
+    "public": "dist/app",
     "cleanUrls": true,
     "ignore": [
       "firebase.json",
