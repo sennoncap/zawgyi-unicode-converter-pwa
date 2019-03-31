@@ -6,7 +6,7 @@
                 role="presentation" aria-hidden="true" width="26" height="26">
             <span role="presentation" aria-hidden="true">Zawgyi Unicode Converter</span>
         </a>
-        <div fxFlex="1 1 auto"></div>
+        <div class="flex-spacer" fxFlex="1 1 auto"></div>
         <a mat-button class="nav-img-btn" href="https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa"
             aria-label="GitHub Repository">
             <img class="nav-img" src="assets/images/appicons/v1/github.svg"
@@ -17,8 +17,8 @@
     </mat-toolbar>
 </header>
 <main class="container page">
-    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="24px">
-        <div fxLayout="column" fxFlex="1 1 100%">
+    <div class="form-container" fxLayout="row" fxLayout.xs="column" fxLayoutGap="24px">
+        <div class="form-field-container" fxLayout="column" fxFlex="1 1 100%">
             <mat-button-toggle-group aria-label="Source font encoding" [value]="sourceEnc"
                 #sourceEncGroup="matButtonToggleGroup" (change)="onSourceEncChanged(sourceEncGroup.value)">
                 <mat-button-toggle value="auto">{{autoEncText}}</mat-button-toggle>
@@ -32,7 +32,7 @@
                     cdkTextareaAutosize cdkAutosizeMinRows="10"></textarea>
             </mat-form-field>
         </div>
-        <div fxLayout="column" fxFlex="1 1 100%" [fxHide.xs]="!outText">
+        <div class="form-field-container" fxLayout="column" fxFlex="1 1 100%" [fxHide.xs]="!outText">
             <mat-button-toggle-group aria-label="Target font encoding" [value]="targetEnc"
                 #targetEncGroup="matButtonToggleGroup" (change)="onTargetEncChanged(targetEncGroup.value)">
                 <mat-button-toggle value="zg">ZAWGYI</mat-button-toggle>
