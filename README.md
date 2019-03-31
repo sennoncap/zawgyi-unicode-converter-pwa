@@ -9,9 +9,9 @@ Zawgyi Unicode Converter is an Angular Progress Web Application (PWA) designed t
 
 ## Live Website (Angular PWA)
 
-[![Zawgyi Unicode Converter](https://zawgyi-unicode-converter.myanmartools.com/assets/images/appicons/v1/ios/ios-appicon-180x180.png)](https://zawgyi-unicode-converter.myanmartools.com)
+[![Zawgyi Unicode Converter](https://zawgyi-unicode-converter.myanmartools.org/assets/images/appicons/v1/ios/ios-appicon-180x180.png)](https://zawgyi-unicode-converter.myanmartools.org)
 
-[Zawgyi Unicode Converter](https://zawgyi-unicode-converter.myanmartools.com) 
+[Zawgyi Unicode Converter](https://zawgyi-unicode-converter.myanmartools.org)
 
 ## Programming Languages & Frameworks
 
