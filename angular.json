@@ -26,12 +26,12 @@
               {
                 "input": "node_modules/@myanmartools/ng-zawgyi-detector/rules/",
                 "glob": "**/*.json",
-                "output": "./assets/zawgyi-detect-rules"
+                "output": "./assets/zawgyi-detect-rules/v1"
               },
               {
                 "input": "node_modules/@myanmartools/ng-translit/rules/",
                 "glob": "**/*.json",
-                "output": "./assets/translit-rules"
+                "output": "./assets/translit-rules/v1"
               },
               "src/favicon.ico",
               "src/manifest.json",
@@ -114,16 +114,6 @@
             },
             "scripts": [],
             "assets": [
-              {
-                "input": "node_modules/@myanmartools/ng-zawgyi-detector/rules/",
-                "glob": "**/*.json",
-                "output": "./assets/zawgyi-detect-rules"
-              },
-              {
-                "input": "node_modules/@myanmartools/ng-translit/rules/",
-                "glob": "**/*.json",
-                "output": "./assets/translit-rules"
-              },
               "src/favicon.ico",
               "src/manifest.json",
               "src/assets"
