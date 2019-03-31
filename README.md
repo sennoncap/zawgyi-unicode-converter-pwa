@@ -13,6 +13,13 @@ Zawgyi Unicode Converter is an Angular Progress Web Application (PWA) designed t
 
 [Zawgyi Unicode Converter](https://zawgyi-unicode-converter.myanmartools.org)
 
+## Features
+
+* Responsive and progressive web design
+* Can be used offline (Progessive Web Application! - PWA)
+* Auto detect Zawgyi and Unicode input font encoding
+* Auto convert Zawgyi to Unicode or Unicode to Zawgyi
+
 ## Programming Languages & Frameworks
 
 * Latest version of Angular (v8)
@@ -20,6 +27,7 @@ Zawgyi Unicode Converter is an Angular Progress Web Application (PWA) designed t
 * SCSS
 * Angular Material
 * Angular Flex-layout
+* Angular Universal (Server-side Rendering - SSR)
 * Progress Web App (PWA) with Angular Service Worker
 * Optimize use of RxJS
 
