@@ -1,0 +1,45 @@
+{
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app-shell",
+      "installMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/assets/images/appicons/v[0-9]+/favicon.ico",
+          "/*.css",
+          "/*.js"
+        ],
+        "urls": [
+          "https://fontassets.firebaseapp.com/**",
+          "https://fonts.googleapis.com/**",
+          "https://fonts.gstatic.com/s/**"
+        ]
+      }
+    },
+    {
+      "name": "assets-eager",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/images/**",
+          "!/assets/images/appicons/**"
+        ]
+      }
+    },
+    {
+      "name": "assets-lazy",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/images/appicons/**",
+          "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
+        ]
+      }
+    }
+  ]
+}
