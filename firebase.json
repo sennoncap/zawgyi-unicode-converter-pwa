@@ -1,5 +1,6 @@
 {
-  "hosting": {
+  "hosting": [{
+    "target": "zawgyiunicodeconverter",
     "public": "dist/app",
     "cleanUrls": true,
     "ignore": [
@@ -11,5 +12,5 @@
       "source": "**/!(*.@(js|html|css|json|svg|png|jpg|jpeg|xml|txt|ico))",
       "destination": "/index.html"
     }]
-  }
+  }]
 }
