@@ -3,9 +3,10 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import { ServiceWorkerModule } from '@angular/service-worker';
+import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
+import { ServiceWorkerModule } from '@angular/service-worker';
+
+// import { TransferHttpCacheModule } from '@nguniversal/common';
 
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -22,6 +23,8 @@ import { HttpTranslitRuleLoaderModule } from '@myanmartools/ng-translit/http-loa
 import { ZawgyiDetectorModule } from '@myanmartools/ng-zawgyi-detector';
 import { HttpZgUniRuleLoaderModule } from '@myanmartools/ng-zawgyi-detector/http-loader';
 
+import { environment } from '../environments/environment';
+
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -29,10 +32,11 @@ import { AppComponent } from './app.component';
         AppComponent
     ],
     imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
+        BrowserModule.withServerTransition({ appId: 'zawgyi-unicode-converter-angular-pwa' }),
         CommonModule,
         HttpClientModule,
+
+        BrowserTransferStateModule,
 
         TextFieldModule,
         FlexLayoutModule,
@@ -46,9 +50,9 @@ import { AppComponent } from './app.component';
         TranslitModule,
         HttpTranslitRuleLoaderModule,
         ZawgyiDetectorModule,
-        HttpZgUniRuleLoaderModule
+        HttpZgUniRuleLoaderModule,
 
-        // ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.serviceWorker })
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ],
     providers: [],
     bootstrap: [AppComponent]
