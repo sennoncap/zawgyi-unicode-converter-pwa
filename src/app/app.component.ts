@@ -19,8 +19,6 @@ export type DetectedEncType = 'zg' | 'uni' | 'win' | null | '';
     encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit, OnDestroy {
-    title: 'Zawgyi Unicode Converter | Myanmar Tools';
-
     autoEncText = 'AUTO';
     sourceEnc: SourceEncType;
     targetEnc: TargetEncType;

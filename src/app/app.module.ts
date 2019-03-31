@@ -27,6 +27,10 @@ import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 
+export function translitEndpointFactory(sourceEnc: string, targetEnc: string): string {
+    return `/assets/translit-rules/v1/${sourceEnc}2${targetEnc}.json`;
+}
+
 @NgModule({
     declarations: [
         AppComponent
@@ -48,9 +52,13 @@ import { AppComponent } from './app.component';
         MatToolbarModule,
 
         TranslitModule,
-        HttpTranslitRuleLoaderModule,
+        HttpTranslitRuleLoaderModule.withOptions({
+            endpointFactory: translitEndpointFactory
+        }),
         ZawgyiDetectorModule,
-        HttpZgUniRuleLoaderModule,
+        HttpZgUniRuleLoaderModule.withOptions({
+            endpoint: '/assets/zawgyi-detect-rules/v1/zg-uni-rule.json'
+        }),
 
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ],
