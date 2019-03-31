@@ -23,5 +23,5 @@ deploy_script:
   - ps: |
       if ($env:firebase_token)
       {
-        iex "firebase deploy --token $env:firebase_token"
+        iex "firebase deploy --only hosting:zawgyiunicodeconverter --token $env:firebase_token"
       }
