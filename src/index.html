@@ -15,8 +15,8 @@
 
     <link rel="canonical" href="https://zawgyi-unicode-converter.myanmartools.org/">
 
-    <meta name="theme-color" content="#8764b8">
     <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#8764b8">
 
     <!-- IoS app title -->
     <meta name="apple-mobile-web-app-title" content="Zawgyi Unicode Converter">
@@ -139,6 +139,10 @@
     <meta content="1200" property="og:image:width">
     <meta content="630" property="og:image:height">
 
+    <!-- NOTE: These need to be kept in sync with `ngsw-config.json`. -->
+    <link rel="stylesheet" href="https://fontassets.firebaseapp.com/zawgyione/v1/font.css">
+    <link rel="stylesheet" href="https://fontassets.firebaseapp.com/notosansmyanmarui/v1/font.css">
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-137255227-1"></script>
     <script>
@@ -152,14 +156,22 @@
         gtag('config', 'UA-137255227-1');
     </script>
 
-    <link rel="preload" as="font" type="font/woff" crossorigin="crossorigin"
-        href="https://fontassets.firebaseapp.com/notosansmyanmarui/v1/NotoSansMyanmarUI-Regular.woff2">
-    <link rel="preload" as="font" type="font/woff" crossorigin="crossorigin"
-        href="https://fontassets.firebaseapp.com/zawgyione/v1/Zawgyi-One.woff2">
+    <!-- <link rel="preload" as="font" type="font/woff" crossorigin="crossorigin"
+        href="https://fontassets.firebaseapp.com/notosansmyanmarui/v1/NotoSansMyanmarUI-Regular.woff2"> -->
+    <!-- <link rel="preload" as="font" type="font/woff" crossorigin="crossorigin"
+        href="https://fontassets.firebaseapp.com/zawgyione/v1/Zawgyi-One.woff2"> -->
 </head>
 
 <body>
+    <h1
+        style="position:absolute !important;overflow:hidden !important;clip:rect(1px, 1px, 1px, 1px) !important;width:1px !important;height:1px !important;border:0 !important;padding:0 !important; margin: 0 !important;">
+        Zawgyi Unicode Converter | Myanmar Tools</h1>
+    <div
+        style="position:absolute !important;overflow:hidden !important;clip:rect(1px, 1px, 1px, 1px) !important;width:1px !important;height:1px !important;border:0 !important;padding:0 !important; margin: 0 !important;">
+        Zawgyi Unicode Converter (Myanmar Tools) is an open source progressive web app PWA designed to easily convert
+        between Zawgyi-One and Unicode font encodings.</div>
     <app-root></app-root>
     <noscript>Please enable JavaScript to continue using this application.</noscript>
 </body>
+
 </html>
