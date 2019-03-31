@@ -2,4 +2,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://zawgyi-unicode-converter.myanmartools.com/sitemap.xml
+Sitemap: https://zawgyi-unicode-converter.myanmartools.org/sitemap.xml
