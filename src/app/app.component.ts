@@ -1,12 +1,12 @@
-import { Component, NgZone, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 
 import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, switchMap, take, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, switchMap, takeUntil } from 'rxjs/operators';
 
 import { TranslitService } from '@myanmartools/ng-translit';
 import { ZawgyiDetector } from '@myanmartools/ng-zawgyi-detector';
+
+import { CdkTextareaSyncSize } from '../cdk-extensions';
 
 export type SourceEncType = 'auto' | 'zg' | 'uni' | 'win' | null | '';
 export type TargetEncType = 'zg' | 'uni' | null | '';
@@ -23,8 +23,11 @@ export class AppComponent implements OnInit, OnDestroy {
     sourceEnc: SourceEncType;
     targetEnc: TargetEncType;
 
-    @ViewChild('outTextAreaAutosize')
-    outCdkTextareaAutosize: CdkTextareaAutosize;
+    @ViewChild('sourceTextareaSyncSize')
+    sourceTextareaSyncSize: CdkTextareaSyncSize;
+
+    @ViewChild('outTextareaSyncSize')
+    outTextareaSyncSize: CdkTextareaSyncSize;
 
     private readonly _translitSubject = new Subject<string>();
     private readonly _detectSubject = new Subject<string>();
@@ -52,12 +55,12 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     constructor(private readonly _translitService: TranslitService,
-        private readonly _zawgyiDetector: ZawgyiDetector,
-        private readonly _ngZone: NgZone) {
-
-    }
+        private readonly _zawgyiDetector: ZawgyiDetector) { }
 
     ngOnInit(): void {
+        this.sourceTextareaSyncSize.secondCdkTextareaSyncSize = this.outTextareaSyncSize;
+        this.outTextareaSyncSize.secondCdkTextareaSyncSize = this.sourceTextareaSyncSize;
+
         this._detectSubject.pipe(
             debounceTime(100),
             distinctUntilChanged(),
@@ -87,7 +90,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 this._detectedEnc = null;
 
                 this._outText = this._sourceText;
-                this.resizeOutTextArea();
+                // this.sourceTextareaSyncSize.resizeToFitContent(true, false, true);
 
                 this._translitSubject.next('');
             }
@@ -111,7 +114,7 @@ export class AppComponent implements OnInit, OnDestroy {
             })
         ).subscribe(result => {
             this._outText = result.outputText || '';
-            this.resizeOutTextArea();
+            // this.sourceTextareaSyncSize.resizeToFitContent(true, true);
         });
     }
 
@@ -155,17 +158,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.translitNext();
     }
 
-    private resizeOutTextArea(): void {
-        this._ngZone.onStable
-            .pipe(
-                take(1),
-                takeUntil(this._destroyed)
-            )
-            .subscribe(() => {
-                this.outCdkTextareaAutosize.resizeToFitContent(true);
-            });
-    }
-
     private resetAutoEncText(text?: string): void {
         this.autoEncText = text || 'AUTO';
     }
@@ -173,7 +165,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private translitNext(): void {
         if (!this.sourceText || !this.sourceText.length || !this.sourceText.trim().length) {
             this._outText = this.sourceText;
-            this.resizeOutTextArea();
+            // this.sourceTextareaSyncSize.resizeToFitContent(true, false, true);
 
             this._translitSubject.next('');
 

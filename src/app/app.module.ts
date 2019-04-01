@@ -25,6 +25,8 @@ import { HttpZgUniRuleLoaderModule } from '@myanmartools/ng-zawgyi-detector/http
 
 import { environment } from '../environments/environment';
 
+import { CdkTextareaSyncSizeModule } from '../cdk-extensions';
+
 import { AppComponent } from './app.component';
 
 export function translitEndpointFactory(sourceEnc: string, targetEnc: string): string {
@@ -50,6 +52,8 @@ export function translitEndpointFactory(sourceEnc: string, targetEnc: string): s
         MatIconModule,
         MatInputModule,
         MatToolbarModule,
+
+        CdkTextareaSyncSizeModule,
 
         TranslitModule,
         HttpTranslitRuleLoaderModule.withOptions({

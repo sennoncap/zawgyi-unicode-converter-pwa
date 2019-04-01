@@ -6,6 +6,8 @@
 
 @import "app/app-theme";
 
+@import "cdk-extensions/cdk-textarea-syncsize";
+
 $app-styles-config: app-styles-config(
     $font-family-base: $font-family-base,
     $font-size-base: $font-size-base,
@@ -15,6 +17,8 @@ $app-styles-config: app-styles-config(
     $container-max-widths: $container-max-widths);
 
 @include app-styles-core($app-styles-config);
+
+@include cdk-textarea-syncsize();
 
 // define a custom typography config that overrides the font-family as well as the
 // `headlines` and `body-1` levels.
@@ -70,7 +74,3 @@ $accent: mat-palette($mat-pink, A200, A100, A400);
 $theme: mat-light-theme($primary, $accent);
 @include angular-material-theme($theme);
 @include app-theme($theme);
-
-// Myanmar Fonts
-// @import url(https://fontassets.firebaseapp.com/zawgyione/v1/font.css);
-// @import url(https://fontassets.firebaseapp.com/notosansmyanmarui/v1/font.css);

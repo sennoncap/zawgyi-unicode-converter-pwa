@@ -29,7 +29,8 @@
                 <textarea class="myanmar-text" spellcheck="false" matInput placeholder="Zawgyi or Unicode text"
                     [value]="sourceText" (input)="sourceText = $event.target.value"
                     [class.my-uni]="!detectedEnc || detectedEnc == 'uni'" [class.my-zg]="detectedEnc == 'zg'"
-                    cdkTextareaAutosize cdkAutosizeMinRows="10"></textarea>
+                    cdkTextareaSyncSize cdkAutosizeMinRows="10"
+                    #sourceTextareaSyncSize="cdkTextareaSyncSize"></textarea>
             </mat-form-field>
         </div>
         <div class="form-field-container" fxLayout="column" fxFlex="1 1 100%" [fxHide.xs]="!outText">
@@ -41,8 +42,8 @@
             <mat-form-field floatLabel="never">
                 <textarea class="myanmar-text" spellcheck="false" matInput placeholder="Converted text"
                     [value]="outText" [class.my-uni]="targetEnc == 'uni'"
-                    [class.my-zg]="!targetEnc || targetEnc == 'zg'" cdkTextareaAutosize cdkAutosizeMinRows="10"
-                    #outTextAreaAutosize="cdkTextareaAutosize" [readonly]="!outText"></textarea>
+                    [class.my-zg]="!targetEnc || targetEnc == 'zg'" [readonly]="!outText" cdkTextareaSyncSize
+                    cdkAutosizeMinRows="10" #outTextareaSyncSize="cdkTextareaSyncSize"></textarea>
             </mat-form-field>
         </div>
     </div>
