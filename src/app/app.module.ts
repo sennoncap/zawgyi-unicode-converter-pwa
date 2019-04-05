@@ -29,8 +29,8 @@ import { CdkTextareaSyncSizeModule } from '../cdk-extensions';
 
 import { AppComponent } from './app.component';
 
-export function translitEndpointFactory(sourceEnc: string, targetEnc: string): string {
-    return `/assets/translit-rules/v1/${sourceEnc}2${targetEnc}.json`;
+export function translitEndpointFactory(baseUrl: string, sourceEnc: string, targetEnc: string): string {
+    return `${baseUrl}assets/translit-rules/v1/${sourceEnc}2${targetEnc}.json`;
 }
 
 @NgModule({
