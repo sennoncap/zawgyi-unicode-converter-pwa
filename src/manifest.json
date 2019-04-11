@@ -3,7 +3,7 @@
   "short_name": "Zawgyi Unicode Converter",
   "description": "Zawgyi Unicode Converter - Myanmar Tools",
   "theme_color": "#8764b8",
-  "background_color": "#8764b8",
+  "background_color": "#ffffff",
   "display": "standalone",
   "orientation": "portrait",
   "start_url": "/",
