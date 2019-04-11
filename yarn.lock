@@ -107,10 +107,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@angular/cdk@^7.3.7":
-  version "7.3.7"
-  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-7.3.7.tgz#ce1ad53ba04beb9c8e950acc5691ea0143753764"
-  integrity sha512-xbXxhHHKGkVuW6K7pzPmvpJXIwpl0ykBnvA2g+/7Sgy5Pd35wCC+UtHD9RYczDM/mkygNxMQtagyCErwFnDtQA==
+"@angular/cdk@8.0.0-beta.1":
+  version "8.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-8.0.0-beta.1.tgz#8a5047e21d2b5e753a32aedb0944ba71d74a74ef"
+  integrity sha512-dPlYPlG9X0uY6k6UJeM+03ZJcnzxMkP+NFQD7mlu7SS4HE0rt0O7TnRLPF63/xBrSkZK5tPgUOe+BVHWHq2LYA==
   dependencies:
     tslib "^1.7.1"
   optionalDependencies:
@@ -190,7 +190,7 @@
   dependencies:
     tslib "^1.9.0"
 
-"@angular/http@^8.0.0-beta.11":
+"@angular/http@^8.0.0-beta.10":
   version "8.0.0-beta.10"
   resolved "https://registry.yarnpkg.com/@angular/http/-/http-8.0.0-beta.10.tgz#3d30c98aa64603daa3fc5675413c2dc3da3868b2"
   integrity sha512-NV2TGnrpivJvOa4/1O/GQfFocPSib4NUieh2umNpJYa2CYjyYfgWpmh+0wDqh23ThPPxRufywZQkkSeb+X9PRA==
@@ -202,10 +202,10 @@
   resolved "https://registry.yarnpkg.com/@angular/language-service/-/language-service-8.0.0-beta.11.tgz#8d2202a28ce6b0bbdfbad063939eec44303a1ef9"
   integrity sha512-rvmC3yKzRP9/z7ZYH6AUdSK+7g4r0jEUILST5dyOo0V3lU3X+dkuKrYNgZYAzXnLMePVcCvShoCGhy4FKglGWA==
 
-"@angular/material@^7.3.7":
-  version "7.3.7"
-  resolved "https://registry.yarnpkg.com/@angular/material/-/material-7.3.7.tgz#dcd95e6618ba6254c5880efee1aad349cf5b9140"
-  integrity sha512-Eq+7frkeNGkLOfEtmkmJgR+AgoWajOipXZWWfCSamNfpCcPof82DwvGOpAmgGni9FuN2XFQdqP5MoaffQzIvUA==
+"@angular/material@8.0.0-beta.1":
+  version "8.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-8.0.0-beta.1.tgz#6a3448b648fa68b1fccff41ea6d5ba0e3ae12688"
+  integrity sha512-3LSIOIh0Jovf+FLdKYYNl9JD1yPa9gSL+0x2mx/3/t1+rdTWksToC35oBGQAGDGPr7jsxHT1Qodg8/B6e6uZ3Q==
   dependencies:
     tslib "^1.7.1"
 
@@ -419,10 +419,15 @@
   dependencies:
     "@types/jasmine" "*"
 
-"@types/node@*", "@types/node@^11.13.0":
+"@types/node@*":
   version "11.13.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-11.13.0.tgz#b0df8d6ef9b5001b2be3a94d909ce3c29a80f9e1"
   integrity sha512-rx29MMkRdVmzunmiA4lzBYJNnXsW/PhG4kMBy2ATsYaDjGGR75dCFEVVROKpNwlVdcUX3xxlghKQOeDPBJobng==
+
+"@types/node@^11.13.4":
+  version "11.13.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.13.4.tgz#f83ec3c3e05b174b7241fadeb6688267fe5b22ca"
+  integrity sha512-+rabAZZ3Yn7tF/XPGHupKIL5EcAbrLxnTr/hgQICxbeuAfWtT0UZSfULE+ndusckBItcv4o6ZeOJplQikVcLvQ==
 
 "@types/q@^0.0.32":
   version "0.0.32"
