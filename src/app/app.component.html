@@ -1,17 +1,14 @@
 <header class="app-header" role="banner">
     <mat-toolbar color="primary">
-        <a mat-button class="nav-img-btn nav-brand" href="https://zawgyi-unicode-converter.myanmartools.org"
-            aria-label="Zawgyi Unicode Converter">
-            <img class="nav-img" src="assets/images/appicons/v1/zg2uni-converter.svg" alt="Zawgyi Unicode Converter"
-                role="presentation" aria-hidden="true" width="26" height="26">
-            <span role="presentation" aria-hidden="true">Zawgyi Unicode Converter</span>
+        <a mat-button class="nav-img-btn nav-brand" [href]="baseUrl" [attr.aria-label]="titleWithSuffix">
+            <img class="nav-img site-logo-img" [src]="appImageUrl" alt="{{titleWithSuffix}}" role="presentation"
+                aria-hidden="true">
+            <span role="presentation" aria-hidden="true">{{title}}</span>
+            <span role="presentation" aria-hidden="true" fxHide.xs>{{titleSuffix}}</span>
         </a>
         <div class="flex-spacer" fxFlex="1 1 auto"></div>
-        <a mat-button class="nav-img-btn" href="https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa"
-            aria-label="GitHub Repository">
-            <img class="nav-img" src="assets/images/appicons/v1/github.svg"
-                alt="Myanmar Font Encoding Converter Angular PWA GitHub" role="presentation" aria-hidden="true"
-                width="26" height="26">
+        <a mat-button class="nav-img-btn" [href]="githubRepoUrl" aria-label="GitHub Repository">
+            <img class="nav-img" [src]="githubImageUrl" alt="{{githubImageAlt}}" role="presentation" aria-hidden="true">
             <span role="presentation" aria-hidden="true" fxHide.xs>GitHub</span>
         </a>
     </mat-toolbar>
@@ -46,6 +43,13 @@
                     cdkAutosizeMinRows="10" #outTextareaSyncSize="cdkTextareaSyncSize"></textarea>
             </mat-form-field>
         </div>
+    </div>
+    <div fxLayout="column" class="about-description">
+        <p>
+            Zawgyi Unicode Converter (Myanmar Tools) is an open source progressive web app PWA designed to easily
+            convert between Zawgyi-One and Unicode font encodings.
+        </p>
+        <div class="app-version">Version: {{appVersion}}</div>
     </div>
 </main>
 <footer class="app-footer">

@@ -8,9 +8,12 @@ import { ZawgyiDetector } from '@myanmartools/ng-zawgyi-detector';
 
 import { CdkTextareaSyncSize } from '../cdk-extensions';
 
-export type SourceEncType = 'auto' | 'zg' | 'uni' | 'win' | null | '';
+import { environment } from '../environments/environment';
+import { VERSION } from '../version';
+
+export type SourceEncType = 'auto' | 'zg' | 'uni' | null | '';
 export type TargetEncType = 'zg' | 'uni' | null | '';
-export type DetectedEncType = 'zg' | 'uni' | 'win' | null | '';
+export type DetectedEncType = 'zg' | 'uni' | null | '';
 
 @Component({
     selector: 'app-root',
@@ -19,6 +22,12 @@ export type DetectedEncType = 'zg' | 'uni' | 'win' | null | '';
     encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit, OnDestroy {
+    title = 'Zawgyi Unicode Converter';
+    titleSuffix = ' - Myanmar Tools';
+
+    githubRepoUrl = 'https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa';
+    githubImageAlt = 'Zawgyi Unicode Converter GitHub Repo';
+
     autoEncText = 'AUTO';
     sourceEnc: SourceEncType;
     targetEnc: TargetEncType;
@@ -28,6 +37,26 @@ export class AppComponent implements OnInit, OnDestroy {
 
     @ViewChild('outTextareaSyncSize')
     outTextareaSyncSize: CdkTextareaSyncSize;
+
+    get appVersion(): string {
+        return VERSION.full;
+    }
+
+    get titleWithSuffix(): string {
+        return `${this.title}${this.titleSuffix}`;
+    }
+
+    get baseUrl(): string {
+        return environment.production ? 'https://zawgyi-unicode-converter.myanmartools.org/' : '/';
+    }
+
+    get appImageUrl(): string {
+        return `${this.baseUrl}assets/images/appicons/v1/logo.png`;
+    }
+
+    get githubImageUrl(): string {
+        return `${this.baseUrl}assets/images/appicons/v1/github.svg`;
+    }
 
     private readonly _translitSubject = new Subject<string>();
     private readonly _detectSubject = new Subject<string>();
