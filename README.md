@@ -1,11 +1,10 @@
+# Zawgyi Unicode Converter Angular PWA
+
 [![Build Status](https://dev.azure.com/myanmartools/zawgyi-unicode-converter-angular-pwa/_apis/build/status/myanmartools.zawgyi-unicode-converter-angular-pwa?branchName=master)](https://dev.azure.com/myanmartools/zawgyi-unicode-converter-angular-pwa/_build/latest?definitionId=3&branchName=master)
 [![Build status](https://ci.appveyor.com/api/projects/status/ybu0vcw6y6ilvndm?svg=true)](https://ci.appveyor.com/project/admindagonmetriccom/zawgyi-unicode-converter-angular-pwa)
-
-# Zawgyi Unicode Converter - Angular PWA
-
 [![Gitter](https://badges.gitter.im/myanmartools/community.svg)](https://gitter.im/myanmartools/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-Zawgyi Unicode Converter is an Angular Progress Web Application (PWA) designed to auto detect & convert Myanmar font encoding between Zawgyi-One and Unicode.
+Zawgyi Unicode Converter is an Angular Progress Web Application (PWA) designed to auto detect & convert Myanmar font encodings between Zawgyi-One and Unicode.
 
 ## Live Website (Angular PWA)
 
@@ -33,19 +32,9 @@ Zawgyi Unicode Converter is an Angular Progress Web Application (PWA) designed t
 
 ## Main Packages Used by This Application
 
-[@myanmartools/ng-zawgyi-detector](https://www.npmjs.com/package/@myanmartools/ng-zawgyi-detector)
+* [@myanmartools/ng-zawgyi-detector](https://www.npmjs.com/package/@myanmartools/ng-zawgyi-detector) - Zawgyi-One / Myanmar Unicode detection package for Angular
 
-[![npm (scoped)](https://img.shields.io/npm/v/@myanmartools/ng-zawgyi-detector.svg)](https://www.npmjs.com/package/@myanmartools/ng-zawgyi-detector)
-[![npm](https://img.shields.io/npm/dm/@myanmartools/ng-zawgyi-detector.svg)](https://www.npmjs.com/package/@myanmartools/ng-zawgyi-detector)
-
-Zawgyi-One / Myanmar Unicode font encoding detection package for Angular.
-
-[@myanmartools/ng-translit](https://www.npmjs.com/package/@myanmartools/ng-translit)
-
-[![npm (scoped)](https://img.shields.io/npm/v/@myanmartools/ng-translit.svg)](https://www.npmjs.com/package/@myanmartools/ng-translit)
-[![npm](https://img.shields.io/npm/dm/@myanmartools/ng-translit.svg)](https://www.npmjs.com/package/@myanmartools/ng-translit)
-
-Zawgyi-One <> Myanmar Unicode transliteration package for Angular.
+* [@dagonmetric/ng-translit](https://www.npmjs.com/package/@dagonmetric/ng-translit) - Transliteration service for Angular applications which can be used in swapping letters such as α → a, ၎ → ၎င်း or Zawgyi-One to standard Myanmar Unicode
 
 ## Feedback and Contributing
 
