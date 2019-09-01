@@ -1,30 +1,20 @@
 version: '{build}'
-branches:
-  only:
-    - master
-    - '/v(?:0|[1-9]\d*)(\.(?:0|[1-9]\d*))?(\.(?:0|[1-9]\d*))?(?:-[\da-z-]+(?:\.[\da-z-]+)*)?(?:\+[\da-z-]+(?:\.[\da-z-]+)*)?/'
-clone_depth: 1
-skip_non_tags: true
-image: Visual Studio 2017
+image: 'Visual Studio 2017'
 environment:
   nodejs_version: "10"
 install:
   - ps: Install-Product node $env:nodejs_version
-  - ps: |
-  - yarn global add firebase-tools
-  # - yarn install --frozen-lockfile --network-timeout=500000
-  - yarn install
+  - yarn install --frozen-lockfile
 build_script:
-  - yarn run lint
-  - yarn run build
-  # - yarn run test
-test: "off"
+  - yarn build
+test_script:
+  - yarn test -c=ci
+  - ps: |
+      if ($env:CODECOV_TOKEN)
+      {
+        yarn global add codecov
+        codecov --disable=gcov -f dist/coverage/zawgyi-unicode-converter-angular-pwa/lcov.info -F unit
+      }
 cache:
   - node_modules -> yarn.lock
   - "%LOCALAPPDATA%\\Yarn"
-deploy_script:
-  - ps: |
-      if ($env:firebase_token)
-      {
-        iex "firebase deploy --only hosting:zawgyiunicodeconverter --token $env:firebase_token"
-      }
