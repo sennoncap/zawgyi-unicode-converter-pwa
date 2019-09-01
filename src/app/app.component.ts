@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 
 import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil } from 'rxjs/operators';
 
-import { TranslitService } from '@myanmartools/ng-translit';
+import { TranslitService } from '@dagonmetric/ng-translit';
+
 import { ZawgyiDetector } from '@myanmartools/ng-zawgyi-detector';
+import { uni2zgRules, zg2uniRules } from '@myanmartools/zawgyi-unicode-translit-rules';
 
 import { CdkTextareaSyncSize } from '../cdk-extensions';
 
@@ -32,10 +34,10 @@ export class AppComponent implements OnInit, OnDestroy {
     sourceEnc: SourceEncType;
     targetEnc: TargetEncType;
 
-    @ViewChild('sourceTextareaSyncSize')
+    @ViewChild('sourceTextareaSyncSize', { static: false })
     sourceTextareaSyncSize: CdkTextareaSyncSize;
 
-    @ViewChild('outTextareaSyncSize')
+    @ViewChild('outTextareaSyncSize', { static: false })
     outTextareaSyncSize: CdkTextareaSyncSize;
 
     get appVersion(): string {
@@ -87,15 +89,19 @@ export class AppComponent implements OnInit, OnDestroy {
         private readonly _zawgyiDetector: ZawgyiDetector) { }
 
     ngOnInit(): void {
-        this.sourceTextareaSyncSize.secondCdkTextareaSyncSize = this.outTextareaSyncSize;
-        this.outTextareaSyncSize.secondCdkTextareaSyncSize = this.sourceTextareaSyncSize;
+        if (this.sourceTextareaSyncSize) {
+            this.sourceTextareaSyncSize.secondCdkTextareaSyncSize = this.outTextareaSyncSize;
+        }
+        if (this.outTextareaSyncSize) {
+            this.outTextareaSyncSize.secondCdkTextareaSyncSize = this.sourceTextareaSyncSize;
+        }
 
         this._detectSubject.pipe(
             debounceTime(100),
             distinctUntilChanged(),
             filter((input) => input && input.length > 0 && this.sourceEnc === 'auto' || !this.detectedEnc),
             takeUntil(this._destroyed),
-            switchMap(input => this._zawgyiDetector.detect(input))
+            map(input => this._zawgyiDetector.detect(input))
         ).subscribe(result => {
             if (result.detectedEnc === 'zg') {
                 this.resetAutoEncText('ZAWGYI DETECTED');
@@ -136,7 +142,10 @@ export class AppComponent implements OnInit, OnDestroy {
                 const inputPart = formattedInput.substr(formattedInput.indexOf('|'));
                 const input = inputPart.length > 1 ? inputPart.substr(1) : '';
 
-                return this._translitService.translit(input, this.detectedEnc as string, this.targetEnc as string)
+                const rulesToUse = this.detectedEnc === 'zg' ? zg2uniRules : uni2zgRules;
+                const ruleName = this.detectedEnc === 'zg' ? 'zg2uni' : 'uni2zg';
+
+                return this._translitService.translit(input, ruleName, rulesToUse)
                     .pipe(
                         takeUntil(this._destroyed)
                     );
