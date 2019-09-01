@@ -23,7 +23,7 @@
                 <mat-button-toggle value="uni">UNICODE</mat-button-toggle>
             </mat-button-toggle-group>
             <mat-form-field floatLabel="never">
-                <textarea class="myanmar-text" spellcheck="false" matInput placeholder="Zawgyi or Unicode text"
+                <textarea matInput id="sourceTextareaSyncSize" class="myanmar-text" spellcheck="false" placeholder="Zawgyi or Unicode text"
                     [value]="sourceText" (input)="sourceText = $event.target.value"
                     [class.my-uni]="!detectedEnc || detectedEnc == 'uni'" [class.my-zg]="detectedEnc == 'zg'"
                     cdkTextareaSyncSize cdkAutosizeMinRows="10"
@@ -37,7 +37,7 @@
                 <mat-button-toggle value="uni">UNICODE</mat-button-toggle>
             </mat-button-toggle-group>
             <mat-form-field floatLabel="never">
-                <textarea class="myanmar-text" spellcheck="false" matInput placeholder="Converted text"
+                <textarea id="outTextareaSyncSize" matInput class="myanmar-text" spellcheck="false" placeholder="Converted text"
                     [value]="outText" [class.my-uni]="targetEnc == 'uni'"
                     [class.my-zg]="!targetEnc || targetEnc == 'zg'" [readonly]="!outText" cdkTextareaSyncSize
                     cdkAutosizeMinRows="10" #outTextareaSyncSize="cdkTextareaSyncSize"></textarea>

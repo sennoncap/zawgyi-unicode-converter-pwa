@@ -6,7 +6,7 @@
  * found under the LICENSE file in the root directory of this source tree.
  */
 
-import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil } from 'rxjs/operators';
@@ -21,9 +21,9 @@ import { CdkTextareaSyncSize } from '../cdk-extensions';
 import { environment } from '../environments/environment';
 import { VERSION } from '../version';
 
-export type SourceEncType = 'auto' | 'zg' | 'uni' | null | '';
-export type TargetEncType = 'zg' | 'uni' | null | '';
-export type DetectedEncType = 'zg' | 'uni' | null | '';
+export type SourceEncType = 'auto' | 'zg' | 'uni' | null;
+export type TargetEncType = 'zg' | 'uni' | null;
+export type DetectedEncType = 'zg' | 'uni' | null;
 
 /**
  * Core app component.
@@ -34,7 +34,7 @@ export type DetectedEncType = 'zg' | 'uni' | null | '';
     styleUrls: ['./app.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     title = 'Zawgyi Unicode Converter';
     titleSuffix = ' - Myanmar Tools';
 
@@ -42,14 +42,14 @@ export class AppComponent implements OnInit, OnDestroy {
     githubImageAlt = 'Zawgyi Unicode Converter GitHub Repo';
 
     autoEncText = 'AUTO';
-    sourceEnc: SourceEncType;
-    targetEnc: TargetEncType;
+    sourceEnc?: SourceEncType;
+    targetEnc?: TargetEncType;
 
     @ViewChild('sourceTextareaSyncSize', { static: false })
-    sourceTextareaSyncSize: CdkTextareaSyncSize;
+    sourceTextareaSyncSize?: CdkTextareaSyncSize;
 
     @ViewChild('outTextareaSyncSize', { static: false })
-    outTextareaSyncSize: CdkTextareaSyncSize;
+    outTextareaSyncSize?: CdkTextareaSyncSize;
 
     get appVersion(): string {
         return VERSION.full;
@@ -78,7 +78,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private _sourceText = '';
     private _outText = '';
 
-    private _detectedEnc: DetectedEncType;
+    private _detectedEnc: DetectedEncType = null;
 
     get detectedEnc(): DetectedEncType {
         return this._detectedEnc;
@@ -100,13 +100,6 @@ export class AppComponent implements OnInit, OnDestroy {
         private readonly _zawgyiDetector: ZawgyiDetector) { }
 
     ngOnInit(): void {
-        if (this.sourceTextareaSyncSize) {
-            this.sourceTextareaSyncSize.secondCdkTextareaSyncSize = this.outTextareaSyncSize;
-        }
-        if (this.outTextareaSyncSize) {
-            this.outTextareaSyncSize.secondCdkTextareaSyncSize = this.sourceTextareaSyncSize;
-        }
-
         this._detectSubject.pipe(
             debounceTime(100),
             distinctUntilChanged(),
@@ -165,6 +158,15 @@ export class AppComponent implements OnInit, OnDestroy {
             this._outText = result.outputText || '';
             // this.sourceTextareaSyncSize.resizeToFitContent(true, true);
         });
+    }
+
+    ngAfterViewInit(): void {
+        if (this.sourceTextareaSyncSize) {
+            this.sourceTextareaSyncSize.secondCdkTextareaSyncSize = this.outTextareaSyncSize;
+        }
+        if (this.outTextareaSyncSize) {
+            this.outTextareaSyncSize.secondCdkTextareaSyncSize = this.sourceTextareaSyncSize;
+        }
     }
 
     ngOnDestroy(): void {
