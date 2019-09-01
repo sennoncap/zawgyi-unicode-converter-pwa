@@ -3,8 +3,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// import { StateTransferInitializerModule } from '@nguniversal/common';
-
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
 
@@ -12,10 +10,6 @@ import { AppModule } from './app.module';
     bootstrap: [AppComponent],
     imports: [
         AppModule,
-
-        // broken for the time-being with ASP.NET
-        // StateTransferInitializerModule,
-
         BrowserAnimationsModule
     ]
 })

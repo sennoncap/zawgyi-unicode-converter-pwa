@@ -16,15 +16,10 @@ import { AppModule } from './app.module';
         AppModule,
         ServerModule,
         ServerTransferStateModule,
-
-        // Important* to have lazy-loaded routes work
         ModuleMapLoaderModule,
         NoopAnimationsModule,
-
         FlexLayoutServerModule
     ],
-    // Since the bootstrapped component is not inherited from your
-    // imported AppModule, it needs to be repeated here.
     bootstrap: [AppComponent]
 })
 export class AppServerModule { }

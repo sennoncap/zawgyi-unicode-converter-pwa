@@ -15,10 +15,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
-import { TranslitModule } from '@myanmartools/ng-translit';
-import { HttpTranslitRuleLoaderModule } from '@myanmartools/ng-translit/http-loader';
+import { TranslitModule } from '@dagonmetric/ng-translit';
 import { ZawgyiDetectorModule } from '@myanmartools/ng-zawgyi-detector';
-import { HttpZgUniRuleLoaderModule } from '@myanmartools/ng-zawgyi-detector/http-loader';
 
 import { environment } from '../environments/environment';
 
@@ -49,14 +47,11 @@ export function translitEndpointFactory(baseUrl: string, sourceEnc: string, targ
 
         CdkTextareaSyncSizeModule,
 
+        // ng-translit module
         TranslitModule,
-        HttpTranslitRuleLoaderModule.withOptions({
-            endpointFactory: translitEndpointFactory
-        }),
+
+        // ng-zawgyi-detector module
         ZawgyiDetectorModule,
-        HttpZgUniRuleLoaderModule.withOptions({
-            endpoint: '/assets/zawgyi-detect-rules/v1/zg-uni-rule.json'
-        }),
 
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ],
