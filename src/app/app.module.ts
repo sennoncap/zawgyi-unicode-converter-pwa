@@ -1,12 +1,16 @@
-// tslint:disable: no-unnecessary-class
+/**
+ * @license
+ * Copyright DagonMetric. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found under the LICENSE file in the root directory of this source tree.
+ */
 
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
-
-// import { TransferHttpCacheModule } from '@nguniversal/common';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -24,10 +28,9 @@ import { CdkTextareaSyncSizeModule } from '../cdk-extensions';
 
 import { AppComponent } from './app.component';
 
-export function translitEndpointFactory(baseUrl: string, sourceEnc: string, targetEnc: string): string {
-    return `${baseUrl}assets/translit-rules/v1/${sourceEnc}2${targetEnc}.json`;
-}
-
+/**
+ * App module for both node and web platforms.
+ */
 @NgModule({
     declarations: [
         AppComponent
