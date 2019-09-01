@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright DagonMetric. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found under the LICENSE file in the root directory of this source tree.
+ */
+
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 
 import { Subject } from 'rxjs';
@@ -17,6 +25,9 @@ export type SourceEncType = 'auto' | 'zg' | 'uni' | null | '';
 export type TargetEncType = 'zg' | 'uni' | null | '';
 export type DetectedEncType = 'zg' | 'uni' | null | '';
 
+/**
+ * Core app component.
+ */
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
