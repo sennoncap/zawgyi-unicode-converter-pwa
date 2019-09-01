@@ -8,22 +8,21 @@
 
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil } from 'rxjs/operators';
+import { of, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 
-import { TranslitService } from '@dagonmetric/ng-translit';
+import { ConfigService } from '@dagonmetric/ng-config';
+import { LogService } from '@dagonmetric/ng-log';
+import { TranslitResult, TranslitService } from '@dagonmetric/ng-translit';
 
-import { ZawgyiDetector } from '@myanmartools/ng-zawgyi-detector';
-import { uni2zgRules, zg2uniRules } from '@myanmartools/zawgyi-unicode-translit-rules';
+import { DetectedEnc, ZawgyiDetector } from '@myanmartools/ng-zawgyi-detector';
 
 import { CdkTextareaSyncSize } from '../cdk-extensions';
 
 import { environment } from '../environments/environment';
 import { VERSION } from '../version';
 
-export type SourceEncType = 'auto' | 'zg' | 'uni' | null;
-export type TargetEncType = 'zg' | 'uni' | null;
-export type DetectedEncType = 'zg' | 'uni' | null;
+export type SourceEnc = 'auto' | DetectedEnc;
 
 /**
  * Core app component.
@@ -35,15 +34,9 @@ export type DetectedEncType = 'zg' | 'uni' | null;
     encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
-    title = 'Zawgyi Unicode Converter';
-    titleSuffix = ' - Myanmar Tools';
-
-    githubRepoUrl = 'https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa';
-    githubImageAlt = 'Zawgyi Unicode Converter GitHub Repo';
-
     autoEncText = 'AUTO';
-    sourceEnc?: SourceEncType;
-    targetEnc?: TargetEncType;
+    sourceEnc?: SourceEnc;
+    targetEnc?: DetectedEnc;
 
     @ViewChild('sourceTextareaSyncSize', { static: false })
     sourceTextareaSyncSize?: CdkTextareaSyncSize;
@@ -55,32 +48,49 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
         return VERSION.full;
     }
 
+    get title(): string {
+        return this._configService.getValue<string>('title');
+    }
+
+    get titleSuffix(): string {
+        return this._configService.getValue<string>('titleSuffix');
+    }
+
     get titleWithSuffix(): string {
         return `${this.title}${this.titleSuffix}`;
     }
 
     get baseUrl(): string {
-        return environment.production ? 'https://zawgyi-unicode-converter.myanmartools.org/' : '/';
+        return environment.production ? this._configService.getValue<string>('baseUrl') : '/';
+    }
+
+    get githubRepoUrl(): string {
+        return this._configService.getValue<string>('githubRepoUrl');
+    }
+
+    get githubImageAlt(): string {
+        return this._configService.getValue<string>('githubImageAlt');
     }
 
     get appImageUrl(): string {
-        return `${this.baseUrl}assets/images/appicons/v1/logo.png`;
+        return `${this.baseUrl}${this._configService.getValue<string>('appImageUrl')}`;
     }
 
     get githubImageUrl(): string {
-        return `${this.baseUrl}assets/images/appicons/v1/github.svg`;
+        return `${this.baseUrl}${this._configService.getValue<string>('githubImageUrl')}`;
     }
 
     private readonly _translitSubject = new Subject<string>();
-    private readonly _detectSubject = new Subject<string>();
     private readonly _destroyed = new Subject<void>();
 
     private _sourceText = '';
     private _outText = '';
 
-    private _detectedEnc: DetectedEncType = null;
+    private _detectedEnc: DetectedEnc = null;
+    private _prevInputIsZg = false;
+    private _curRuleName = '';
 
-    get detectedEnc(): DetectedEncType {
+    get detectedEnc(): DetectedEnc {
         return this._detectedEnc;
     }
 
@@ -96,67 +106,87 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
         return this._outText;
     }
 
-    constructor(private readonly _translitService: TranslitService,
-        private readonly _zawgyiDetector: ZawgyiDetector) { }
+    constructor(
+        private readonly _translitService: TranslitService,
+        private readonly _zawgyiDetector: ZawgyiDetector,
+        private readonly _configService: ConfigService,
+        private readonly _logService: LogService) { }
 
     ngOnInit(): void {
-        this._detectSubject.pipe(
-            debounceTime(100),
-            distinctUntilChanged(),
-            filter((input) => input && input.length > 0 && this.sourceEnc === 'auto' || !this.detectedEnc),
-            takeUntil(this._destroyed),
-            map(input => this._zawgyiDetector.detect(input))
-        ).subscribe(result => {
-            if (result.detectedEnc === 'zg') {
-                this.resetAutoEncText('ZAWGYI DETECTED');
-                this.sourceEnc = 'auto';
-                this._detectedEnc = 'zg';
-                this.targetEnc = 'uni';
-
-                const formattedInput = `${this._detectedEnc},${this.targetEnc}|${this.sourceText}`;
-                this._translitSubject.next(formattedInput);
-            } else if (result.detectedEnc === 'uni') {
-                this.resetAutoEncText('UNICODE DETECTED');
-                this.sourceEnc = 'auto';
-                this._detectedEnc = 'uni';
-                this.targetEnc = 'zg';
-
-                const formattedInput = `${this._detectedEnc},${this.targetEnc}|${this.sourceText}`;
-                this._translitSubject.next(formattedInput);
-            } else {
-                this.resetAutoEncText();
-                this.sourceEnc = 'auto';
-                this._detectedEnc = null;
-
-                this._outText = this._sourceText;
-                // this.sourceTextareaSyncSize.resizeToFitContent(true, false, true);
-
-                this._translitSubject.next('');
-            }
-        });
-
         this._translitSubject.pipe(
             debounceTime(100),
             distinctUntilChanged(),
-            filter((formattedInput) => this.sourceText && this.sourceText.length > 0 &&
-                formattedInput && formattedInput.indexOf('|') > 0 &&
-                this.detectedEnc && this.targetEnc ? true : false),
             takeUntil(this._destroyed),
             switchMap(formattedInput => {
                 const inputPart = formattedInput.substr(formattedInput.indexOf('|'));
                 const input = inputPart.length > 1 ? inputPart.substr(1) : '';
+                if (!input || !input.trim().length) {
+                    if (this.sourceEnc === 'auto' || !this.detectedEnc) {
+                        this.resetAutoEncText();
+                        this.sourceEnc = 'auto';
+                        this._detectedEnc = null;
+                    }
 
-                const rulesToUse = this.detectedEnc === 'zg' ? zg2uniRules : uni2zgRules;
-                const ruleName = this.detectedEnc === 'zg' ? 'zg2uni' : 'uni2zg';
+                    return of({
+                        outputText: input,
+                        replaced: false,
+                        duration: 0
+                    });
+                }
 
-                return this._translitService.translit(input, ruleName, rulesToUse)
+                if (this.sourceEnc === 'auto' || !this.detectedEnc) {
+                    const detectorResult = this._zawgyiDetector.detect(input, { preferZg: this._prevInputIsZg, detectMixType: false });
+                    this._detectedEnc = detectorResult.detectedEnc;
+
+                    if (detectorResult.detectedEnc === 'zg') {
+                        this.resetAutoEncText('ZAWGYI DETECTED');
+                        this.sourceEnc = 'auto';
+                        this._detectedEnc = 'zg';
+                        this.targetEnc = 'uni';
+                        this._prevInputIsZg = true;
+                    } else if (detectorResult.detectedEnc === 'uni') {
+                        this.resetAutoEncText('UNICODE DETECTED');
+                        this.sourceEnc = 'auto';
+                        this._detectedEnc = 'uni';
+                        this.targetEnc = 'zg';
+                        this._prevInputIsZg = false;
+                    } else {
+                        this.resetAutoEncText();
+                        this.sourceEnc = 'auto';
+                        this._detectedEnc = null;
+                        this._prevInputIsZg = false;
+
+                        return of({
+                            replaced: false,
+                            outputText: input,
+                            duration: 0
+                        });
+                    }
+                }
+
+                this._curRuleName = this.detectedEnc === 'zg' ? 'zg2uni' : 'uni2zg';
+
+                return this._translitService.translit(input, this._curRuleName)
                     .pipe(
                         takeUntil(this._destroyed)
                     );
             })
-        ).subscribe(result => {
+        ).subscribe((result: TranslitResult) => {
             this._outText = result.outputText || '';
-            // this.sourceTextareaSyncSize.resizeToFitContent(true, true);
+
+            if (this._outText.length && this._sourceText.length && this._curRuleName) {
+                this._logService.trackEvent({
+                    name: `${this._curRuleName}`,
+                    event_category: 'convert',
+                    properties: {
+                        duration: result.duration,
+                        replaced: result.replaced,
+                        inputLength: this._sourceText.length,
+                        outputLength: this._outText.length,
+                        inputEnc: this.sourceEnc
+                    }
+                });
+            }
         });
     }
 
@@ -174,7 +204,7 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
         this._destroyed.complete();
     }
 
-    onSourceEncChanged(val: SourceEncType): void {
+    onSourceEncChanged(val: SourceEnc): void {
         this.sourceEnc = val;
 
         if (val === 'uni' || val === 'zg') {
@@ -195,7 +225,7 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
         this.translitNext();
     }
 
-    onTargetEncChanged(val: TargetEncType): void {
+    onTargetEncChanged(val: DetectedEnc): void {
         this.targetEnc = val;
 
         if (this.targetEnc === 'zg' && (!this.sourceEnc || this.sourceEnc === 'zg')) {
@@ -214,28 +244,6 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     }
 
     private translitNext(): void {
-        if (!this.sourceText || !this.sourceText.length || !this.sourceText.trim().length) {
-            this._outText = this.sourceText;
-            // this.sourceTextareaSyncSize.resizeToFitContent(true, false, true);
-
-            this._translitSubject.next('');
-
-            if (this.sourceEnc === 'auto' || !this.detectedEnc) {
-                this.resetAutoEncText();
-                this._detectSubject.next('');
-            }
-
-            return;
-        }
-
-        if (this.sourceEnc === 'auto' || !this.detectedEnc) {
-            this._detectSubject.next(this.sourceText);
-
-            return;
-        }
-
-        const formattedInput = `${this._detectedEnc},${this.targetEnc}|${this.sourceText}`;
-
-        this._translitSubject.next(formattedInput);
+        this._translitSubject.next(`${this.sourceEnc},${this.targetEnc}|${this.sourceText}`);
     }
 }
