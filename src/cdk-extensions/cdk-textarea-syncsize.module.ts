@@ -11,6 +11,9 @@ import { NgModule } from '@angular/core';
 import { PlatformModule } from '@angular/cdk/platform';
 import { CdkTextareaSyncSize } from './cdk-textarea-syncsize';
 
+/**
+ * The `NGMODULE` for `CdkTextareaSyncSize`.
+ */
 @NgModule({
     declarations: [
         CdkTextareaSyncSize
