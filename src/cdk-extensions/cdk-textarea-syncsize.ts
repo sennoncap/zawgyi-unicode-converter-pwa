@@ -1,6 +1,10 @@
-// tslint:disable: directive-class-suffix
-// tslint:disable: directive-selector
-// tslint:disable: no-host-metadata-property
+/**
+ * @license
+ * Copyright DagonMetric. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found under the LICENSE file in the root directory of this source tree.
+ */
 
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Platform } from '@angular/cdk/platform';
