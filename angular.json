@@ -103,6 +103,10 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
+            "codeCoverageExclude": [
+              "**/test.ts",
+              "**/index.ts"
+            ],
             "styles": [
               "src/styles.scss"
             ],
@@ -118,6 +122,15 @@
               "src/manifest.json",
               "src/assets"
             ]
+          },
+          "configurations": {
+            "ci": {
+              "browsers": "ChromeHeadless",
+              "reporters": ["progress", "junit"],
+              "codeCoverage": true,
+              "watch": false,
+              "progress": false
+            }
           }
         },
         "lint": {
