@@ -20,7 +20,6 @@ import { DetectedEnc, ZawgyiDetector } from '@myanmartools/ng-zawgyi-detector';
 import { CdkTextareaSyncSize } from '../cdk-extensions';
 
 import { environment } from '../environments/environment';
-import { VERSION } from '../version';
 
 export type SourceEnc = 'auto' | DetectedEnc;
 
@@ -45,7 +44,7 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     outTextareaSyncSize?: CdkTextareaSyncSize;
 
     get appVersion(): string {
-        return VERSION.full;
+        return this._configService.getValue<string>('appVersion', 'dev');
     }
 
     get title(): string {
