@@ -71,6 +71,7 @@ import { ZgUniTranslitRuleLoaderModule } from './zg-uni-translit-rule-loader.mod
         // ng-config modules
         ConfigModule.init(),
         StaticConfigLoaderModule.withSettings({
+            appVersion: '1.0.0',
             title: 'Zawgyi Unicode Converter',
             titleSuffix: ' - Myanmar Tools',
             githubRepoUrl: 'https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa',
