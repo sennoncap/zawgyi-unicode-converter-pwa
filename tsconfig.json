@@ -1,6 +1,6 @@
 ﻿{
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2015",
     "module": "esnext",
     "moduleResolution": "node",
     "experimentalDecorators": true,
@@ -16,7 +16,9 @@
     "stripInternal": true,
     "strictPropertyInitialization": true,
 
+    "downlevelIteration": true,
     "sourceMap": true,
+    "declaration": false,
     "importHelpers": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
@@ -32,5 +34,9 @@
         "configFile": "tslint.json"
       }
     ]
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
   }
 }
