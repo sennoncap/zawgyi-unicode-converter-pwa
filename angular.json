@@ -74,6 +74,11 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
                 }
               ]
             }
@@ -127,7 +132,6 @@
             "ci": {
               "browsers": "ChromeHeadless",
               "reporters": ["progress", "junit"],
-              "codeCoverage": true,
               "watch": false,
               "progress": false
             }
