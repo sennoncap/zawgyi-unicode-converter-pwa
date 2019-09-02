@@ -5,20 +5,24 @@ import { async, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { TextFieldModule } from '@angular/cdk/text-field';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { ConfigModule } from '@dagonmetric/ng-config';
+import { StaticConfigLoaderModule } from '@dagonmetric/ng-config/static-loader';
+import { LogModule } from '@dagonmetric/ng-log';
 import { TranslitModule } from '@dagonmetric/ng-translit';
+
 import { ZawgyiDetectorModule } from '@myanmartools/ng-zawgyi-detector';
 
+import { CdkTextareaSyncSizeModule } from '../cdk-extensions';
+
 import { AppComponent } from './app.component';
+import { ZgUniTranslitRuleLoaderModule } from './zg-uni-translit-rule-loader.module';
 
 describe('AppComponent', () => {
     beforeEach(async(() => {
@@ -30,17 +34,37 @@ describe('AppComponent', () => {
                 NoopAnimationsModule,
                 CommonModule,
 
-                TextFieldModule,
                 FlexLayoutModule,
                 MatButtonModule,
                 MatButtonToggleModule,
-                MatCardModule,
-                MatIconModule,
                 MatInputModule,
                 MatToolbarModule,
 
+                CdkTextareaSyncSizeModule,
+
+                // ng-translit module
                 TranslitModule,
-                ZawgyiDetectorModule
+
+                // ng-translit rule loader
+                ZgUniTranslitRuleLoaderModule,
+
+                // ng-zawgyi-detector module
+                ZawgyiDetectorModule,
+
+                // ng-log modules
+                LogModule,
+
+                // ng-config modules
+                ConfigModule.init(),
+                StaticConfigLoaderModule.withSettings({
+                    title: 'Zawgyi Unicode Converter',
+                    titleSuffix: ' - Myanmar Tools',
+                    githubRepoUrl: 'https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa',
+                    githubImageAlt: 'Zawgyi Unicode Converter GitHub Repo',
+                    baseUrl: 'https://zawgyi-unicode-converter.myanmartools.org/',
+                    appImageUrl: 'assets/images/appicons/v1/logo.png',
+                    githubImageUrl: 'assets/images/appicons/v1/github.svg'
+                })
             ],
         }).compileComponents();
     }));
@@ -51,11 +75,18 @@ describe('AppComponent', () => {
         expect(app).toBeTruthy();
     });
 
-    it('should render title in a h1 tag', () => {
+    it('should have title in header', () => {
         const fixture = TestBed.createComponent(AppComponent);
-        fixture.detectChanges();
-        const compiled = fixture.debugElement.nativeElement as HTMLElement;
-        const ele = compiled.querySelector('h1');
-        expect(ele && ele.textContent).toContain('Zawgyi Unicode Converter | Myanmar Tools');
+        const app = fixture.debugElement.componentInstance  as AppComponent;
+        expect(app.title).toEqual('Zawgyi Unicode Converter');
     });
+
+    // it('should convert Unicode input to Zawgyi', () => {
+    //     const fixture = TestBed.createComponent(AppComponent);
+    //     const app = fixture.debugElement.componentInstance as AppComponent;
+    //     app.ngOnInit();
+    //     app.ngAfterViewInit();
+    //     app.sourceText = 'မြန်မာ';
+    //     expect(app.outText).toEqual('\u103B\u1019\u1014\u1039\u1019\u102C');
+    // });
 });
