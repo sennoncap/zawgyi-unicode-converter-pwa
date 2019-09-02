@@ -8,9 +8,9 @@
     <meta name="format-detection" content="telephone=no">
     <title>Zawgyi Unicode Converter | Myanmar Tools</title>
     <meta name="description"
-        content="Zawgyi Unicode Converter (Myanmar Tools) is an open source progressive web app PWA designed to easily convert between Zawgyi-One and Unicode font encodings.">
+        content="Zawgyi Unicode Converter (Myanmar Tools) is an open source online/offline Zawgyi (ဇော်ဂျီ) and standard Myanmar Unicode (မြန်မာယူနီကုဒ်) converter.">
     <meta name="keywords"
-        content="zawgyi to unicode,unicode to zawgyi,converter,myanmar tools,zawgyi-one,myanmar unicode">
+        content="zawgyi to unicode,unicode to zawgyi,zawgyi converter,myanmar tools,zawgyi,myanmar unicode,ဇော်ဂျီ,ယူနီကုဒ်">
     <base href="/">
 
     <link rel="canonical" href="https://zawgyi-unicode-converter.myanmartools.org/">
@@ -21,80 +21,50 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#8764b8">
 
-    <!-- IoS app title -->
     <meta name="apple-mobile-web-app-title" content="Zawgyi Unicode Converter">
-    <!-- IoS webapp capable config -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- IoS statusbar style -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <!-- IoS app icons -->
     <link rel="apple-touch-icon" href="assets/images/appicons/v1/ios/ios-appicon-180x180.png">
-    <!-- iPhone(first generation or 2G), iPhone 3G, iPhone 3GS -->
-    <!-- <link rel="apple-touch-icon" sizes="56x56" href="assets/images/appicons/v1/ios/ios-appicon-56x56.png"> -->
-    <!-- iPad and iPad mini @1x -->
     <link rel="apple-touch-icon" sizes="76x76" href="assets/images/appicons/v1/ios/ios-appicon-76x76.png">
-    <!-- iPhone 4, iPhone 4s, iPhone 5, iPhone 5c, iPhone 5s, iPhone 6, iPhone 6s, iPhone 7, iPhone 7s, iPhone8 -->
     <link rel="apple-touch-icon" sizes="120x120" href="assets/images/appicons/v1/ios/ios-appicon-120x120.png">
-    <!-- iPad and iPad mini @2x -->
     <link rel="apple-touch-icon" sizes="152x152" href="assets/images/appicons/v1/ios/ios-appicon-152x152.png">
-    <!-- iPad Pro -->
-    <!-- <link rel="apple-touch-icon" sizes="167x167" href="assets/images/appicons/v1/ios/ios-appicon-167x167.png"> -->
-    <!-- iPhone X, iPhone 8 Plus, iPhone 7 Plus, iPhone 6s Plus, iPhone 6 Plus -->
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/appicons/v1/ios/ios-appicon-180x180.png">
 
-    <!-- IoS startup images -->
-    <!-- iPhone < 5 retina startup image -->
     <link rel="apple-touch-startup-image" href="assets/images/appicons/v1/ios/ios-launchimage-640x960.png"
         media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <!-- iPhone 5/SE startup image -->
     <link rel="apple-touch-startup-image" href="assets/images/appicons/v1/ios/ios-launchimage-640x1136.png"
         media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <!-- iPhone 6s/7/8 landscape startup image -->
     <link rel="apple-touch-startup-image" href="assets/images/appicons/v1/ios/ios-launchimage-1334x750.png"
         media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-    <!-- iPhone 6s/7/8 portrait startup image -->
     <link rel="apple-touch-startup-image" href="assets/images/appicons/v1/ios/ios-launchimage-750x1334.png"
         media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <!-- iPhone 6 Plus/7 Plus/8 Plus landscape startup image -->
     <link rel="apple-touch-startup-image" href="assets/images/appicons/v1/ios/ios-launchimage-2208x1242.png"
         media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-    <!-- iPhone 6 Plus/7 Plus/8 Plus portrait startup image -->
     <link rel="apple-touch-startup-image" href="assets/images/appicons/v1/ios/ios-launchimage-1242x2208.png"
         media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <!-- iPhone X landscape startup image -->
     <link rel="apple-touch-startup-image" href="assets/images/appicons/v1/ios/ios-launchimage-2436x1125.png"
         media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <!-- iPhone X portrait startup image -->
     <link rel="apple-touch-startup-image" href="assets/images/appicons/v1/ios/ios-launchimage-1125x2436.png"
         media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <!-- iPad non-retina landscape startup image -->
     <link rel="apple-touch-startup-image" href="assets/images/appicons/v1/ios/ios-launchimage-1024x768.png"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 1) and (orientation: landscape)">
-    <!-- iPad non-retina portrait startup image -->
     <link rel="apple-touch-startup-image" href="assets/images/appicons/v1/ios/ios-launchimage-768x1024.png"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 1) and (orientation: portrait)">
-    <!-- iPad mini 4/9.7" iPad landscape startup image -->
     <link rel="apple-touch-startup-image" href="assets/images/appicons/v1/ios/ios-launchimage-2048x1536.png"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-    <!-- iPad mini 4/9.7" iPad portrait startup image -->
     <link rel="apple-touch-startup-image" href="assets/images/appicons/v1/ios/ios-launchimage-1536x2048.png"
         media="(min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
-    <!-- iPad Pro 15" portrait startup image -->
     <link rel="apple-touch-startup-image" href="assets/images/appicons/v1/ios/ios-launchimage-1668x2224.png"
         media="(min-device-width: 834px) and (max-device-width: 834px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
-    <!-- iPad Pro 12.9" portrait startup image -->
     <link rel="apple-touch-startup-image" href="assets/images/appicons/v1/ios/ios-launchimage-2048x2732.png"
         media="(min-device-width: 1024px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)">
 
-    <!-- Safari -->
     <link rel="mask-icon" href="assets/images/appicons/v1/safari/safari-pinned-tab.svg" color="#8764b8">
 
-    <!-- IE10 WP8 -->
     <meta name="msapplication-tap-highlight" content="no">
     <link rel="msapplication-starturl" href="/">
 
-    <!-- Windows Tiles -->
     <meta name="application-name" content="Zawgyi Unicode Converter">
     <meta name="msapplication-TileColor" content="#8764b8">
     <meta name="msapplication-square70x70logo"
@@ -106,7 +76,6 @@
     <meta name="msapplication-square310x310logo"
         content="assets/images/appicons/v1/windows/Square310x310Logo.scale-100.png">
 
-    <!-- Favicons -->
     <link rel="icon" type="image/png" sizes="32x32" href="assets/images/appicons/v1/favicon-32x32.png">
     <link rel="icon" type="image/png" href="assets/images/appicons/v1/android/android-launchericon-96x96.png"
         sizes="96x96">
@@ -117,13 +86,12 @@
     <link rel="shortcut icon" href="assets/images/appicons/v1/favicon.ico" type="image/x-icon">
     <link rel="icon" href="assets/images/appicons/v1/favicon.ico" type="image/x-icon">
 
-    <!-- Twitter card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@myanmartools">
     <meta name="twitter:creator" content="@DagonMetric">
     <meta name="twitter:title" content="Let's Convert between Zawgyi-One and Unicode Easily">
     <meta name="twitter:description"
-        content="This tool is free & open source project of Myanmar Tools foundation super-powered by DagonMetric. Let's try it now...">
+        content="This app is a free & open source project of Myanmar Tools foundation by DagonMetric designed to convert Zawgyi-One and standard Myanmar Unicode.">
     <meta name="twitter:image"
         content="https://zawgyi-unicode-converter.myanmartools.org/assets/images/appicons/v1/og-image-square.png">
 
@@ -132,7 +100,7 @@
     <meta content="https://zawgyi-unicode-converter.myanmartools.org/" property="og:url">
     <meta content="Zawgyi Unicode Converter" property="og:site_name">
     <meta content="Let's Convert between Zawgyi-One and Unicode Easily" property="og:title">
-    <meta content="This tool is free & open source project of Myanmar Tools foundation super-powered by DagonMetric. Let's try it now..."
+    <meta content="This app is a free & open source project of Myanmar Tools foundation by DagonMetric designed to convert Zawgyi-One and standard Myanmar Unicode."
         property="og:description">
     <meta content="461163654621837" property="fb:app_id">
     <meta content="website" property="og:type">
@@ -143,7 +111,7 @@
     <meta content="630" property="og:image:height">
 
     <!-- NOTE: These need to be kept in sync with `ngsw-config.json`. -->
-    <link rel="stylesheet" href="https://fontassets.firebaseapp.com/zawgyione/v1/font.css">
+    <link rel="stylesheet" href="https://fontassets.firebaseapp.com/zawgyione/v2/font.css">
     <link rel="stylesheet" href="https://fontassets.firebaseapp.com/notosansmyanmarui/v1/font.css">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
