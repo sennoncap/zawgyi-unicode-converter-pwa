@@ -12,11 +12,23 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppBrowserModule } from './app/app.browser.module';
 import { environment } from './environments/environment';
 
+// tslint:disable-next-line: no-any
+declare var gtag: any;
+
 if (environment.production) {
     enableProdMode();
 }
 
 platformBrowserDynamic().bootstrapModule(AppBrowserModule)
     .catch(err => {
-        console.error(err);
+        // tslint:disable-next-line: no-typeof-undefined
+        if (environment.production && typeof window !== 'undefined' && gtag) {
+            // tslint:disable-next-line: no-unsafe-any
+            gtag('event', 'exception', {
+                description: `${err}`,
+                fatal: true
+            });
+        } else {
+            console.error(err);
+        }
     });
