@@ -938,17 +938,17 @@
   dependencies:
     tslib "^1.9.3"
 
-"@myanmartools/ng-zawgyi-detector@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@myanmartools/ng-zawgyi-detector/-/ng-zawgyi-detector-1.0.0.tgz#2452c50d37e52063d467cc96c0a68e090c61bf39"
-  integrity sha512-o/HaunEbUVFmO/SN5Rjxa/5V643+V7tX/InHIZPyOZx2o8qs3skDWeHgAM+r0eqQgE1uwB2pAF5hUI76bj311A==
+"@myanmartools/ng-zawgyi-detector@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@myanmartools/ng-zawgyi-detector/-/ng-zawgyi-detector-1.1.0.tgz#229a224f5dc5f313848fcb762ba4e4c166121d9f"
+  integrity sha512-JAtGJVwVB6PjX5JTav3kPGNKxYtdynm/tyfUTVqO6UpaPKYn+NzsZtk65RuSL4mZb9ae6Iswjh2+uRp4rfhvnA==
   dependencies:
     tslib "^1.10.0"
 
-"@myanmartools/zawgyi-unicode-translit-rules@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@myanmartools/zawgyi-unicode-translit-rules/-/zawgyi-unicode-translit-rules-1.0.0.tgz#7e8351881211e6bacba9f9a520f835fb4378c05e"
-  integrity sha512-A3yqCmuffjAspMaeaHw87OBt3qfl8s63Mbj9XJuB5vHKHtSGPKzvamcgOttH4cCP5PL4mt0sMW3LTEf0OUKPwg==
+"@myanmartools/zawgyi-unicode-translit-rules@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@myanmartools/zawgyi-unicode-translit-rules/-/zawgyi-unicode-translit-rules-1.1.0.tgz#b7ac2446bd047d2d31ba1cfa9f8be45ff2a31b9f"
+  integrity sha512-FDLFDvUEScBsWHnTGHlzy84dXMI/JEG+6NGT1AdVAOkW0oYPQzc3fFpHqlnpum7cYe/7h4gqM4zfRSC/V65mSA==
 
 "@ngtools/webpack@8.3.2":
   version "8.3.2"
