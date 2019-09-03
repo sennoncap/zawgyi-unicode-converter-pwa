@@ -86,7 +86,6 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     private _outText = '';
 
     private _detectedEnc: DetectedEnc = null;
-    private _prevInputIsZg = false;
     private _curRuleName = '';
 
     get detectedEnc(): DetectedEnc {
@@ -134,7 +133,7 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
                 }
 
                 if (this.sourceEnc === 'auto' || !this.detectedEnc) {
-                    const detectorResult = this._zawgyiDetector.detect(input, { preferZg: this._prevInputIsZg, detectMixType: false });
+                    const detectorResult = this._zawgyiDetector.detect(input, { detectMixType: false });
                     this._detectedEnc = detectorResult.detectedEnc;
 
                     if (detectorResult.detectedEnc === 'zg') {
@@ -142,18 +141,15 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
                         this.sourceEnc = 'auto';
                         this._detectedEnc = 'zg';
                         this.targetEnc = 'uni';
-                        this._prevInputIsZg = true;
                     } else if (detectorResult.detectedEnc === 'uni') {
                         this.resetAutoEncText('UNICODE DETECTED');
                         this.sourceEnc = 'auto';
                         this._detectedEnc = 'uni';
                         this.targetEnc = 'zg';
-                        this._prevInputIsZg = false;
                     } else {
                         this.resetAutoEncText();
                         this.sourceEnc = 'auto';
                         this._detectedEnc = null;
-                        this._prevInputIsZg = false;
 
                         return of({
                             replaced: false,

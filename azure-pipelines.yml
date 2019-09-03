@@ -1,9 +1,41 @@
-resources:
-  repositories:
-    - repository: templates
-      type: github
-      name: DagonMetric/ng-workspace-configs
-      endpoint: github-dagonmetric-connection
+jobs:
+  - job: build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - task: UseNode@1
+        inputs:
+          version: '10.x'
+        displayName: 'Use Node 10.x'
+      - script: |
+          yarn install --frozen-lockfile
+        displayName: 'Install dependencies'
+      - script: |
+          yarn build
+        displayName: "Run build"
+      - script: |
+          yarn test -c=ci
+        displayName: 'Run test'
+      - script: |
+          yarn lint
+        displayName: 'Run linting'
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'dist'
+          targetPath: 'dist'
+        displayName: 'Publish build artifacts'
+      - task: PublishTestResults@2
+        inputs:
+          testRunTitle: zawgyi-unicode-converter
+          searchFolder: $(System.DefaultWorkingDirectory)/dist/junit
+          testResultsFormat: JUnit
+          testResultsFiles: "**/TESTS*.xml"
+        condition: succeededOrFailed()
+        displayName: Publish test results
+      - task: PublishPipelineArtifact@0
+        inputs:
+          artifactName: 'release-notes'
+          targetPath: 'release-notes/'
+        condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'refs/tags/'))
+        displayName: 'Publish release notes'
 
-stages:
-  - template: azure-pipelines/multi-platform-build-stage.yml@templates
