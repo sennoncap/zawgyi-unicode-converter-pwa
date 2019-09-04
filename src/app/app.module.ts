@@ -14,6 +14,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
@@ -28,8 +29,10 @@ import { ZawgyiDetectorModule } from '@myanmartools/ng-zawgyi-detector';
 import { environment } from '../environments/environment';
 
 import { CdkTextareaSyncSizeModule } from '../cdk-extensions';
+import { CustomIconRegistry } from '../mat-extensions';
 
 import { AppComponent } from './app.component';
+import { appSvgIconProviders } from './app.svg-icons';
 import { ZgUniTranslitRuleLoaderModule } from './zg-uni-translit-rule-loader.module';
 
 /**
@@ -48,6 +51,7 @@ import { ZgUniTranslitRuleLoaderModule } from './zg-uni-translit-rule-loader.mod
         FlexLayoutModule,
         MatButtonModule,
         MatButtonToggleModule,
+        MatIconModule,
         MatInputModule,
         MatToolbarModule,
 
@@ -78,12 +82,35 @@ import { ZgUniTranslitRuleLoaderModule } from './zg-uni-translit-rule-loader.mod
             githubImageAlt: 'Zawgyi Unicode Converter GitHub Repo',
             baseUrl: 'https://zawgyi-unicode-converter.myanmartools.org/',
             appImageUrl: 'assets/images/appicons/v1/logo.png',
-            githubImageUrl: 'assets/images/appicons/v1/github.svg'
+            githubImageUrl: 'assets/images/appicons/v1/github.svg',
+            socialLinks: [
+                {
+                    url: 'https://www.facebook.com/DagonMetric',
+                    label: 'Follow Myanmar Tools on Facebook',
+                    svgIconName: 'facebook'
+                },
+                // {
+                //     url: 'https://twitter.com/myanmartools',
+                //     label: 'Follow Myanmar Tools on Twitter',
+                //     svgIconName: 'twitter'
+                // },
+                {
+                    url: 'https://medium.com/myanmartools',
+                    label: 'Myanmar Tools Blog on Medium',
+                    svgIconName: 'medium'
+                }
+            ]
         }),
 
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ],
-    providers: [],
+    providers: [
+        {
+            provide: MatIconRegistry,
+            useClass: CustomIconRegistry
+        },
+        appSvgIconProviders
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
