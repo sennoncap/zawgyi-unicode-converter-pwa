@@ -21,6 +21,8 @@ import { CdkTextareaSyncSize } from '../cdk-extensions';
 
 import { environment } from '../environments/environment';
 
+import { SocialLinkItem } from './social-link-item';
+
 export type SourceEnc = 'auto' | DetectedEnc;
 
 /**
@@ -77,6 +79,10 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
 
     get githubImageUrl(): string {
         return `${this.baseUrl}${this._configService.getValue<string>('githubImageUrl')}`;
+    }
+
+    get socialLinkItems(): SocialLinkItem[] {
+        return this._configService.getValue<SocialLinkItem[]>('socialLinks', []);
     }
 
     private readonly _translitSubject = new Subject<string>();
