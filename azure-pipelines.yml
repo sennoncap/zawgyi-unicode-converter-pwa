@@ -32,10 +32,3 @@ jobs:
           testResultsFiles: "**/TESTS*.xml"
         condition: succeededOrFailed()
         displayName: Publish test results
-      - task: PublishPipelineArtifact@0
-        inputs:
-          artifactName: 'release-notes'
-          targetPath: 'release-notes/'
-        condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'refs/tags/'))
-        displayName: 'Publish release notes'
-
