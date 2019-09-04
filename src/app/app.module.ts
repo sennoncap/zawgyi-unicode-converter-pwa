@@ -7,6 +7,7 @@
  */
 
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -45,6 +46,7 @@ import { ZgUniTranslitRuleLoaderModule } from './zg-uni-translit-rule-loader.mod
     imports: [
         BrowserModule.withServerTransition({ appId: 'zawgyi-unicode-converter-angular-pwa' }),
         CommonModule,
+        HttpClientModule,
 
         BrowserTransferStateModule,
 
@@ -89,11 +91,11 @@ import { ZgUniTranslitRuleLoaderModule } from './zg-uni-translit-rule-loader.mod
                     label: 'Follow Myanmar Tools on Facebook',
                     svgIconName: 'facebook'
                 },
-                // {
-                //     url: 'https://twitter.com/myanmartools',
-                //     label: 'Follow Myanmar Tools on Twitter',
-                //     svgIconName: 'twitter'
-                // },
+                {
+                    url: 'https://twitter.com/myanmartools',
+                    label: 'Follow Myanmar Tools on Twitter',
+                    svgIconName: 'twitter'
+                },
                 {
                     url: 'https://medium.com/myanmartools',
                     label: 'Myanmar Tools Blog on Medium',
