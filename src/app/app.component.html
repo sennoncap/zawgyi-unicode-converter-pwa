@@ -45,13 +45,12 @@
             </mat-form-field>
         </div>
     </div>
-    <div class="about my-uni" fxLayout="column">
-        <div class="description" fxLayout="column">
+    <div class="about myanmar-text" fxLayout="column">
+        <div class="description my-uni" fxLayout="column">
             Zawgyi Unicode Converter is an open source Zawgyi-One (ဇော်ဂျီ) and Myanmar Unicode (မြန်မာယူနီကုဒ်)
             online/offline converter created by Myanmar Tools team.
-            <!-- <div class="app-version">Version: {{appVersion}}</div> -->
         </div>
-        <div class="features" fxLayout="column">
+        <div class="features my-uni" fxLayout="column">
             <ul fxLayout="column">
                 <li>
                     <span>Ability to convert Zawgyi to Unicode and Unicode to Zawgyi</span>
@@ -104,8 +103,9 @@
 </main>
 <footer class="app-footer">
     <div class="container">
-        <div fxLayout="column" class="footer-section-grid">
-            <section class="footer-section" fxLayout="column">
+        <div fxLayout="column" class="footer-inner-container">
+            <div class="app-version">Version: {{appVersion}}</div>
+            <div class="footer-links" fxLayout="column">
                 <ul fxLayout="row" fxLayoutGap="24px">
                     <li>
                         <a href="https://myanmartools.org" target="_blank" rel="noopener">Myanmar Tools</a>
@@ -120,7 +120,7 @@
                             target="_blank" rel="noopener">Contribute</a>
                     </li>
                 </ul>
-            </section>
+            </div>
             <div class="social-links">
                 <a class="social-link-item" target="_blank" rel="noopener"
                     *ngFor="let socialLinkItem of socialLinkItems" [href]="socialLinkItem.url"

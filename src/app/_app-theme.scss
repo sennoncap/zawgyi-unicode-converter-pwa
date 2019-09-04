@@ -6,7 +6,13 @@
  * found under the LICENSE file in the root directory of this source tree.
  */
 
-$total-feature-tiems: 14;
+$about-description-ani-delay: 4s;
+$about-description-ani-duration: 1s;
+
+$total-feature-items: 14;
+$feature-item-ani-duration: 5s;
+
+$footer-section-ani-duration: 2s;
 
 @mixin app-theme($theme) {
     $primary: map-get($theme, primary);
@@ -18,44 +24,67 @@ $total-feature-tiems: 14;
         background: mat-color($background, background); // #f1f1f1
     }
 
+    .myanmar-text,
+    textarea.myanmar-text,
+    textarea.mat-input-element.myanmar-text {
+        font-size: 1em;
+        line-height: 1.6;
+        font-weight: 400;
+    }
+
+    .my-zg,
+    textarea.mat-input-element.my-zg {
+        font-family: Zawgyi-One;
+    }
+
+    .my-uni,
+    textarea.mat-input-element.my-uni {
+        font-family: "Noto Sans Myanmar UI", "Myanmar Text", Pyidaungsu, Padauk, Myanmar3, sans-serif;
+    }
+
     header.app-header {
         .mat-toolbar.mat-primary {
-            animation: header-background-animation 2.8s ease-in 0s forwards;
+            animation: header-background-ani 2.8s ease-in 0s forwards;
         }
 
         .nav-img {
             &.site-logo-img {
-                animation: brand-logo-animation 2.8s ease-in .2s forwards;
+                animation: brand-logo-ani 2.8s ease-in .2s forwards;
             }
         }
     }
 
-    .page .about {
-        color: mat-color($foreground, secondary-text);
+    .page {
+        .about {
+            color: mat-color($foreground, secondary-text);
 
-        .my-uni,
-        &.my-uni {
-            font-family: "Noto Sans Myanmar UI", "Myanmar Text", Pyidaungsu, Padauk, Myanmar3, sans-serif;
-        }
-
-        .description {
-            animation: about-description-animation 3s linear 4s forwards;
-        }
-
-        .features {
-            ul {
-                font-size: 1.3em;
-                line-height: 1.8;
+            .description {
+                animation: about-description-ani $about-description-ani-duration linear $about-description-ani-delay forwards;
             }
 
-            li {
-                animation: feature-item-animation 7s ease-in;
-                animation-fill-mode: both;
-            }
+            .features {
+                ul {
+                    position: relative;
+                    // font-size: 1.2em;
+                    // line-height: 1.8;
+                    // font-weight: 500;
+                }
 
-            @for $i from 1 through $total-feature-tiems {
-                li:nth-child(#{$i}) {
-                    animation-delay: 7s * $i;
+                li {
+                    position: absolute;
+                    width: 100%;
+                    font-size: 1em;
+                    line-height: 1.6;
+                    font-weight: 400;
+
+                    animation: feature-item-ani $feature-item-ani-duration ease-in;
+                    animation-fill-mode: both;
+                }
+
+                @for $i from 1 through $total-feature-items {
+                    li:nth-child(#{$i}) {
+                        animation-delay: $feature-item-ani-duration * $i;
+                    }
                 }
             }
         }
@@ -63,7 +92,30 @@ $total-feature-tiems: 14;
 
     footer.app-footer {
         color: mat-color($foreground, secondary-text);
-        animation: footer-animation 110s ease-in 0s forwards;
+
+        .app-version {
+            opacity: 0;
+
+            animation: footer-section-ani $footer-section-ani-duration ease-in;
+            animation-fill-mode: forwards;
+            animation-delay: $about-description-ani-delay + $about-description-ani-duration + ($feature-item-ani-duration * $total-feature-items);
+        }
+
+        .footer-links {
+            opacity: 0;
+
+            animation: footer-section-ani $footer-section-ani-duration ease-in;
+            animation-fill-mode: forwards;
+            animation-delay: $about-description-ani-delay + $about-description-ani-duration + ($feature-item-ani-duration * $total-feature-items) + $footer-section-ani-duration;
+        }
+
+        .social-links {
+            opacity: 0;
+
+            animation: footer-section-ani $footer-section-ani-duration ease-in;
+            animation-fill-mode: forwards;
+            animation-delay: $about-description-ani-delay + $about-description-ani-duration + ($feature-item-ani-duration * $total-feature-items) + ($footer-section-ani-duration * 2);
+        }
 
         a {
             color: inherit;
@@ -92,7 +144,7 @@ $total-feature-tiems: 14;
         }
     }
 
-    @keyframes header-background-animation {
+    @keyframes header-background-ani {
         0% {
             background: mat-color($primary, 800);
         }
@@ -102,7 +154,7 @@ $total-feature-tiems: 14;
         }
     }
 
-    @keyframes brand-logo-animation {
+    @keyframes brand-logo-ani {
         0% {
             filter: saturate(100%) brightness(100%) invert(0);
         }
@@ -120,7 +172,7 @@ $total-feature-tiems: 14;
         }
     }
 
-    @keyframes about-description-animation {
+    @keyframes about-description-ani {
         0% {
             opacity: 1;
             height: 100%;
@@ -137,7 +189,7 @@ $total-feature-tiems: 14;
         }
     }
 
-    @keyframes feature-item-animation {
+    @keyframes feature-item-ani {
         0% {
             height: 0;
             opacity: 0;
@@ -159,13 +211,8 @@ $total-feature-tiems: 14;
         }
     }
 
-    @keyframes footer-animation {
+    @keyframes footer-section-ani {
         0% {
-            opacity: 0;
-            height: 0;
-        }
-
-        92% {
             opacity: 0;
             height: 0;
         }
