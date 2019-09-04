@@ -9,6 +9,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
@@ -37,33 +38,43 @@ describe('AppComponent', () => {
                 FlexLayoutModule,
                 MatButtonModule,
                 MatButtonToggleModule,
+                MatIconModule,
                 MatInputModule,
                 MatToolbarModule,
 
                 CdkTextareaSyncSizeModule,
 
-                // ng-translit module
                 TranslitModule,
-
-                // ng-translit rule loader
                 ZgUniTranslitRuleLoaderModule,
-
-                // ng-zawgyi-detector module
                 ZawgyiDetectorModule,
-
-                // ng-log modules
                 LogModule,
-
-                // ng-config modules
                 ConfigModule.init(),
                 StaticConfigLoaderModule.withSettings({
+                    appVersion: '1.0.0',
                     title: 'Zawgyi Unicode Converter',
                     titleSuffix: ' - Myanmar Tools',
                     githubRepoUrl: 'https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa',
                     githubImageAlt: 'Zawgyi Unicode Converter GitHub Repo',
                     baseUrl: 'https://zawgyi-unicode-converter.myanmartools.org/',
                     appImageUrl: 'assets/images/appicons/v1/logo.png',
-                    githubImageUrl: 'assets/images/appicons/v1/github.svg'
+                    githubImageUrl: 'assets/images/appicons/v1/github.svg',
+                    socialLinks: [
+                        {
+                            url: 'https://www.facebook.com/DagonMetric',
+                            label: 'Follow Myanmar Tools on Facebook',
+                            svgIconName: 'facebook'
+                        },
+                        {
+                            url: 'https://twitter.com/myanmartools',
+                            label: 'Follow Myanmar Tools on Twitter',
+                            svgIconName: 'twitter'
+                        },
+                        {
+                            url: 'https://medium.com/myanmartools',
+                            label: 'Myanmar Tools Blog on Medium',
+                            svgIconName: 'medium'
+                        }
+                    ]
                 })
             ],
         }).compileComponents();
@@ -77,7 +88,7 @@ describe('AppComponent', () => {
 
     it('should have title in header', () => {
         const fixture = TestBed.createComponent(AppComponent);
-        const app = fixture.debugElement.componentInstance  as AppComponent;
+        const app = fixture.debugElement.componentInstance as AppComponent;
         expect(app.title).toEqual('Zawgyi Unicode Converter');
     });
 
