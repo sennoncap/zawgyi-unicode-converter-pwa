@@ -49,16 +49,6 @@ textarea.mat-input-element.my-uni {
     flex: 1 1 100%;
 }
 
-.about-description {
-    justify-content: center;
-    text-align: center;
-    margin-top: $default-gap-width;
-
-    .app-version {
-        margin-top: default-gap-width;
-    }
-}
-
 // header
 // ------------------------------------------------------------
 header.app-header {
@@ -99,6 +89,41 @@ header.app-header {
     }
 }
 
+// Content
+// ------------------------------------------------------------
+.page .about {
+    padding-top: $default-gap-width;
+
+    .description {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .features {
+        justify-content: center;
+        text-align: center;
+
+        ul {
+            display: flex;
+            list-style-type: none;
+
+            list-style-position: inside;
+            padding: 0;
+            margin: 0;
+
+            justify-content: center;
+            text-align: center;
+
+            li {
+                position: relative;
+                display: block;
+                list-style-type: none;
+                padding: 0;
+            }
+        }
+    }
+}
+
 // Footer
 // ------------------------------------------------------------
 footer.app-footer {
@@ -106,7 +131,6 @@ footer.app-footer {
     width: 100%;
     padding-top: $default-gap-width;
     padding-bottom: $default-gap-width * 2;
-
 
     .footer-section-grid {
         justify-content: center;
