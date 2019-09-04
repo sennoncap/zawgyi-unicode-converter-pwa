@@ -1,5 +1,7 @@
 # Zawgyi Unicode Converter Angular PWA
 
+[![Build Status](https://dev.azure.com/myanmartools/zawgyi-unicode-converter-angular-pwa/_apis/build/status/myanmartools.zawgyi-unicode-converter-angular-pwa?branchName=master)](https://dev.azure.com/myanmartools/zawgyi-unicode-converter-angular-pwa/_build/latest?definitionId=3&branchName=master)
+[![CircleCI](https://circleci.com/gh/myanmartools/zawgyi-unicode-translit-rules/tree/master.svg?style=svg)](https://circleci.com/gh/myanmartools/zawgyi-unicode-translit-rules/tree/master)
 [![Gitter](https://badges.gitter.im/myanmartools/community.svg)](https://gitter.im/myanmartools/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Zawgyi Unicode Converter is an Angular Progress Web Application (PWA) designed to auto detect & convert Myanmar font encodings between Zawgyi-One and standard Myanmar Unicode.
