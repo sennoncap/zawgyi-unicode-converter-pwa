@@ -49,7 +49,7 @@
     "@dagonmetric/ng-log": "^2.1.1",
     "@dagonmetric/ng-log-gtag": "^2.1.1",
     "@dagonmetric/ng-translit": "^14.2.0",
-    "@myanmartools/ng-zawgyi-detector": "^1.1.0",
+    "@myanmartools/ng-zawgyi-detector": "^1.1.1",
     "@myanmartools/zawgyi-unicode-translit-rules": "^1.1.1",
     "@nguniversal/common": "^8.1.1",
     "@nguniversal/module-map-ngfactory-loader": "^8.1.1",
