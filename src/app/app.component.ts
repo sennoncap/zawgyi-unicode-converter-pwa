@@ -268,6 +268,8 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
 
         // tslint:disable-next-line: no-floating-promises
         this._swUpdate.checkForUpdate().then(() => {
+            this.checkingUpdate = false;
+
             this._swUpdate.available.subscribe(() => {
                 // tslint:disable-next-line: no-floating-promises
                 this._swUpdate.activateUpdate().then(() => {
