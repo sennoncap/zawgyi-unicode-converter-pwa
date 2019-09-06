@@ -27,7 +27,7 @@
                 <textarea matInput id="sourceTextareaSyncSize" class="myanmar-text" spellcheck="false"
                     placeholder="Zawgyi or Unicode text" [value]="sourceText" (input)="sourceText = $event.target.value"
                     [class.my-uni]="!detectedEnc || detectedEnc == 'uni'" [class.my-zg]="detectedEnc == 'zg'"
-                    cdkTextareaSyncSize cdkAutosizeMinRows="10"
+                    cdkTextareaSyncSize cdkAutosizeMinRows="8"
                     #sourceTextareaSyncSize="cdkTextareaSyncSize"></textarea>
             </mat-form-field>
         </div>
@@ -41,7 +41,7 @@
                 <textarea id="outTextareaSyncSize" matInput class="myanmar-text" spellcheck="false"
                     placeholder="Converted text" [value]="outText" [class.my-uni]="targetEnc == 'uni'"
                     [class.my-zg]="!targetEnc || targetEnc == 'zg'" [readonly]="!outText" cdkTextareaSyncSize
-                    cdkAutosizeMinRows="10" #outTextareaSyncSize="cdkTextareaSyncSize"></textarea>
+                    cdkAutosizeMinRows="8" #outTextareaSyncSize="cdkTextareaSyncSize"></textarea>
             </mat-form-field>
         </div>
     </div>
@@ -77,17 +77,17 @@
                     <span>အင်တာနက် ပြတ်တောက်နေချိန်တွင်လည်း အချိန်မရွေးအသုံးပြုနိုင်ခြင်း</span>
                 </li>
                 <li>
-                    <span>Created by Myanmar Tools team</span>
+                    <span>Main Sponsored by Perfect Supply Services (VAC)</span>
                 </li>
                 <li>
-                    <span>မြန်မာဆော့ဖ်ဝဲကိရိယာများအဖွဲ့မှ ဖန်တီးထားသည်</span>
+                    <span>ဤဆော့ဖ်ဝဲအတွက် ဗွီအေစီမှ အဓိက ကမကထပြုထောက်ပံ့ထားသည်</span>
                 </li>
                 <li>
-                    <span>Super-powered by DagonMetric</span>
+                    <span>Created by DagonMetric</span>
 
                 </li>
                 <li>
-                    <span>ဒဂုန်မက်ထရစ်မှ ပူးပေါင်းအားဖြည့်ထားသည်</span>
+                    <span>ဒဂုန်မက်ထရစ်မှ ဖန်တီးထားသည်</span>
                 </li>
                 <li>
                     <span>Let's start converting now to Unicode to improve Myanmar language in digital world!</span>
@@ -104,7 +104,19 @@
 <footer class="app-footer">
     <div class="container">
         <div fxLayout="column" class="footer-inner-container">
-            <div class="app-version">Version: {{appVersion}}</div>
+            <div class="app-version">
+                <span class="version-text" [class.checking-update]="checkingUpdate">
+                    Version: {{appVersion}}
+                </span>
+                <span class="update-spinner" [class.checking-update]="checkingUpdate">
+                    Checking update...
+                </span>
+                <button type="button" class="update-btn" mat-icon-button aria-label="Check update"
+                    [class.checking-update]="checkingUpdate" (click)="checkAppUpdate()">
+                    <mat-icon svgIcon="refresh"></mat-icon>
+                </button>
+            </div>
+
             <div class="footer-links" fxLayout="column">
                 <ul fxLayout="row" fxLayoutGap="24px">
                     <li>

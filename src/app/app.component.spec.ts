@@ -4,6 +4,7 @@ import { async, TestBed } from '@angular/core/testing';
 
 import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -21,6 +22,7 @@ import { TranslitModule } from '@dagonmetric/ng-translit';
 import { ZawgyiDetectorModule } from '@myanmartools/ng-zawgyi-detector';
 
 import { CdkTextareaSyncSizeModule } from '../cdk-extensions';
+import { SwUpdatesModule } from '../sw-updates/sw-updates.module';
 
 import { AppComponent } from './app.component';
 import { ZgUniTranslitRuleLoaderModule } from './zg-uni-translit-rule-loader.module';
@@ -50,7 +52,7 @@ describe('AppComponent', () => {
                 LogModule,
                 ConfigModule.init(),
                 StaticConfigLoaderModule.withSettings({
-                    appVersion: '1.0.0',
+                    appVersion: '1.1.0',
                     title: 'Zawgyi Unicode Converter',
                     titleSuffix: ' - Myanmar Tools',
                     githubRepoUrl: 'https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa',
@@ -75,7 +77,10 @@ describe('AppComponent', () => {
                             svgIconName: 'medium'
                         }
                     ]
-                })
+                }),
+
+                SwUpdatesModule,
+                ServiceWorkerModule.register('ngsw-worker.js', { enabled: false })
             ],
         }).compileComponents();
     }));
@@ -90,6 +95,12 @@ describe('AppComponent', () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.debugElement.componentInstance as AppComponent;
         expect(app.title).toEqual('Zawgyi Unicode Converter');
+    });
+
+    it('should have app version in header', () => {
+        const fixture = TestBed.createComponent(AppComponent);
+        const app = fixture.debugElement.componentInstance as AppComponent;
+        expect(app.appVersion).toEqual('1.1.0');
     });
 
     // it('should convert Unicode input to Zawgyi', () => {

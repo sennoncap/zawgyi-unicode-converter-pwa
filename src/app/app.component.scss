@@ -57,6 +57,7 @@ header.app-header {
         .description {
             justify-content: center;
             text-align: center;
+            padding-bottom: $default-gap-width / 4;
         }
 
         .features {
@@ -109,12 +110,40 @@ header.app-header {
 footer.app-footer {
     position: relative;
     width: 100%;
-    padding-top: $default-gap-width;
-    padding-bottom: $default-gap-width * 2;
+    padding-top: $default-gap-width / 2;
+    padding-bottom: $default-gap-width;
 
     .footer-inner-container {
         justify-content: center;
         text-align: center;
+    }
+
+    .app-version {
+        box-sizing: border-box;
+        display: flex;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+
+        .version-text {
+            &.checking-update {
+                display: none;
+            }
+        }
+
+        .update-spinner {
+            display: none;
+
+            &.checking-update {
+                display: block;
+            }
+        }
+
+        .mat-icon {
+            display: inline-block;
+        }
     }
 
     .footer-links {

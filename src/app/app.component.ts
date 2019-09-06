@@ -7,6 +7,7 @@
  */
 
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { SwUpdate } from '@angular/service-worker';
 
 import { of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
@@ -38,6 +39,7 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     autoEncText = 'AUTO';
     sourceEnc?: SourceEnc;
     targetEnc?: DetectedEnc;
+    checkingUpdate = false;
 
     @ViewChild('sourceTextareaSyncSize', { static: false })
     sourceTextareaSyncSize?: CdkTextareaSyncSize;
@@ -114,7 +116,8 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
         private readonly _translitService: TranslitService,
         private readonly _zawgyiDetector: ZawgyiDetector,
         private readonly _configService: ConfigService,
-        private readonly _logService: LogService) { }
+        private readonly _logService: LogService,
+        private readonly _swUpdate: SwUpdate) { }
 
     ngOnInit(): void {
         this._translitSubject.pipe(
@@ -176,17 +179,22 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
             this._outText = result.outputText || '';
 
             if (this._outText.length && this._sourceText.length && this._curRuleName) {
-                this._logService.trackEvent({
-                    name: `${this._curRuleName}`,
-                    event_category: 'convert',
-                    properties: {
-                        duration: result.duration,
-                        replaced: result.replaced,
-                        inputLength: this._sourceText.length,
-                        outputLength: this._outText.length,
-                        inputEnc: this.sourceEnc
-                    }
-                });
+                if (environment.production) {
+                    const eventLabel = this._curRuleName === 'zg2uni' ? 'User converts Zawgyi to Unicode' : 'User converts Unicode to Zawgyi';
+                    this._logService.trackEvent({
+                        name: `${this._curRuleName}`,
+                        event_category: 'convert',
+                        event_label: eventLabel,
+                        properties: {
+                            app_version: this.appVersion,
+                            duration: result.duration,
+                            replaced: result.replaced,
+                            inputLength: this._sourceText.length,
+                            outputLength: this._outText.length,
+                            inputEnc: this.sourceEnc
+                        }
+                    });
+                }
             }
         });
     }
@@ -238,6 +246,35 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
         }
 
         this.translitNext();
+    }
+
+    checkAppUpdate(): void {
+        if (!this._swUpdate.isEnabled) {
+            return;
+        }
+
+        this.checkingUpdate = true;
+
+        if (environment.production) {
+            this._logService.trackEvent({
+                name: 'check_update',
+                event_label: 'User checks update',
+                event_category: 'others',
+                properties: {
+                    app_version: this.appVersion
+                }
+            });
+        }
+
+        // tslint:disable-next-line: no-floating-promises
+        this._swUpdate.checkForUpdate().then(() => {
+            this._swUpdate.available.subscribe(() => {
+                // tslint:disable-next-line: no-floating-promises
+                this._swUpdate.activateUpdate().then(() => {
+                    this.checkingUpdate = false;
+                });
+            });
+        });
     }
 
     private resetAutoEncText(text?: string): void {
