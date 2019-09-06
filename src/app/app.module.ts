@@ -32,6 +32,8 @@ import { environment } from '../environments/environment';
 import { CdkTextareaSyncSizeModule } from '../cdk-extensions';
 import { CustomIconRegistry } from '../mat-extensions';
 
+import { SwUpdatesModule } from '../sw-updates/sw-updates.module';
+
 import { AppComponent } from './app.component';
 import { appSvgIconProviders } from './app.svg-icons';
 import { ZgUniTranslitRuleLoaderModule } from './zg-uni-translit-rule-loader.module';
@@ -104,6 +106,7 @@ import { ZgUniTranslitRuleLoaderModule } from './zg-uni-translit-rule-loader.mod
             ]
         }),
 
+        SwUpdatesModule,
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ],
     providers: [
