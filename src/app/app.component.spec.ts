@@ -52,7 +52,7 @@ describe('AppComponent', () => {
                 LogModule,
                 ConfigModule.init(),
                 StaticConfigLoaderModule.withSettings({
-                    appVersion: '1.1.2',
+                    appVersion: '1.1.3',
                     title: 'Zawgyi Unicode Converter',
                     titleSuffix: ' - Myanmar Tools',
                     githubRepoUrl: 'https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa',
@@ -100,15 +100,6 @@ describe('AppComponent', () => {
     it('should have app version in header', () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.debugElement.componentInstance as AppComponent;
-        expect(app.appVersion).toEqual('1.1.2');
+        expect(app.appVersion).toEqual('1.1.3');
     });
-
-    // it('should convert Unicode input to Zawgyi', () => {
-    //     const fixture = TestBed.createComponent(AppComponent);
-    //     const app = fixture.debugElement.componentInstance as AppComponent;
-    //     app.ngOnInit();
-    //     app.ngAfterViewInit();
-    //     app.sourceText = 'မြန်မာ';
-    //     expect(app.outText).toEqual('\u103B\u1019\u1014\u1039\u1019\u102C');
-    // });
 });
