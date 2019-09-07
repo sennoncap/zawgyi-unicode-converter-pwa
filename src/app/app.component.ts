@@ -249,7 +249,8 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     }
 
     checkAppUpdate(): void {
-        if (!this._swUpdate.isEnabled) {
+        // tslint:disable-next-line: no-typeof-undefined
+        if (!this._swUpdate.isEnabled || typeof navigator === 'undefined' || !navigator.serviceWorker) {
             return;
         }
 
@@ -267,16 +268,16 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
         }
 
         // tslint:disable-next-line: no-floating-promises
-        this._swUpdate.checkForUpdate().then(() => {
+        navigator.serviceWorker.getRegistrations().then(registrations => {
+            registrations.forEach(registration => registration.unregister());
             this.checkingUpdate = false;
 
-            this._swUpdate.available.subscribe(() => {
-                // tslint:disable-next-line: no-floating-promises
-                this._swUpdate.activateUpdate().then(() => {
-                    this.checkingUpdate = false;
-                });
-            });
+            if (registrations.length > 0) {
+                location.reload();
+            }
         });
+
+        this.checkingUpdate = false;
     }
 
     private resetAutoEncText(text?: string): void {
