@@ -45,7 +45,9 @@ Let's start converting now to Unicode to improve Myanmar language in digital wor
 [@myanmartools/zawgyi-unicode-translit-rules](https://www.npmjs.com/package/@myanmartools/zawgyi-unicode-translit-rules)
 [![npm version](https://img.shields.io/npm/v/@myanmartools/zawgyi-unicode-translit-rules.svg)](https://www.npmjs.com/package/@myanmartools/zawgyi-unicode-translit-rules)
 
-## Core Sponsor
+## Sponsoring Zawgyi Unicode Converter
+
+### Core Sponsor
 
 [![Perfect Supply Services - VAC](https://vacjobsearch.com/wp-content/uploads/2019/02/vac-jobsearch-logo.png)](https://vacjobsearch.com/)
 
