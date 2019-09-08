@@ -178,22 +178,24 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
         ).subscribe((result: TranslitResult) => {
             this._outText = result.outputText || '';
 
-            if (this._outText.length && this._sourceText.length && this._curRuleName) {
-                if (environment.production) {
-                    const eventLabel = this._curRuleName === 'zg2uni' ? 'User converts Zawgyi to Unicode' : 'User converts Unicode to Zawgyi';
+            if (this._outText.length && this._sourceText.length && this._curRuleName && environment.production) {
+                const eventLabel = this._curRuleName === 'zg2uni' ? 'User converts Zawgyi to Unicode' : 'User converts Unicode to Zawgyi';
+                try {
                     this._logService.trackEvent({
-                        name: `${this._curRuleName}`,
+                        name: `convert_${this._curRuleName}`,
                         event_category: 'convert',
                         event_label: eventLabel,
                         properties: {
                             app_version: this.appVersion,
                             duration: result.duration,
                             replaced: result.replaced,
-                            inputLength: this._sourceText.length,
-                            outputLength: this._outText.length,
-                            inputEnc: this.sourceEnc
+                            input_length: this._sourceText.length,
+                            output_length: this._outText.length,
+                            input_enc: this.sourceEnc
                         }
                     });
+                } catch (err) {
+                    // Do nothing
                 }
             }
         });
@@ -250,21 +252,27 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
 
     checkAppUpdate(): void {
         // tslint:disable-next-line: no-typeof-undefined
-        if (!this._swUpdate.isEnabled || typeof navigator === 'undefined' || !navigator.serviceWorker) {
+        if (!this._swUpdate.isEnabled || typeof navigator === 'undefined' || !navigator.serviceWorker || !navigator.onLine) {
             return;
         }
 
         this.checkingUpdate = true;
 
         if (environment.production) {
-            this._logService.trackEvent({
-                name: 'check_update',
-                event_label: 'User checks update',
-                event_category: 'others',
-                properties: {
-                    app_version: this.appVersion
-                }
-            });
+            try {
+                this._logService.trackEvent({
+                    name: 'check_update',
+                    event_label: 'User checks update',
+                    event_category: 'update',
+                    properties: {
+                        app_version: this.appVersion
+                    }
+                });
+            } catch (err) {
+                this.checkingUpdate = false;
+
+                return;
+            }
         }
 
         // tslint:disable-next-line: no-floating-promises
@@ -272,7 +280,7 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
             registrations.forEach(registration => registration.unregister());
             this.checkingUpdate = false;
 
-            if (registrations.length > 0) {
+            if (registrations.length > 0 && navigator.onLine) {
                 location.reload();
             }
         });
