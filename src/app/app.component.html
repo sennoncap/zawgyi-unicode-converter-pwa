@@ -27,8 +27,7 @@
                 <textarea matInput id="sourceTextareaSyncSize" class="myanmar-text" spellcheck="false"
                     placeholder="Zawgyi or Unicode text" [value]="sourceText" (input)="sourceText = $event.target.value"
                     [class.my-uni]="!detectedEnc || detectedEnc == 'uni'" [class.my-zg]="detectedEnc == 'zg'"
-                    cdkTextareaSyncSize cdkAutosizeMinRows="8"
-                    #sourceTextareaSyncSize="cdkTextareaSyncSize"></textarea>
+                    cdkTextareaSyncSize #sourceTextareaSyncSize="cdkTextareaSyncSize"></textarea>
             </mat-form-field>
         </div>
         <div class="form-field-container" fxLayout="column" fxFlex="1 1 100%" [fxHide.xs]="!outText">
@@ -41,14 +40,13 @@
                 <textarea id="outTextareaSyncSize" matInput class="myanmar-text" spellcheck="false"
                     placeholder="Converted text" [value]="outText" [class.my-uni]="targetEnc == 'uni'"
                     [class.my-zg]="!targetEnc || targetEnc == 'zg'" [readonly]="!outText" cdkTextareaSyncSize
-                    cdkAutosizeMinRows="8" #outTextareaSyncSize="cdkTextareaSyncSize"></textarea>
+                    #outTextareaSyncSize="cdkTextareaSyncSize"></textarea>
             </mat-form-field>
         </div>
     </div>
     <div class="about myanmar-text" fxLayout="column">
         <div class="description my-uni" fxLayout="column">
-            Zawgyi Unicode Converter is an open source Zawgyi-One (ဇော်ဂျီ) and Myanmar Unicode (မြန်မာယူနီကုဒ်)
-            online/offline converter created by Myanmar Tools team.
+            Zawgyi Unicode Converter is an open source Zawgyi-One and standard Myanmar Unicode online/offline converter created by DagonMetric's Myanmar Tools team.
         </div>
         <div class="features my-uni" fxLayout="column">
             <ul fxLayout="column">
