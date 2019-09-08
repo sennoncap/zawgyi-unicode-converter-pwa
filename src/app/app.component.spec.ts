@@ -52,7 +52,7 @@ describe('AppComponent', () => {
                 LogModule,
                 ConfigModule.init(),
                 StaticConfigLoaderModule.withSettings({
-                    appVersion: '1.1.4',
+                    appVersion: '1.1.5',
                     title: 'Zawgyi Unicode Converter',
                     titleSuffix: ' - Myanmar Tools',
                     githubRepoUrl: 'https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa',
@@ -100,6 +100,6 @@ describe('AppComponent', () => {
     it('should have app version in header', () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.debugElement.componentInstance as AppComponent;
-        expect(app.appVersion).toEqual('1.1.4');
+        expect(app.appVersion).toEqual('1.1.5');
     });
 });
