@@ -13,7 +13,7 @@ import { of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 
 import { ConfigService } from '@dagonmetric/ng-config';
-import { LogService } from '@dagonmetric/ng-log';
+import { EventInfo, LogService } from '@dagonmetric/ng-log';
 import { TranslitResult, TranslitService } from '@dagonmetric/ng-translit';
 
 import { DetectedEnc, ZawgyiDetector } from '@myanmartools/ng-zawgyi-detector';
@@ -88,6 +88,8 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     }
 
     private readonly _translitSubject = new Subject<string>();
+    private readonly _logSubject = new Subject<EventInfo>();
+
     private readonly _destroyed = new Subject<void>();
 
     private _sourceText = '';
@@ -178,26 +180,28 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
         ).subscribe((result: TranslitResult) => {
             this._outText = result.outputText || '';
 
-            if (this._outText.length && this._sourceText.length && this._curRuleName && environment.production) {
+            if (this._outText.length && this._sourceText.length && this._curRuleName) {
                 const eventLabel = this._curRuleName === 'zg2uni' ? 'User converts Zawgyi to Unicode' : 'User converts Unicode to Zawgyi';
-                try {
-                    this._logService.trackEvent({
-                        name: `convert_${this._curRuleName}`,
-                        event_category: 'convert',
-                        event_label: eventLabel,
-                        properties: {
-                            app_version: this.appVersion,
-                            duration: result.duration,
-                            replaced: result.replaced,
-                            input_length: this._sourceText.length,
-                            output_length: this._outText.length,
-                            input_enc: this.sourceEnc
-                        }
-                    });
-                } catch (err) {
-                    // Do nothing
-                }
+                this._logSubject.next({
+                    name: `convert_${this._curRuleName}`,
+                    event_category: 'convert',
+                    event_label: eventLabel,
+                    properties: {
+                        app_version: this.appVersion,
+                        duration: result.duration,
+                        replaced: result.replaced,
+                        input_length: this._sourceText.length,
+                        output_length: this._outText.length,
+                        input_enc: this.sourceEnc
+                    }
+                });
             }
+        });
+
+        this._logSubject.pipe(
+            takeUntil(this._destroyed)
+        ).subscribe((eventInfo: EventInfo) => {
+            this._logService.trackEvent(eventInfo);
         });
     }
 
@@ -258,22 +262,14 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
 
         this.checkingUpdate = true;
 
-        if (environment.production) {
-            try {
-                this._logService.trackEvent({
-                    name: 'check_update',
-                    event_label: 'User checks update',
-                    event_category: 'update',
-                    properties: {
-                        app_version: this.appVersion
-                    }
-                });
-            } catch (err) {
-                this.checkingUpdate = false;
-
-                return;
+        this._logSubject.next({
+            name: 'check_update',
+            event_label: 'User checks update',
+            event_category: 'update',
+            properties: {
+                app_version: this.appVersion
             }
-        }
+        });
 
         // tslint:disable-next-line: no-floating-promises
         navigator.serviceWorker.getRegistrations().then(registrations => {
