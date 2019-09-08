@@ -50,7 +50,9 @@ export class CdkTextareaSyncSize implements AfterViewInit, DoCheck, OnDestroy {
 
     // tslint:disable-next-line: no-unsafe-any
     @Input('cdkAutosizeMinRows')
-    get minRows(): number { return this._minRows != null ? this._minRows : 0; }
+    get minRows(): number {
+        return this._minRows != null ? this._minRows : this.getMinRowsAutoHeight();
+    }
     set minRows(value: number) {
         this._minRows = value;
         this.setMinHeight();
@@ -211,6 +213,14 @@ export class CdkTextareaSyncSize implements AfterViewInit, DoCheck, OnDestroy {
 
     _noopInputHandler(): void {
         // Do nothing
+    }
+
+    private getMinRowsAutoHeight(): number {
+        if (this._platform.isBrowser) {
+            return window.innerHeight > 960 ? 10 : window.innerHeight > 600 ? 8 : window.innerHeight > 400 ? 6 : 4;
+        } else {
+            return 0;
+        }
     }
 
     private scrollToCaretPosition(textarea: HTMLTextAreaElement): void {
