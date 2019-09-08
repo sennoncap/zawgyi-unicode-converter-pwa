@@ -152,7 +152,7 @@ export class CdkTextareaSyncSize implements AfterViewInit, DoCheck, OnDestroy {
         const textarea = this._elementRef.nativeElement as HTMLTextAreaElement;
         const value = textarea.value;
 
-        if (!force && this._minRows === this._previousMinRows && value === this._previousValue) {
+        if (!force && this.minRows === this._previousMinRows && value === this._previousValue) {
             return;
         }
 
@@ -219,7 +219,7 @@ export class CdkTextareaSyncSize implements AfterViewInit, DoCheck, OnDestroy {
         if (this._platform.isBrowser) {
             return window.innerHeight > 960 ? 10 : window.innerHeight > 600 ? 8 : window.innerHeight > 400 ? 6 : 4;
         } else {
-            return 0;
+            return 8;
         }
     }
 
