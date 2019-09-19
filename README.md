@@ -1,10 +1,8 @@
-# Zawgyi Unicode Converter Angular PWA
+# Zawgyi Unicode Converter - Android, iOS and Angular PWA
 
-[![Build Status](https://dev.azure.com/myanmartools/zawgyi-unicode-converter-angular-pwa/_apis/build/status/myanmartools.zawgyi-unicode-converter-angular-pwa?branchName=master)](https://dev.azure.com/myanmartools/zawgyi-unicode-converter-angular-pwa/_build/latest?definitionId=3&branchName=master)
-[![CircleCI](https://circleci.com/gh/myanmartools/zawgyi-unicode-translit-rules/tree/master.svg?style=svg)](https://circleci.com/gh/myanmartools/zawgyi-unicode-translit-rules/tree/master)
 [![Gitter](https://badges.gitter.im/myanmartools/community.svg)](https://gitter.im/myanmartools/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-Zawgyi Unicode Converter is an Angular Progress Web Application (PWA) designed to auto detect & convert Myanmar font encodings between Zawgyi-One and standard Myanmar Unicode.
+Zawgyi Unicode Converter is an open source Zawgyi-One and standard Myanmar Unicode converter for Android, iOS and Desktop devices written in Angular, Ionic Native, Typescript, SCSS and powered with Angular Material, Ionic UI Components, Flex-layout, PWA RxJS and more.
 
 ## Live Application
 
@@ -57,8 +55,8 @@ Contact us: opensource@dagonmetric.com
 
 ## Feedback and Contributing
 
-Check out the [Contributing](https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa/blob/master/CONTRIBUTING.md) page to see the best places to log issues and start discussions.
+Check out the [Contributing](https://github.com/myanmartools/zawgyi-unicode-converter/blob/master/CONTRIBUTING.md) page to see the best places to log issues and start discussions.
 
 ## License
 
-This repository is licensed with the [MIT](https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa/blob/master/LICENSE) license.
+This repository is licensed with the [MIT](https://github.com/myanmartools/zawgyi-unicode-converter/blob/master/LICENSE) license.
