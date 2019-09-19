@@ -1,17 +1,17 @@
 {
-  "name": "zawgyi-unicode-converter-angular-pwa",
+  "name": "zawgyi-unicode-converter",
   "version": "1.1.5",
   "private": true,
   "author": "DagonMetric",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa.git"
+    "url": "https://github.com/myanmartools/zawgyi-unicode-converter.git"
   },
   "bugs": {
-    "url": "https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa/issues"
+    "url": "https://github.com/myanmartools/zawgyi-unicode-converter/issues"
   },
-  "homepage": "https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa",
+  "homepage": "https://zawgyi-unicode-converter.myanmartools.org",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -21,7 +21,7 @@
     "e2e": "ng e2e",
     "build:prod": "npm run build:universal:prod && npm run generate:prerender && npm run copy-files",
     "build:app:prod": "ng build --prod",
-    "build:server:prod": "ng run zawgyi-unicode-converter-angular-pwa:server:production",
+    "build:server:prod": "ng run zawgyi-unicode-converter:server:production",
     "build:universal:prod": "npm run build:app:prod && npm run build:server:prod",
     "update:ngsw-config": "node_modules/.bin/ngsw-config dist/app ngsw-config.json",
     "compile:prerender": "tsc -p tsconfig.prerender.json",
@@ -60,7 +60,7 @@
     "zone.js": "^0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.803.4",
+    "@angular-devkit/build-angular": "^0.803.5",
     "@angular/cli": "^8.3.5",
     "@angular/compiler-cli": "^8.2.7",
     "@angular/language-service": "^8.2.7",
