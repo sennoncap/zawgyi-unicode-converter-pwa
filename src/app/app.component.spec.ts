@@ -55,7 +55,7 @@ describe('AppComponent', () => {
                     appVersion: '1.1.5',
                     title: 'Zawgyi Unicode Converter',
                     titleSuffix: ' - Myanmar Tools',
-                    githubRepoUrl: 'https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa',
+                    githubRepoUrl: 'https://github.com/myanmartools/zawgyi-unicode-converter',
                     githubImageAlt: 'Zawgyi Unicode Converter GitHub Repo',
                     baseUrl: 'https://zawgyi-unicode-converter.myanmartools.org/',
                     appImageUrl: 'assets/images/appicons/v1/logo.png',
