@@ -18,11 +18,10 @@ import { TranslitResult, TranslitService } from '@dagonmetric/ng-translit';
 
 import { DetectedEnc, ZawgyiDetector } from '@myanmartools/ng-zawgyi-detector';
 
-import { CdkTextareaSyncSize } from '../cdk-extensions';
-
 import { environment } from '../environments/environment';
 
-import { SocialLinkItem } from './social-link-item';
+import { CommunityLinkItem } from './shared';
+import { CdkTextareaSyncSize } from './shared/cdk-extensions';
 
 export type SourceEnc = 'auto' | DetectedEnc;
 
@@ -83,8 +82,8 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
         return `${this.baseUrl}${this._configService.getValue<string>('githubImageUrl')}`;
     }
 
-    get socialLinkItems(): SocialLinkItem[] {
-        return this._configService.getValue<SocialLinkItem[]>('socialLinks', []);
+    get communityLinkItems(): CommunityLinkItem[] {
+        return this._configService.getValue<CommunityLinkItem[]>('communityLinkItems', []);
     }
 
     private readonly _translitSubject = new Subject<string>();

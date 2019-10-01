@@ -10,7 +10,7 @@
 
 import { Provider } from '@angular/core';
 
-import { SVG_ICON } from '../mat-extensions';
+import { SVG_ICON } from './shared/mat-extensions';
 
 // These are the hardcoded inline svg sources to be used by the `<mat-icon>` component
 export const appSvgIconProviders: Provider[] = [

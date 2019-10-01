@@ -32,7 +32,7 @@
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "apps/pwa/src/styles",
+                "apps/pwa/src/theme",
                 "node_modules/normalize.css"
               ]
             },
@@ -112,7 +112,7 @@
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "apps/pwa/src/styles",
+                "apps/pwa/src/theme",
                 "node_modules/normalize.css"
               ]
             },
@@ -165,7 +165,7 @@
             "tsConfig": "apps/pwa/tsconfig.server.json",
             "stylePreprocessorOptions": {
               "includePaths": [
-                "apps/pwa/src/styles",
+                "apps/pwa/src/theme",
                 "node_modules/normalize.css"
               ]
             }

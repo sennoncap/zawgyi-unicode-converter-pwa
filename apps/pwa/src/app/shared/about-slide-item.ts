@@ -6,6 +6,8 @@
  * found under the LICENSE file in the root directory of this source tree.
  */
 
-export const environment = {
-    production: false
-};
+export interface AboutSlideItem {
+    label: string;
+    language?: string;
+    imageUrl?: string;
+}

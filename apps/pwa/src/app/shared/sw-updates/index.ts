@@ -6,6 +6,5 @@
  * found under the LICENSE file in the root directory of this source tree.
  */
 
-export const environment = {
-    production: false
-};
+export * from './sw-updates.module';
+export * from './sw-updates.service';

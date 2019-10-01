@@ -6,6 +6,9 @@
  * found under the LICENSE file in the root directory of this source tree.
  */
 
-export const environment = {
-    production: false
-};
+export interface CommunityLinkItem {
+    url: string;
+    label?: string;
+    iconName?: string;
+    imageUrl?: string;
+}

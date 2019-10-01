@@ -10,11 +10,10 @@
 @import '~@angular/material/theming';
 @import "~@dagonmetric/app-styles-base/core";
 
-@import "shared/constants";
+@import "app/app.theme";
+@import "app/shared/cdk-extensions/cdk-textarea-syncsize";
 
-@import "app/app-theme";
-
-@import "cdk-extensions/cdk-textarea-syncsize";
+@import "variables";
 
 $app-styles-config: app-styles-config(
     $font-family-base: $font-family-base,
@@ -36,8 +35,7 @@ $body-1: mat-typography-level($font-size-base, $line-height-base, $font-weight-b
 // include material core styles.
 @include mat-core($typography-config);
 
-// Define the light theme.
-$fluent-color: (
+$app-color-mat-palette: (
     50: #F1ECF6,
     100: #DBD1EA,
     200: #C3B2DC,
@@ -76,7 +74,7 @@ $fluent-color: (
   )
 );
 
-$primary: mat-palette($fluent-color, 500);
+$primary: mat-palette($app-color-mat-palette, 500);
 $accent: mat-palette($mat-pink, A200, A100, A400);
 
 $theme: mat-light-theme($primary, $accent);

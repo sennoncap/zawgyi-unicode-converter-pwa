@@ -29,14 +29,13 @@ import { ZawgyiDetectorModule } from '@myanmartools/ng-zawgyi-detector';
 
 import { environment } from '../environments/environment';
 
-import { CdkTextareaSyncSizeModule } from '../cdk-extensions';
-import { CustomIconRegistry } from '../mat-extensions';
-
-import { SwUpdatesModule } from '../sw-updates/sw-updates.module';
+import { ZgUniTranslitRuleLoaderModule } from './shared';
+import { CdkTextareaSyncSizeModule } from './shared/cdk-extensions';
+import { CustomIconRegistry } from './shared/mat-extensions';
+import { SwUpdatesModule } from './shared/sw-updates';
 
 import { AppComponent } from './app.component';
 import { appSvgIconProviders } from './app.svg-icons';
-import { ZgUniTranslitRuleLoaderModule } from './zg-uni-translit-rule-loader.module';
 
 /**
  * App module for both node and web platforms.
@@ -87,7 +86,7 @@ import { ZgUniTranslitRuleLoaderModule } from './zg-uni-translit-rule-loader.mod
             baseUrl: 'https://zawgyi-unicode-converter.myanmartools.org/',
             appImageUrl: 'assets/images/appicons/v1/logo.png',
             githubImageUrl: 'assets/images/appicons/v1/github.svg',
-            socialLinks: [
+            communityLinkItems: [
                 {
                     url: 'https://www.facebook.com/DagonMetric',
                     label: 'Follow Myanmar Tools on Facebook',

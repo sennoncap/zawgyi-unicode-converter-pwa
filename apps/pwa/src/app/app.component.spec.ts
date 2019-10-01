@@ -60,7 +60,7 @@ describe('AppComponent', () => {
                     baseUrl: 'https://zawgyi-unicode-converter.myanmartools.org/',
                     appImageUrl: 'assets/images/appicons/v1/logo.png',
                     githubImageUrl: 'assets/images/appicons/v1/github.svg',
-                    socialLinks: [
+                    communityLinkItems: [
                         {
                             url: 'https://www.facebook.com/DagonMetric',
                             label: 'Follow Myanmar Tools on Facebook',
