@@ -1,12 +1,12 @@
 {
   "name": "zawgyi-unicode-converter",
-  "version": "1.1.5",
+  "version": "0.0.0",
   "private": true,
   "author": "DagonMetric",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/myanmartools/zawgyi-unicode-converter.git"
+    "url": "ssh://git@github.com/myanmartools/zawgyi-unicode-converter.git"
   },
   "bugs": {
     "url": "https://github.com/myanmartools/zawgyi-unicode-converter/issues"
