@@ -1,8 +1,8 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "es5",
-    "outDir": "./dist/out-tsc/app",
+    "outDir": "../../out-tsc/pwa",
     "types": []
   },
   "include": [

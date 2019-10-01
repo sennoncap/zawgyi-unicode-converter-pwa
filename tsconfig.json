@@ -26,7 +26,7 @@
 
     "baseUrl": ".",
     "rootDir": ".",
-    "outDir": "./dist/out-tsc",
+    "outDir": "./out-tsc",
 
     "plugins": [
       {
