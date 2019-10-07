@@ -19,7 +19,7 @@ import { ConfigService } from '@dagonmetric/ng-config';
 
 import { environment } from '../environments/environment';
 
-import { CommunityLinkItem } from './shared';
+import { NavLinkItem } from './shared/nav-link-item';
 
 const SMALL_WIDTH_BREAKPOINT = 720;
 
@@ -54,8 +54,8 @@ export class AppComponent {
         return environment.production ? this._configService.getValue<string>('baseUrl') : '/';
     }
 
-    get communityLinks(): CommunityLinkItem[] {
-        return this._configService.getValue<CommunityLinkItem[]>('communityLinks', []);
+    get communityLinks(): NavLinkItem[] {
+        return this._configService.getValue<NavLinkItem[]>('communityLinks', []);
     }
 
     get privacyUrl(): string {

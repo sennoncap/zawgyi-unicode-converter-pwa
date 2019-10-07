@@ -1,5 +1,6 @@
 # Zawgyi Unicode Converter
 
+[![CircleCI](https://circleci.com/gh/myanmartools/zawgyi-unicode-converter-angular-pwa.svg?style=svg)](https://circleci.com/gh/myanmartools/zawgyi-unicode-converter-angular-pwa)
 [![Gitter](https://badges.gitter.im/myanmartools/community.svg)](https://gitter.im/myanmartools/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Zawgyi Unicode Converter is a progressive web application (PWA) designed to automatically detect and convert Zawgyi-One and standard Myanmar Unicode written in Angular, Typescript, SCSS and powered with Material Design.

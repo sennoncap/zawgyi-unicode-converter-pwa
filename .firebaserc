@@ -1,14 +1,5 @@
 {
   "projects": {
-    "default": "myanmartools"
-  },
-  "targets": {
-    "myanmartools": {
-      "hosting": {
-        "zawgyiunicodeconverter": [
-          "zawgyiunicodeconverter"
-        ]
-      }
-    }
+    "default": "zawgyi-unicode-converter-8f386"
   }
 }

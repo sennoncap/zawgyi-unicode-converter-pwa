@@ -32,9 +32,9 @@ import { ZawgyiDetectorModule } from '@myanmartools/ng-zawgyi-detector';
 
 import { environment } from '../environments/environment';
 
-import { ZgUniTranslitRuleLoaderModule } from './shared';
 import { CdkTextareaSyncSizeModule } from './shared/cdk-extensions';
 import { CustomIconRegistry } from './shared/mat-extensions';
+import { ZgUniTranslitRuleLoaderModule } from './shared/zg-uni-translit-rule-loader';
 
 import { AboutComponent, AboutDialogHandlerComponent } from './about';
 import { HomeComponent } from './home';
@@ -110,7 +110,7 @@ export const appRoutes: Routes = [
         // ng-config modules
         ConfigModule.init(),
         StaticConfigLoaderModule.withSettings({
-            appVersion: '1.1.5',
+            appVersion: '2.0.0-preview1',
             appName: 'Zawgyi Unicode Converter',
             appTitleSuffix: 'Myanmar Tools',
             appDescription: 'Zawgyi Unicode Converter is a free and open source Zawgyi-One and standard Myanmar Unicode online/offline converter created by DagonMetric Myanmar Tools team.',

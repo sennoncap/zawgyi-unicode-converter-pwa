@@ -7,5 +7,10 @@
  */
 
 export const environment = {
-    production: true
+    production: true,
+    firebase: {
+        // apiKey: '',
+        projectId: 'zawgyi-unicode-converter-8f386',
+        measurementId: 'G-80PGHB92MC'
+    }
 };

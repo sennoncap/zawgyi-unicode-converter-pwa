@@ -6,7 +6,7 @@
  * found under the LICENSE file in the root directory of this source tree.
  */
 
-export interface CommunityLinkItem {
+export interface NavLinkItem {
     url: string;
     label?: string;
     iconName?: string;

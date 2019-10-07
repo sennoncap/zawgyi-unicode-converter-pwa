@@ -1,6 +1,6 @@
 {
-  "hosting": [{
-    "target": "zawgyiunicodeconverter",
+  "hosting": {
+    "site": "zawgyi-unicode-converter-web",
     "public": "app",
     "cleanUrls": true,
     "ignore": [
@@ -12,5 +12,5 @@
       "source": "**/!(*.@(js|html|css|json|svg|png|jpg|jpeg|xml|txt|ico))",
       "destination": "/index.html"
     }]
-  }]
+  }
 }

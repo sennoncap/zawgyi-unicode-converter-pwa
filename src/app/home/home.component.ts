@@ -5,7 +5,7 @@ import { of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 
 import { ConfigService } from '@dagonmetric/ng-config';
-import { EventInfo, LogService } from '@dagonmetric/ng-log';
+import { LogService } from '@dagonmetric/ng-log';
 import { TranslitResult, TranslitService } from '@dagonmetric/ng-translit';
 
 import { DetectedEnc, ZawgyiDetector } from '@myanmartools/ng-zawgyi-detector';
@@ -35,8 +35,6 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
     outTextareaSyncSize?: CdkTextareaSyncSize;
 
     private readonly _translitSubject = new Subject<string>();
-    private readonly _logSubject = new Subject<EventInfo>();
-
     private readonly _destroyed = new Subject<void>();
     private readonly _isBrowser: boolean;
 
@@ -166,17 +164,15 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
             }
 
             if (this._outText.length && this._sourceText.length && this._curRuleName) {
-                this._logSubject.next({
-                    name: `convert_${this._curRuleName}`,
-                    event_category: 'convert'
-                });
+                try {
+                    this._logService.trackEvent({
+                        name: `convert_${this._curRuleName}`,
+                        event_category: 'convert'
+                    });
+                } catch (err) {
+                    console.error(err);
+                }
             }
-        });
-
-        this._logSubject.pipe(
-            takeUntil(this._destroyed)
-        ).subscribe((eventInfo: EventInfo) => {
-            this._logService.trackEvent(eventInfo);
         });
     }
 

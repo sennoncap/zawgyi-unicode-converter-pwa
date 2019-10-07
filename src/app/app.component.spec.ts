@@ -37,6 +37,6 @@ describe('AppComponent', () => {
     it('should have app version in header', () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.debugElement.componentInstance as AppComponent;
-        expect(app.appVersion).toEqual('1.1.5');
+        expect(app.appVersion).toEqual('2.0.0-preview1');
     });
 });

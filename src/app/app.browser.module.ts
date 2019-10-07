@@ -12,9 +12,11 @@ import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-bro
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
-import { GTagLoggerModule } from '@dagonmetric/ng-log-gtag';
+// import { GTagLoggerModule } from '@dagonmetric/ng-log-gtag';
 
 import { environment } from '../environments/environment';
+
+// import { FirebaseLoggerModule } from './shared/ng-log-firebase';
 
 import { AppComponent } from './app.component';
 import { appId, AppModule } from './app.module';
@@ -33,9 +35,8 @@ import { appId, AppModule } from './app.module';
 
         BrowserAnimationsModule,
 
-        GTagLoggerModule.withOptions({
-            measurementId: ''
-        }),
+        // GTagLoggerModule.withOptions(environment.googleAnalytics),
+        // FirebaseLoggerModule.initializeApp(environment.firebase),
 
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ]

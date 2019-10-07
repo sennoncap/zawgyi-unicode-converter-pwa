@@ -6,11 +6,5 @@
  * found under the LICENSE file in the root directory of this source tree.
  */
 
-export const environment = {
-    production: false,
-    firebase: {
-    },
-    googleAnalytics: {
-        measurementId: ''
-    }
-};
+export * from './zg-uni-translit-rule-loader';
+export * from './zg-uni-translit-rule-loader.module';
