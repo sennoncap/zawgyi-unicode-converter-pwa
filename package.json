@@ -1,6 +1,6 @@
 {
   "name": "zawgyi-unicode-converter-angular-pwa",
-  "version": "0.0.0",
+  "version": "1.1.5",
   "private": true,
   "author": "DagonMetric",
   "license": "MIT",
@@ -21,7 +21,7 @@
     "e2e": "ng e2e",
     "build:prod": "npm run build:universal:prod && npm run generate:prerender && npm run copy-files",
     "build:app:prod": "ng build --prod",
-    "build:server:prod": "ng run zawgyi-unicode-converter:server:production",
+    "build:server:prod": "ng run zawgyi-unicode-converter-angular-pwa:server:production",
     "build:universal:prod": "npm run build:app:prod && npm run build:server:prod",
     "update:ngsw-config": "node_modules/.bin/ngsw-config dist/app ngsw-config.json",
     "compile:prerender": "tsc -p tsconfig.prerender.json",

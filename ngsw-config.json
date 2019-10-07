@@ -8,7 +8,7 @@
         "files": [
           "/favicon.ico",
           "/index.html",
-          "/assets/images/appicons/v[0-9]+/favicon.ico",
+          "/assets/appicons/v[0-9]+/favicon.ico",
           "/*.css",
           "/*.js"
         ],
@@ -26,7 +26,7 @@
       "resources": {
         "files": [
           "/assets/images/**",
-          "!/assets/images/appicons/**"
+          "!/assets/appicons/**"
         ]
       }
     },
@@ -36,7 +36,8 @@
       "updateMode": "prefetch",
       "resources": {
         "files": [
-          "/assets/images/appicons/**",
+          "/assets/images/**",
+          "!/assets/appicons/**",
           "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
         ]
       }

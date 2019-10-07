@@ -10,7 +10,7 @@
     </button>
 </mat-toolbar>
 <mat-sidenav-container class="app-sidenav-container">
-    <mat-sidenav #sidenav class="app-sidenav" position="end" [opened]="!(isScreenSmall | async)"
+    <mat-sidenav #sidenav class="app-sidenav" position="end" [opened]="(isScreenSmall | async) ? false : true"
         [mode]="(isScreenSmall | async) ? 'over' : 'side'" [fixedInViewport]="(isScreenSmall | async) ? true : false">
         <mat-nav-list>
             <h3 mat-subheader>Community and Links</h3>

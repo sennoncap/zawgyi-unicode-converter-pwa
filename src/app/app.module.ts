@@ -7,10 +7,8 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
@@ -28,7 +26,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ConfigModule } from '@dagonmetric/ng-config';
 import { StaticConfigLoaderModule } from '@dagonmetric/ng-config/static-loader';
 import { LogModule } from '@dagonmetric/ng-log';
-import { GTagLoggerModule } from '@dagonmetric/ng-log-gtag';
 import { TranslitModule } from '@dagonmetric/ng-translit';
 
 import { ZawgyiDetectorModule } from '@myanmartools/ng-zawgyi-detector';
@@ -38,7 +35,6 @@ import { environment } from '../environments/environment';
 import { ZgUniTranslitRuleLoaderModule } from './shared';
 import { CdkTextareaSyncSizeModule } from './shared/cdk-extensions';
 import { CustomIconRegistry } from './shared/mat-extensions';
-import { SwUpdatesModule } from './shared/sw-updates';
 
 import { AboutComponent, AboutDialogHandlerComponent } from './about';
 import { HomeComponent } from './home';
@@ -46,6 +42,8 @@ import { SupportComponent, SupportDialogHandlerComponent } from './support';
 
 import { AppComponent } from './app.component';
 import { appSvgIconProviders } from './app.svg-icons';
+
+export const appId = 'zawgyi-unicode-converter';
 
 export const appRoutes: Routes = [
     {
@@ -68,7 +66,7 @@ export const appRoutes: Routes = [
 ];
 
 /**
- * App module for both node and web platforms.
+ * App shared module for server, browser and test platforms.
  */
 @NgModule({
     declarations: [
@@ -80,11 +78,8 @@ export const appRoutes: Routes = [
         SupportDialogHandlerComponent
     ],
     imports: [
-        BrowserModule.withServerTransition({ appId: 'zawgyi-unicode-converter' }),
         CommonModule,
         FormsModule,
-        HttpClientModule,
-        BrowserTransferStateModule,
         RouterModule.forRoot(appRoutes),
 
         FlexLayoutModule,
@@ -111,9 +106,6 @@ export const appRoutes: Routes = [
 
         // ng-log modules
         LogModule,
-        GTagLoggerModule.withOptions({
-            measurementId: 'UA-137255227-1'
-        }),
 
         // ng-config modules
         ConfigModule.init(),
@@ -123,7 +115,6 @@ export const appRoutes: Routes = [
             appTitleSuffix: 'Myanmar Tools',
             appDescription: 'Zawgyi Unicode Converter is a free and open source Zawgyi-One and standard Myanmar Unicode online/offline converter created by DagonMetric Myanmar Tools team.',
             baseUrl: 'https://zawgyi-unicode-converter.myanmartools.org/',
-            appImageUrl: 'assets/images/appicons/v1/logo.png',
             communityLinks: [
                 {
                     url: 'https://www.facebook.com/DagonMetric',
@@ -135,11 +126,6 @@ export const appRoutes: Routes = [
                     label: 'YouTube',
                     iconName: 'logo-youtube'
                 },
-                // {
-                //     url: 'https://twitter.com/myanmartools',
-                //     label: 'Twitter',
-                //     iconName: 'logo-twitter'
-                // },
                 {
                     url: 'https://medium.com/myanmartools',
                     label: 'Medium',
@@ -163,7 +149,6 @@ export const appRoutes: Routes = [
             privacyUrl: 'https://privacy.dagonmetric.com/privacy-statement/',
         }),
 
-        SwUpdatesModule,
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ],
     providers: [
