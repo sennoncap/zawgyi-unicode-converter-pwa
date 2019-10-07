@@ -10,7 +10,7 @@ We use [Github issues](https://github.com/myanmartools/zawgyi-unicode-converter-
 
 ### Discussions
 
-[Gitter Channel](https://badges.gitter.im/myanmartools/community) for general Myanmar tools discussions.
+[Gitter Channel](https://gitter.im/myanmartools/community) for general Myanmar tools discussions.
 
 ## Contributing code and content
 
