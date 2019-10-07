@@ -1,0 +1,42 @@
+@import "variables";
+
+.form-container {
+    flex-direction: row;
+    box-sizing: border-box;
+    display: flex;
+}
+
+.form-field-container {
+    flex-direction: column;
+    box-sizing: border-box;
+    display: flex;
+    flex: 1 1 100%;
+}
+
+.page {
+    .about {
+        .description {
+            justify-content: center;
+            text-align: center;
+            margin-bottom: $default-gap-width / 2;
+        }
+    }
+}
+
+.mobile-apps {
+    justify-content: center;
+    text-align: center;
+
+    .app-badge-button.mat-icon-button {
+        // width: 139.53px;
+        width: 140px;
+        height: 54px;
+        line-height: 54px;
+        border-radius: 0;
+
+        img {
+            width: 139.53px;
+            height: 54px;
+        }
+    }
+}

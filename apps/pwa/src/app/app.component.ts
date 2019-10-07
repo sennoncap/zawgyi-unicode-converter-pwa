@@ -6,24 +6,22 @@
  * found under the LICENSE file in the root directory of this source tree.
  */
 
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { SwUpdate } from '@angular/service-worker';
+import { Component, ViewEncapsulation } from '@angular/core';
 
-import { of, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
+import { BreakpointObserver } from '@angular/cdk/layout';
+
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ConfigService } from '@dagonmetric/ng-config';
-import { EventInfo, LogService } from '@dagonmetric/ng-log';
-import { TranslitResult, TranslitService } from '@dagonmetric/ng-translit';
-
-import { DetectedEnc, ZawgyiDetector } from '@myanmartools/ng-zawgyi-detector';
 
 import { environment } from '../environments/environment';
 
 import { CommunityLinkItem } from './shared';
-import { CdkTextareaSyncSize } from './shared/cdk-extensions';
 
-export type SourceEnc = 'auto' | DetectedEnc;
+const SMALL_WIDTH_BREAKPOINT = 720;
 
 /**
  * Core app component.
@@ -34,260 +32,97 @@ export type SourceEnc = 'auto' | DetectedEnc;
     styleUrls: ['./app.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
-    autoEncText = 'AUTO';
-    sourceEnc?: SourceEnc;
-    targetEnc?: DetectedEnc;
+export class AppComponent {
     checkingUpdate = false;
-
-    @ViewChild('sourceTextareaSyncSize', { static: false })
-    sourceTextareaSyncSize?: CdkTextareaSyncSize;
-
-    @ViewChild('outTextareaSyncSize', { static: false })
-    outTextareaSyncSize?: CdkTextareaSyncSize;
+    isScreenSmall?: Observable<boolean>;
 
     get appVersion(): string {
         return this._configService.getValue<string>('appVersion', 'dev');
     }
 
-    get title(): string {
-        return this._configService.getValue<string>('title');
+    get appTitle(): string {
+        return this._configService.getValue<string>('appName');
     }
 
-    get titleSuffix(): string {
-        return this._configService.getValue<string>('titleSuffix');
-    }
+    get appTitleFull(): string {
+        const appTitleSuffix = this._configService.getValue<string>('appTitleSuffix');
 
-    get titleWithSuffix(): string {
-        return `${this.title}${this.titleSuffix}`;
+        return `${this.appTitle} | ${appTitleSuffix}`;
     }
 
     get baseUrl(): string {
         return environment.production ? this._configService.getValue<string>('baseUrl') : '/';
     }
 
-    get githubRepoUrl(): string {
-        return this._configService.getValue<string>('githubRepoUrl');
+    get communityLinks(): CommunityLinkItem[] {
+        return this._configService.getValue<CommunityLinkItem[]>('communityLinks', []);
     }
 
-    get githubImageAlt(): string {
-        return this._configService.getValue<string>('githubImageAlt');
-    }
-
-    get appImageUrl(): string {
-        return `${this.baseUrl}${this._configService.getValue<string>('appImageUrl')}`;
-    }
-
-    get githubImageUrl(): string {
-        return `${this.baseUrl}${this._configService.getValue<string>('githubImageUrl')}`;
-    }
-
-    get communityLinkItems(): CommunityLinkItem[] {
-        return this._configService.getValue<CommunityLinkItem[]>('communityLinkItems', []);
-    }
-
-    private readonly _translitSubject = new Subject<string>();
-    private readonly _logSubject = new Subject<EventInfo>();
-
-    private readonly _destroyed = new Subject<void>();
-
-    private _sourceText = '';
-    private _outText = '';
-
-    private _detectedEnc: DetectedEnc = null;
-    private _curRuleName = '';
-
-    get detectedEnc(): DetectedEnc {
-        return this._detectedEnc;
-    }
-
-    get sourceText(): string {
-        return this._sourceText;
-    }
-    set sourceText(value: string) {
-        this._sourceText = value;
-        this.translitNext();
-    }
-
-    get outText(): string {
-        return this._outText;
+    get privacyUrl(): string {
+        return this._configService.getValue<string>('privacyUrl');
     }
 
     constructor(
-        private readonly _translitService: TranslitService,
-        private readonly _zawgyiDetector: ZawgyiDetector,
         private readonly _configService: ConfigService,
-        private readonly _logService: LogService,
-        private readonly _swUpdate: SwUpdate) { }
-
-    ngOnInit(): void {
-        this._translitSubject.pipe(
-            debounceTime(100),
-            distinctUntilChanged(),
-            takeUntil(this._destroyed),
-            switchMap(formattedInput => {
-                const inputPart = formattedInput.substr(formattedInput.indexOf('|'));
-                const input = inputPart.length > 1 ? inputPart.substr(1) : '';
-                if (!input || !input.trim().length) {
-                    if (this.sourceEnc === 'auto' || !this.detectedEnc) {
-                        this.resetAutoEncText();
-                        this.sourceEnc = 'auto';
-                        this._detectedEnc = null;
-                    }
-
-                    return of({
-                        outputText: input,
-                        replaced: false,
-                        duration: 0
-                    });
-                }
-
-                if (this.sourceEnc === 'auto' || !this.detectedEnc) {
-                    const detectorResult = this._zawgyiDetector.detect(input, { detectMixType: false });
-                    this._detectedEnc = detectorResult.detectedEnc;
-
-                    if (detectorResult.detectedEnc === 'zg') {
-                        this.resetAutoEncText('ZAWGYI DETECTED');
-                        this.sourceEnc = 'auto';
-                        this._detectedEnc = 'zg';
-                        this.targetEnc = 'uni';
-                    } else if (detectorResult.detectedEnc === 'uni') {
-                        this.resetAutoEncText('UNICODE DETECTED');
-                        this.sourceEnc = 'auto';
-                        this._detectedEnc = 'uni';
-                        this.targetEnc = 'zg';
-                    } else {
-                        this.resetAutoEncText();
-                        this.sourceEnc = 'auto';
-                        this._detectedEnc = null;
-
-                        return of({
-                            replaced: false,
-                            outputText: input,
-                            duration: 0
-                        });
-                    }
-                }
-
-                this._curRuleName = this.detectedEnc === 'zg' ? 'zg2uni' : 'uni2zg';
-
-                return this._translitService.translit(input, this._curRuleName)
-                    .pipe(
-                        takeUntil(this._destroyed)
-                    );
-            })
-        ).subscribe((result: TranslitResult) => {
-            this._outText = result.outputText || '';
-
-            if (this._outText.length && this._sourceText.length && this._curRuleName) {
-                const eventLabel = this._curRuleName === 'zg2uni' ? 'User converts Zawgyi to Unicode' : 'User converts Unicode to Zawgyi';
-                this._logSubject.next({
-                    name: `convert_${this._curRuleName}`,
-                    event_category: 'convert',
-                    event_label: eventLabel,
-                    properties: {
-                        app_version: this.appVersion,
-                        duration: result.duration,
-                        replaced: result.replaced,
-                        input_length: this._sourceText.length,
-                        output_length: this._outText.length,
-                        input_enc: this.sourceEnc
-                    }
-                });
-            }
-        });
-
-        this._logSubject.pipe(
-            takeUntil(this._destroyed)
-        ).subscribe((eventInfo: EventInfo) => {
-            this._logService.trackEvent(eventInfo);
-        });
+        private readonly _snackBar: MatSnackBar,
+        breakpointObserver: BreakpointObserver) {
+        this.isScreenSmall = breakpointObserver.observe(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`)
+            .pipe(
+                // tslint:disable-next-line: no-unsafe-any
+                map(breakpoint => breakpoint.matches)
+            );
     }
 
-    ngAfterViewInit(): void {
-        if (this.sourceTextareaSyncSize) {
-            this.sourceTextareaSyncSize.secondCdkTextareaSyncSize = this.outTextareaSyncSize;
-        }
-        if (this.outTextareaSyncSize) {
-            this.outTextareaSyncSize.secondCdkTextareaSyncSize = this.sourceTextareaSyncSize;
-        }
-    }
+    openSharing(): void {
+        const socialSharingSubject = this._configService.getValue<string>('socialSharingSubject');
+        const socialSharingLink = this._configService.getValue<string>('socialSharingLink');
+        const socialSharingMessage = this._configService.getValue<string>('socialSharingMessage');
 
-    ngOnDestroy(): void {
-        this._destroyed.next();
-        this._destroyed.complete();
-    }
-
-    onSourceEncChanged(val: SourceEnc): void {
-        this.sourceEnc = val;
-
-        if (val === 'uni' || val === 'zg') {
-            this._detectedEnc = val;
+        // tslint:disable-next-line: no-any
+        if (typeof navigator === 'object' && (navigator as any).share) {
+            // tslint:disable-next-line: no-any no-unsafe-any
+            (navigator as any).share({
+                title: socialSharingSubject,
+                text: socialSharingMessage,
+                url: socialSharingLink
+            }).then(() => {
+                this.showThankYouMessage();
+            }).catch(() => {
+                this.shareTofacebook();
+            });
         } else {
-            this._detectedEnc = null;
+            this.shareTofacebook();
         }
-
-        if (this.sourceEnc === 'zg' && (!this.targetEnc || this.targetEnc === 'zg')) {
-            this.targetEnc = 'uni';
-            this.resetAutoEncText();
-        } else if (this.sourceEnc === 'uni' && (!this.targetEnc || this.targetEnc === 'uni')) {
-            this.resetAutoEncText();
-
-            this.targetEnc = 'zg';
-        }
-
-        this.translitNext();
     }
 
-    onTargetEncChanged(val: DetectedEnc): void {
-        this.targetEnc = val;
+    private shareTofacebook(): void {
+        const socialSharingLink = this._configService.getValue<string>('socialSharingLink');
+        const appId = this._configService.getValue<string>('facebookAppId');
+        const socialSharingMessage = this._configService.getValue<string>('socialSharingMessage');
 
-        if (this.targetEnc === 'zg' && (!this.sourceEnc || this.sourceEnc === 'zg')) {
-            this._detectedEnc = this.sourceEnc = 'uni';
-            this.resetAutoEncText();
-        } else if (this.targetEnc === 'uni' && (!this.sourceEnc || this.sourceEnc === 'uni')) {
-            this._detectedEnc = this.sourceEnc = 'zg';
-            this.resetAutoEncText();
-        }
+        let urlString = 'https://www.facebook.com/dialog/share?';
+        urlString += `&app_id=${encodeURIComponent(appId)}`;
+        // urlString += `&redirect_uri=${encodeURIComponent(socialSharingLink)}`;
+        urlString += `&href=${encodeURIComponent(socialSharingLink)}`;
+        urlString += `&quote=${encodeURIComponent(socialSharingMessage)}`;
+        // urlString += `&display=${encodeURIComponent('popup')}`;
 
-        this.translitNext();
+        const winWidth = 557;
+        const winHeight = 690;
+        const winTop = (window.innerHeight - winHeight) / 2; // (screen.height / 2) - (winHeight / 2);
+        const winLeft = (window.innerWidth - winWidth) / 2; // (screen.width / 2) - (winWidth / 2);
+
+        window.open(
+            urlString,
+            'Facebook',
+            `toolbar=0,status=0,resizable=yes,width=${winWidth},height=${winHeight},top=${winTop},left=${winLeft}`);
+
+        this.showThankYouMessage();
     }
 
-    checkAppUpdate(): void {
-        // tslint:disable-next-line: no-typeof-undefined
-        if (!this._swUpdate.isEnabled || typeof navigator === 'undefined' || !navigator.serviceWorker || !navigator.onLine) {
-            return;
-        }
-
-        this.checkingUpdate = true;
-
-        this._logSubject.next({
-            name: 'check_update',
-            event_label: 'User checks update',
-            event_category: 'update',
-            properties: {
-                app_version: this.appVersion
-            }
+    private showThankYouMessage(): void {
+        this._snackBar.open('Thank you for sharing 😄.', undefined, {
+            duration: 3000
         });
-
-        // tslint:disable-next-line: no-floating-promises
-        navigator.serviceWorker.getRegistrations().then(registrations => {
-            registrations.forEach(registration => registration.unregister());
-            this.checkingUpdate = false;
-
-            if (registrations.length > 0 && navigator.onLine) {
-                location.reload();
-            }
-        });
-
-        this.checkingUpdate = false;
-    }
-
-    private resetAutoEncText(text?: string): void {
-        this.autoEncText = text || 'AUTO';
-    }
-
-    private translitNext(): void {
-        this._translitSubject.next(`${this.sourceEnc},${this.targetEnc}|${this.sourceText}`);
     }
 }

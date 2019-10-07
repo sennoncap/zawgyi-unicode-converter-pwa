@@ -8,39 +8,31 @@
 
 @import "variables";
 
-$header-nav-img-height: 26px;
+// SideNav container
+// ------------------------------------------------------------
+.app-sidenav-container {
+    flex: 1;
+    box-sizing: border-box;
+}
+
+.app-sidenav {
+    display: flex;
+    width: 240px;
+}
 
 // header
 // ------------------------------------------------------------
-header.app-header {
-    box-sizing: border-box;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-
+.mat-toolbar.app-header {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
 
-    .nav-img-btn {
-        &.mat-button {
-            padding-left: 0;
-            padding-right: 0;
-            min-width: 0;
-        }
+    .app-header-logo {
+        display: block;
+        margin-right: $default-gap-width / 2;
 
-        img+span {
-            margin-left: $default-gap-width / 2;
-        }
-    }
-
-    .nav-img {
-        height: $header-nav-img-height;
-        vertical-align: middle;
-
-        &.site-logo-img {
+        .mat-icon {
             width: 38px;
             height: 38px;
             line-height: 38px;
@@ -48,155 +40,13 @@ header.app-header {
     }
 }
 
-// Content
+// footer
 // ------------------------------------------------------------
-.page {
-    padding-top: $default-gap-width;
-
-    .about {
-        .description {
-            justify-content: center;
-            text-align: center;
-            padding-bottom: $default-gap-width / 4;
-        }
-
-        .features {
-            justify-content: center;
-            text-align: center;
-
-            ul {
-                display: flex;
-                list-style-type: none;
-                position: relative;
-
-                list-style-position: inside;
-                padding: 0;
-                margin: 0;
-
-                justify-content: center;
-                text-align: center;
-
-                li {
-                    // position: relative;
-                    display: block;
-                    list-style-type: none;
-                    padding: 0;
-                }
-            }
-        }
-    }
-}
-
-.flex-spacer {
-    flex: 1 1 auto;
-    box-sizing: border-box;
-}
-
-.form-container {
-    flex-direction: row;
-    box-sizing: border-box;
-    display: flex;
-}
-
-.form-field-container {
-    flex-direction: column;
-    box-sizing: border-box;
-    display: flex;
-    flex: 1 1 100%;
-}
-
-// Footer
-// ------------------------------------------------------------
-footer.app-footer {
-    position: relative;
-    width: 100%;
-    padding-top: $default-gap-width / 2;
-    padding-bottom: $default-gap-width;
-
-    .footer-inner-container {
-        justify-content: center;
-        text-align: center;
-    }
-
-    .app-version {
-        box-sizing: border-box;
-        display: flex;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-content: center;
-        align-items: center;
-
-        .version-text {
-            &.checking-update {
-                display: none;
-            }
-        }
-
-        .update-spinner {
-            display: none;
-
-            &.checking-update {
-                display: block;
-            }
-        }
-
-        .mat-icon {
-            display: inline-block;
-        }
-    }
-
-    .footer-links {
-        margin-top: $default-gap-width / 2;
-    }
-
-    .social-links {
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: row;
-        flex: 0 1 auto;
-        justify-content: center;
-        text-align: center;
-        margin-top: $default-gap-width;
-
-        &>*:not(:last-child) {
-            margin-right: $default-gap-width / 2;
-        }
-
-        .social-link-item {
-            box-sizing: border-box;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-content: center;
-            align-items: center;
-            overflow: hidden;
-            color: inherit;
-            cursor: pointer;
-
-            .mat-icon {
-                display: inline-block;
-            }
-        }
-    }
-
-    ul {
-        display: flex;
-        list-style-type: disc;
-
-        // important
-        list-style-position: inside;
-        padding: 0;
-        margin: 0;
-
-        justify-content: center;
-        text-align: center;
-
-        li {
-            display: block;
-            list-style-type: none;
-            padding: 0;
-        }
+.app-footer {
+    a {
+        padding-left: 12px;
+        text-decoration: none;
+        color: inherit;
+        outline: none;
     }
 }

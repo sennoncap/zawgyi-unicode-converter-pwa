@@ -42,103 +42,29 @@ $footer-section-ani-duration: 2s;
         font-family: "Noto Sans Myanmar UI", "Myanmar Text", Pyidaungsu, Padauk, Myanmar3, sans-serif;
     }
 
-    header.app-header {
-        .mat-toolbar.mat-primary {
-            animation: header-background-ani 2.8s ease-in 0s forwards;
+    .app-header {
+        &.mat-toolbar {
+            font-size: 18px;
+
+            h1 {
+                font-size: inherit;
+                font-weight: 400;
+            }
         }
 
-        .nav-img {
-            &.site-logo-img {
-                animation: brand-logo-ani 2.8s ease-in .2s forwards;
-            }
+        &.mat-toolbar.mat-primary {
+            animation: header-background-ani 2.8s ease-in 0s forwards;
         }
     }
 
     .page {
         .about {
             color: mat-color($foreground, secondary-text);
-
-            .description {
-                animation: about-description-ani $about-description-ani-duration linear $about-description-ani-delay forwards;
-            }
-
-            .features {
-                ul {
-                    position: relative;
-                }
-
-                li {
-                    position: absolute;
-                    width: 100%;
-                    font-size: 1em;
-                    line-height: 1.6;
-                    font-weight: 400;
-
-                    animation: feature-item-ani $feature-item-ani-duration ease-in;
-                    animation-fill-mode: both;
-                }
-
-                @for $i from 1 through $total-feature-items {
-                    li:nth-child(#{$i}) {
-                        animation-delay: $feature-item-ani-duration * $i;
-                    }
-                }
-            }
         }
     }
 
-    footer.app-footer {
+    .app-footer {
         color: mat-color($foreground, secondary-text);
-
-        .app-version {
-            opacity: 0;
-
-            animation: footer-section-ani $footer-section-ani-duration ease-in;
-            animation-fill-mode: forwards;
-            animation-delay: $about-description-ani-delay + $about-description-ani-duration + ($feature-item-ani-duration * $total-feature-items);
-        }
-
-        .footer-links {
-            opacity: 0;
-
-            animation: footer-section-ani $footer-section-ani-duration ease-in;
-            animation-fill-mode: forwards;
-            animation-delay: $about-description-ani-delay + $about-description-ani-duration + ($feature-item-ani-duration * $total-feature-items) + $footer-section-ani-duration;
-        }
-
-        .social-links {
-            opacity: 0;
-
-            animation: footer-section-ani $footer-section-ani-duration ease-in;
-            animation-fill-mode: forwards;
-            animation-delay: $about-description-ani-delay + $about-description-ani-duration + ($feature-item-ani-duration * $total-feature-items) + ($footer-section-ani-duration * 2);
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-            outline: 0;
-            -webkit-tap-highlight-color: transparent;
-            background: transparent;
-            position: relative;
-
-            &:hover,
-            &:focus,
-            &:active {
-                color: mat-color($primary);
-            }
-        }
-
-        h3 {
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 16px;
-        }
-
-        ul {
-            font-size: 14px;
-            line-height: 24px;
-        }
     }
 
     @keyframes header-background-ani {
@@ -151,72 +77,4 @@ $footer-section-ani-duration: 2s;
         }
     }
 
-    @keyframes brand-logo-ani {
-        0% {
-            filter: saturate(100%) brightness(100%) invert(0);
-        }
-
-        50% {
-            filter: saturate(50%) brightness(150%) invert(0);
-        }
-
-        99.99% {
-            filter: saturate(0) brightness(300%) invert(0);
-        }
-
-        100% {
-            filter: saturate(0) brightness(0) invert(1);
-        }
-    }
-
-    @keyframes about-description-ani {
-        0% {
-            opacity: 1;
-            height: 100%;
-        }
-
-        80% {
-            opacity: 0.8;
-            height: 100%;
-        }
-
-        100% {
-            opacity: 0;
-            height: 0;
-        }
-    }
-
-    @keyframes feature-item-ani {
-        0% {
-            height: 0;
-            opacity: 0;
-        }
-
-        10% {
-            height: 100%;
-            opacity: 1;
-        }
-
-        90% {
-            height: 100%;
-            opacity: 1;
-        }
-
-        100% {
-            height: 0;
-            opacity: 0;
-        }
-    }
-
-    @keyframes footer-section-ani {
-        0% {
-            opacity: 0;
-            height: 0;
-        }
-
-        100% {
-            opacity: 1;
-            height: 100%;
-        }
-    }
 }

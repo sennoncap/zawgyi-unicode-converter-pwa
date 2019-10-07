@@ -80,3 +80,24 @@ $accent: mat-palette($mat-pink, A200, A100, A400);
 $theme: mat-light-theme($primary, $accent);
 @include angular-material-theme($theme);
 @include app-theme($theme);
+
+// app-root
+// ------------------------------------------------------------
+app-root {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.page {
+    padding-top: $default-gap-width;
+}
+
+.flex-spacer {
+    flex: 1 1 auto;
+    box-sizing: border-box;
+}

@@ -1,0 +1,45 @@
+<div class="container page">
+    <div class="form-container" fxLayout="row" fxLayout.xs="column" fxLayoutGap="24px">
+        <div class="form-field-container" fxLayout="column" fxFlex="1 1 100%">
+            <mat-button-toggle-group aria-label="Select input font" [value]="sourceEnc"
+                #sourceEncGroup="matButtonToggleGroup" (change)="onSourceEncChanged(sourceEncGroup.value)">
+                <mat-button-toggle value="auto">{{autoEncText}}</mat-button-toggle>
+                <mat-button-toggle value="zg">ZAWGYI</mat-button-toggle>
+                <mat-button-toggle value="uni">UNICODE</mat-button-toggle>
+            </mat-button-toggle-group>
+            <mat-form-field floatLabel="never">
+                <textarea matInput class="myanmar-text" spellcheck="false" [placeholder]="sourcePlaceholderText"
+                    [(ngModel)]="sourceText" [class.my-uni]="!detectedEnc || detectedEnc == 'uni'"
+                    [class.my-zg]="detectedEnc == 'zg'" cdkTextareaSyncSize
+                    #sourceTextareaSyncSize="cdkTextareaSyncSize"></textarea>
+            </mat-form-field>
+        </div>
+        <div class="form-field-container" fxLayout="column" fxFlex="1 1 100%" [fxHide.xs]="!outText">
+            <mat-button-toggle-group aria-label="Select output font" [value]="targetEnc"
+                #targetEncGroup="matButtonToggleGroup" (change)="onTargetEncChanged(targetEncGroup.value)">
+                <mat-button-toggle value="zg">ZAWGYI</mat-button-toggle>
+                <mat-button-toggle value="uni">UNICODE</mat-button-toggle>
+            </mat-button-toggle-group>
+            <mat-form-field floatLabel="never">
+                <textarea matInput class="myanmar-text" spellcheck="false" [placeholder]="targetPlaceholderText"
+                    [ngModel]="outText" [class.my-uni]="targetEnc == 'uni'"
+                    [class.my-zg]="!targetEnc || targetEnc == 'zg'" [readonly]="!outText" cdkTextareaSyncSize
+                    #outTextareaSyncSize="cdkTextareaSyncSize"></textarea>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="about" fxLayout="column" *ngIf="aboutSection">
+        <div class="description" fxLayout="column">
+            {{appDescription}}
+        </div>
+    </div>
+    <div class="mobile-apps" fxLayout="row">
+        <a mat-icon-button class="app-badge-button"
+            href='https://play.google.com/store/apps/details?id=com.dagonmetric.zawgyiunicodeconverter&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'
+            title="Get the mobile app from Google Play">
+            <img alt='Get it on Google Play' src='assets/images/google-play-badge.png' />
+
+        </a>
+    </div>
+    <router-outlet></router-outlet>
+</div>

@@ -9,14 +9,20 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
+import { RouterModule, Routes } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { ConfigModule } from '@dagonmetric/ng-config';
@@ -34,28 +40,62 @@ import { CdkTextareaSyncSizeModule } from './shared/cdk-extensions';
 import { CustomIconRegistry } from './shared/mat-extensions';
 import { SwUpdatesModule } from './shared/sw-updates';
 
+import { AboutComponent, AboutDialogHandlerComponent } from './about';
+import { HomeComponent } from './home';
+import { SupportComponent, SupportDialogHandlerComponent } from './support';
+
 import { AppComponent } from './app.component';
 import { appSvgIconProviders } from './app.svg-icons';
+
+export const appRoutes: Routes = [
+    {
+        path: '',
+        component: HomeComponent,
+        // pathMatch: 'full',
+        // data: {},
+        children: [
+            {
+                path: 'about',
+                component: AboutDialogHandlerComponent
+            },
+            {
+                path: 'support',
+                component: SupportDialogHandlerComponent
+            }
+        ]
+    },
+    { path: '**', redirectTo: '' }
+];
 
 /**
  * App module for both node and web platforms.
  */
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        AboutComponent,
+        AboutDialogHandlerComponent,
+        HomeComponent,
+        SupportComponent,
+        SupportDialogHandlerComponent
     ],
     imports: [
         BrowserModule.withServerTransition({ appId: 'zawgyi-unicode-converter' }),
         CommonModule,
+        FormsModule,
         HttpClientModule,
-
         BrowserTransferStateModule,
+        RouterModule.forRoot(appRoutes),
 
         FlexLayoutModule,
         MatButtonModule,
         MatButtonToggleModule,
+        MatDialogModule,
         MatIconModule,
         MatInputModule,
+        MatListModule,
+        MatSidenavModule,
+        MatSnackBarModule,
         MatToolbarModule,
 
         CdkTextareaSyncSizeModule,
@@ -79,30 +119,48 @@ import { appSvgIconProviders } from './app.svg-icons';
         ConfigModule.init(),
         StaticConfigLoaderModule.withSettings({
             appVersion: '1.1.5',
-            title: 'Zawgyi Unicode Converter',
-            titleSuffix: ' - Myanmar Tools',
-            githubRepoUrl: 'https://github.com/myanmartools/zawgyi-unicode-converter',
-            githubImageAlt: 'Zawgyi Unicode Converter GitHub Repo',
+            appName: 'Zawgyi Unicode Converter',
+            appTitleSuffix: 'Myanmar Tools',
+            appDescription: 'Zawgyi Unicode Converter is a free and open source Zawgyi-One and standard Myanmar Unicode online/offline converter created by DagonMetric Myanmar Tools team.',
             baseUrl: 'https://zawgyi-unicode-converter.myanmartools.org/',
             appImageUrl: 'assets/images/appicons/v1/logo.png',
-            githubImageUrl: 'assets/images/appicons/v1/github.svg',
-            communityLinkItems: [
+            communityLinks: [
                 {
                     url: 'https://www.facebook.com/DagonMetric',
-                    label: 'Follow Myanmar Tools on Facebook',
-                    svgIconName: 'facebook'
+                    label: 'Facebook',
+                    iconName: 'logo-facebook'
                 },
                 {
-                    url: 'https://twitter.com/myanmartools',
-                    label: 'Follow Myanmar Tools on Twitter',
-                    svgIconName: 'twitter'
+                    url: 'https://www.youtube.com/channel/UCbJLAOU-kG6vkBOU1TSM5Cw',
+                    label: 'YouTube',
+                    iconName: 'logo-youtube'
                 },
+                // {
+                //     url: 'https://twitter.com/myanmartools',
+                //     label: 'Twitter',
+                //     iconName: 'logo-twitter'
+                // },
                 {
                     url: 'https://medium.com/myanmartools',
-                    label: 'Myanmar Tools Blog on Medium',
-                    svgIconName: 'medium'
+                    label: 'Medium',
+                    iconName: 'logo-medium'
+                },
+                {
+                    url: 'https://github.com/myanmartools/zawgyi-unicode-converter',
+                    label: 'GitHub',
+                    iconName: 'logo-github'
+                },
+                {
+                    url: 'https://myanmartools.org',
+                    label: 'Myanmar Tools',
+                    iconName: 'logo-myanmartools'
                 }
-            ]
+            ],
+            facebookAppId: '461163654621837',
+            socialSharingSubject: 'Zawgyi Unicode Converter app you may also like',
+            socialSharingMessage: 'သူငယ်ချင်းတို့တွေထဲမှာ ဇော်ဂျီ ယူနီကုဒ် အခက်အခဲရှိနေရင်\nZawgyi Unicode Converter app ကိုသုံးပြီး ဇော်ဂျီကနေ ယူနီကုဒ်၊ ယူနီကုဒ်ကနေ ဇော်ဂျီ အပြန်အလှန်ပြောင်းကြည့်လို့ရတယ်နော်။\nDownload link: ',
+            socialSharingLink: 'https://zawgyi-unicode-converter.myanmartools.org/',
+            privacyUrl: 'https://privacy.dagonmetric.com/privacy-statement/',
         }),
 
         SwUpdatesModule,
@@ -114,6 +172,10 @@ import { appSvgIconProviders } from './app.svg-icons';
             useClass: CustomIconRegistry
         },
         appSvgIconProviders
+    ],
+    entryComponents: [
+        AboutComponent,
+        SupportComponent
     ],
     bootstrap: [AppComponent]
 })

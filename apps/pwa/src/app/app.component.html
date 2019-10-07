@@ -1,47 +1,54 @@
-<header class="app-header" role="banner">
-    <mat-toolbar color="primary">
-        <a mat-button class="nav-img-btn nav-brand" [href]="baseUrl" [attr.aria-label]="titleWithSuffix">
-            <img class="nav-img site-logo-img" [src]="appImageUrl" alt="{{titleWithSuffix}}" role="presentation"
-                aria-hidden="true">
-            <span role="presentation" aria-hidden="true">{{title}}</span>
-            <span role="presentation" aria-hidden="true" fxHide.xs>{{titleSuffix}}</span>
-        </a>
-        <div class="flex-spacer" fxFlex="1 1 auto"></div>
-        <a mat-button class="nav-img-btn" [href]="githubRepoUrl" aria-label="GitHub Repository" target="_blank"
-            rel="noopener">
-            <img class="nav-img" [src]="githubImageUrl" alt="{{githubImageAlt}}" role="presentation" aria-hidden="true">
-            <span role="presentation" aria-hidden="true" fxHide.xs>GitHub</span>
-        </a>
-    </mat-toolbar>
-</header>
-<main class="container page">
-    <div class="form-container" fxLayout="row" fxLayout.xs="column" fxLayoutGap="24px">
-        <div class="form-field-container" fxLayout="column" fxFlex="1 1 100%">
-            <mat-button-toggle-group aria-label="Source font encoding" [value]="sourceEnc"
-                #sourceEncGroup="matButtonToggleGroup" (change)="onSourceEncChanged(sourceEncGroup.value)">
-                <mat-button-toggle value="auto">{{autoEncText}}</mat-button-toggle>
-                <mat-button-toggle value="zg">ZAWGYI</mat-button-toggle>
-                <mat-button-toggle value="uni">UNICODE</mat-button-toggle>
-            </mat-button-toggle-group>
-            <mat-form-field floatLabel="never">
-                <textarea matInput id="sourceTextareaSyncSize" class="myanmar-text" spellcheck="false"
-                    placeholder="Zawgyi or Unicode text" [value]="sourceText" (input)="sourceText = $event.target.value"
-                    [class.my-uni]="!detectedEnc || detectedEnc == 'uni'" [class.my-zg]="detectedEnc == 'zg'"
-                    cdkTextareaSyncSize #sourceTextareaSyncSize="cdkTextareaSyncSize"></textarea>
-            </mat-form-field>
-        </div>
-        <div class="form-field-container" fxLayout="column" fxFlex="1 1 100%" [fxHide.xs]="!outText">
-            <mat-button-toggle-group aria-label="Target font encoding" [value]="targetEnc"
-                #targetEncGroup="matButtonToggleGroup" (change)="onTargetEncChanged(targetEncGroup.value)">
-                <mat-button-toggle value="zg">ZAWGYI</mat-button-toggle>
-                <mat-button-toggle value="uni">UNICODE</mat-button-toggle>
-            </mat-button-toggle-group>
-            <mat-form-field floatLabel="never">
-                <textarea id="outTextareaSyncSize" matInput class="myanmar-text" spellcheck="false"
-                    placeholder="Converted text" [value]="outText" [class.my-uni]="targetEnc == 'uni'"
-                    [class.my-zg]="!targetEnc || targetEnc == 'zg'" [readonly]="!outText" cdkTextareaSyncSize
-                    #outTextareaSyncSize="cdkTextareaSyncSize"></textarea>
-            </mat-form-field>
-        </div>
-    </div>
-</main>
+<mat-toolbar color="primary" class="app-header" role="banner">
+    <a mat-icon-button class="app-header-logo" [href]="baseUrl"
+        [attr.aria-label]="(isScreenSmall | async) ? appTitle : appTitleFull">
+        <mat-icon svgIcon="logo-app"></mat-icon>
+    </a>
+    <h1 role="presentation" aria-hidden="true">{{(isScreenSmall | async) ? appTitle : appTitleFull}}</h1>
+    <div class="flex-spacer" fxFlex="1 1 auto"></div>
+    <button type="button" mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon svgIcon="menu"></mat-icon>
+    </button>
+</mat-toolbar>
+<mat-sidenav-container class="app-sidenav-container">
+    <mat-sidenav #sidenav class="app-sidenav" position="end" [opened]="!(isScreenSmall | async)"
+        [mode]="(isScreenSmall | async) ? 'over' : 'side'" [fixedInViewport]="(isScreenSmall | async) ? true : false">
+        <mat-nav-list>
+            <h3 mat-subheader>Community and Links</h3>
+            <a mat-list-item [href]="communityLink.url" *ngFor="let communityLink of communityLinks">
+                <mat-icon mat-list-icon [svgIcon]="communityLink.iconName"></mat-icon>
+                <p matLine>
+                    {{communityLink.label}}
+                </p>
+            </a>
+            <mat-divider></mat-divider>
+            <h3 mat-subheader>Info and Support</h3>
+            <a mat-list-item routerLink="about">
+                <mat-icon mat-list-icon svgIcon="info"></mat-icon>
+                <p matLine>
+                    About
+                </p>
+            </a>
+            <a mat-list-item routerLink="support">
+                <mat-icon mat-list-icon svgIcon="help"></mat-icon>
+                <p matLine>
+                    Support
+                </p>
+            </a>
+            <mat-list-item (click)="openSharing()">
+                <mat-icon mat-list-icon svgIcon="share"></mat-icon>
+                <p matLine>
+                    Share
+                </p>
+            </mat-list-item>
+        </mat-nav-list>
+        <mat-list class="app-footer" dense>
+            <mat-list-item>
+                <span>&copy; DagonMetric</span>
+                <a [href]="privacyUrl">Privacy</a>
+            </mat-list-item>
+        </mat-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>
