@@ -9,7 +9,7 @@ Zawgyi Unicode Converter is a progressive web application (PWA) designed to auto
 
 Let's start converting now to Unicode to improve Myanmar language in digital world!
 
-[![Zawgyi Unicode Converter](https://zawgyi-unicode-converter.myanmartools.org/assets/images/appicons/v1/screenshot.jpg)](https://zawgyi-unicode-converter.myanmartools.org)
+[![Zawgyi Unicode Converter](https://zawgyi-unicode-converter.myanmartools.org/assets/images/screenshot-v1.jpg)](https://zawgyi-unicode-converter.myanmartools.org)
 
 [https://zawgyi-unicode-converter.myanmartools.org](https://zawgyi-unicode-converter.myanmartools.org)
 
