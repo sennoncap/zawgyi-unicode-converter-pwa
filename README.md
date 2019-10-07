@@ -2,7 +2,7 @@
 
 [![Gitter](https://badges.gitter.im/myanmartools/community.svg)](https://gitter.im/myanmartools/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-Zawgyi Unicode Converter is an open source Zawgyi-One and standard Myanmar Unicode converter for Android, iOS and Desktop devices written in Angular, Ionic Native, Typescript, SCSS and powered with Material Design, Ionic UI Components, Flex-layout, PWA and RxJS.
+Zawgyi Unicode Converter is a progressive web application (PWA) designed to automatically detect and convert Zawgyi-One and standard Myanmar Unicode written in Angular, Typescript, SCSS and powered with Material Design.
 
 ## Live Application
 
