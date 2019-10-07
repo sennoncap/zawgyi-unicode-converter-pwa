@@ -146,7 +146,7 @@ export const appRoutes: Routes = [
                     iconName: 'logo-medium'
                 },
                 {
-                    url: 'https://github.com/myanmartools/zawgyi-unicode-converter',
+                    url: 'https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa',
                     label: 'GitHub',
                     iconName: 'logo-github'
                 },

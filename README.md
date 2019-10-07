@@ -55,8 +55,8 @@ Contact us: opensource@dagonmetric.com
 
 ## Feedback and Contributing
 
-Check out the [Contributing](https://github.com/myanmartools/zawgyi-unicode-converter/blob/master/CONTRIBUTING.md) page to see the best places to log issues and start discussions.
+Check out the [Contributing](https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa/blob/master/CONTRIBUTING.md) page to see the best places to log issues and start discussions.
 
 ## License
 
-This repository is licensed with the [MIT](https://github.com/myanmartools/zawgyi-unicode-converter/blob/master/LICENSE) license.
+This repository is licensed with the [MIT](https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa/blob/master/LICENSE) license.
