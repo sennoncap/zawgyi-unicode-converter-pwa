@@ -9,7 +9,6 @@
 export const environment = {
     production: true,
     firebase: {
-        apiKey: 'AIzaSyDBlQDQIzXsuYxg6QHgu7yQIruZuErZ17U',
         projectId: 'zawgyi-unicode-converter-8f386',
         appId: '1:806756708926:web:06a1188c2ad7531283d76f',
         measurementId: 'G-80PGHB92MC'
