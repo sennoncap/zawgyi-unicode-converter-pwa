@@ -1,11 +1,11 @@
 <mat-toolbar color="primary" class="app-header" role="banner">
-    <a mat-icon-button class="app-header-logo" [href]="baseUrl"
+    <a mat-icon-button class="app-header-logo" routerLink="/"
         [attr.aria-label]="(isScreenSmall | async) ? appTitle : appTitleFull">
         <mat-icon svgIcon="logo-app"></mat-icon>
     </a>
     <h1 role="presentation" aria-hidden="true">{{(isScreenSmall | async) ? appTitle : appTitleFull}}</h1>
     <div class="flex-spacer" fxFlex="1 1 auto"></div>
-    <button type="button" mat-icon-button (click)="sidenav.toggle()">
+    <button type="button" mat-icon-button (click)="toggleSideNav()">
         <mat-icon svgIcon="menu"></mat-icon>
     </button>
 </mat-toolbar>
@@ -14,10 +14,10 @@
         [mode]="(isScreenSmall | async) ? 'over' : 'side'" [fixedInViewport]="(isScreenSmall | async) ? true : false">
         <mat-nav-list>
             <h3 mat-subheader>Community and Links</h3>
-            <a mat-list-item [href]="communityLink.url" *ngFor="let communityLink of communityLinks">
-                <mat-icon mat-list-icon [svgIcon]="communityLink.iconName"></mat-icon>
+            <a mat-list-item [href]="navLink.url" *ngFor="let navLink of navLinks">
+                <mat-icon mat-list-icon [svgIcon]="navLink.iconName"></mat-icon>
                 <p matLine>
-                    {{communityLink.label}}
+                    {{navLink.label}}
                 </p>
             </a>
             <mat-divider></mat-divider>

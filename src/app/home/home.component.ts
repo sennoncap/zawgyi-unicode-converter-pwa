@@ -164,14 +164,10 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
             }
 
             if (this._outText.length && this._sourceText.length && this._curRuleName) {
-                try {
-                    this._logService.trackEvent({
-                        name: `convert_${this._curRuleName}`,
-                        event_category: 'convert'
-                    });
-                } catch (err) {
-                    console.error(err);
-                }
+                this._logService.trackEvent({
+                    name: `convert_${this._curRuleName}`,
+                    event_category: 'convert'
+                });
             }
         });
     }

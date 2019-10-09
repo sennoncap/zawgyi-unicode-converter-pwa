@@ -6,6 +6,4 @@
  * found under the LICENSE file in the root directory of this source tree.
  */
 
-export * from './firebase-logger-provider';
-export * from './firebase-logger';
-export * from './firebase-logger.module';
+export * from './page-title.service';

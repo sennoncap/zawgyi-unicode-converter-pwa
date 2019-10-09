@@ -26,14 +26,15 @@ import { appId, AppModule } from './app.module';
     imports: [
         BrowserModule.withServerTransition({ appId: appId }),
         BrowserTransferStateModule,
+        HttpClientModule,
 
         AppModule,
-        HttpClientModule,
 
         ServerModule,
         ServerTransferStateModule,
         ModuleMapLoaderModule,
         NoopAnimationsModule,
+
         FlexLayoutServerModule,
 
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: false })

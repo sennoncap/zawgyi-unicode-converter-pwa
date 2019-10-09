@@ -12,11 +12,9 @@ import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-bro
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
-// import { GTagLoggerModule } from '@dagonmetric/ng-log-gtag';
-
 import { environment } from '../environments/environment';
 
-// import { FirebaseLoggerModule } from './shared/ng-log-firebase';
+import { FirebaseAnalyticsLoggerModule } from './shared/ng-log-firebase-analytics';
 
 import { AppComponent } from './app.component';
 import { appId, AppModule } from './app.module';
@@ -29,14 +27,13 @@ import { appId, AppModule } from './app.module';
     imports: [
         BrowserModule.withServerTransition({ appId: appId }),
         BrowserTransferStateModule,
+        HttpClientModule,
 
         AppModule,
-        HttpClientModule,
 
         BrowserAnimationsModule,
 
-        // GTagLoggerModule.withOptions(environment.googleAnalytics),
-        // FirebaseLoggerModule.initializeApp(environment.firebase),
+        FirebaseAnalyticsLoggerModule.initialize(environment.firebase),
 
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ]

@@ -6,4 +6,8 @@
  * found under the LICENSE file in the root directory of this source tree.
  */
 
-export * from './nav-link-item';
+export interface SocialSharingOptions {
+    subject?: string;
+    message?: string;
+    linkUrl?: string;
+}

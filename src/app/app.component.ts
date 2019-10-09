@@ -6,18 +6,18 @@
  * found under the LICENSE file in the root directory of this source tree.
  */
 
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 
 import { BreakpointObserver } from '@angular/cdk/layout';
-
+import { MatSidenav } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
 
 import { ConfigService } from '@dagonmetric/ng-config';
-
-import { environment } from '../environments/environment';
+import { LogService } from '@dagonmetric/ng-log';
 
 import { NavLinkItem } from './shared/nav-link-item';
 
@@ -32,13 +32,11 @@ const SMALL_WIDTH_BREAKPOINT = 720;
     styleUrls: ['./app.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class AppComponent {
-    checkingUpdate = false;
+export class AppComponent implements OnDestroy {
     isScreenSmall?: Observable<boolean>;
 
-    get appVersion(): string {
-        return this._configService.getValue<string>('appVersion', 'dev');
-    }
+    @ViewChild('sidenav', { static: false })
+    sidenav?: MatSidenav;
 
     get appTitle(): string {
         return this._configService.getValue<string>('appName');
@@ -50,27 +48,63 @@ export class AppComponent {
         return `${this.appTitle} | ${appTitleSuffix}`;
     }
 
-    get baseUrl(): string {
-        return environment.production ? this._configService.getValue<string>('baseUrl') : '/';
-    }
-
-    get communityLinks(): NavLinkItem[] {
-        return this._configService.getValue<NavLinkItem[]>('communityLinks', []);
-    }
-
     get privacyUrl(): string {
         return this._configService.getValue<string>('privacyUrl');
     }
 
+    get navLinks(): NavLinkItem[] {
+        return this._configService.getValue<NavLinkItem[]>('navLinks', []);
+    }
+
+    private readonly _onDestroy = new Subject<void>();
+
     constructor(
         private readonly _configService: ConfigService,
+        private readonly _logService: LogService,
         private readonly _snackBar: MatSnackBar,
+        router: Router,
         breakpointObserver: BreakpointObserver) {
+        router.events
+            .pipe(
+                filter(event => event instanceof NavigationEnd),
+                takeUntil(this._onDestroy)
+            )
+            .subscribe((data: NavigationEnd) => {
+                const urlAfterRedirects = data.urlAfterRedirects;
+                this._logService.trackPageView({
+                    name: urlAfterRedirects
+                });
+            });
+
         this.isScreenSmall = breakpointObserver.observe(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`)
             .pipe(
                 // tslint:disable-next-line: no-unsafe-any
                 map(breakpoint => breakpoint.matches)
             );
+    }
+
+    ngOnDestroy(): void {
+        this._onDestroy.next();
+        this._onDestroy.complete();
+
+        this._logService.flush();
+    }
+
+    toggleSideNav(): void {
+        if (!this.sidenav) {
+            return;
+        }
+
+        // tslint:disable-next-line: no-floating-promises
+        this.sidenav.toggle().then(drawerResult => {
+            this._logService.trackEvent({
+                event_category: 'engagement',
+                name: 'toggle_drawer_menu',
+                properties: {
+                    action: drawerResult === 'open' ? 'open' : 'close',
+                }
+            });
+        });
     }
 
     openSharing(): void {
@@ -86,8 +120,18 @@ export class AppComponent {
                 text: socialSharingMessage,
                 url: socialSharingLink
             }).then(() => {
+                this._logService.trackEvent({
+                    event_category: 'engagement',
+                    name: 'share',
+                    properties: {
+                        method: 'Web Share API'
+                    }
+                });
                 this.showThankYouMessage();
-            }).catch(() => {
+            }).catch((err: Error) => {
+                const errMsg = err && err.message ? ` ${err.message}` : '';
+                this._logService.warn(`An error occurs when sharing via Web API.${errMsg}`);
+
                 this.shareTofacebook();
             });
         } else {
@@ -116,6 +160,14 @@ export class AppComponent {
             urlString,
             'Facebook',
             `toolbar=0,status=0,resizable=yes,width=${winWidth},height=${winHeight},top=${winTop},left=${winLeft}`);
+
+        this._logService.trackEvent({
+            event_category: 'engagement',
+            name: 'share',
+            properties: {
+                method: 'Facebook Share Dialog'
+            }
+        });
 
         this.showThankYouMessage();
     }

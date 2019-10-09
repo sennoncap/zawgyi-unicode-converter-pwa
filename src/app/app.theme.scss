@@ -51,10 +51,6 @@ $footer-section-ani-duration: 2s;
                 font-weight: 400;
             }
         }
-
-        &.mat-toolbar.mat-primary {
-            animation: header-background-ani 2.8s ease-in 0s forwards;
-        }
     }
 
     .page {
@@ -66,15 +62,4 @@ $footer-section-ani-duration: 2s;
     .app-footer {
         color: mat-color($foreground, secondary-text);
     }
-
-    @keyframes header-background-ani {
-        0% {
-            background: mat-color($primary, 800);
-        }
-
-        100% {
-            background: mat-color($primary, 500);
-        }
-    }
-
 }

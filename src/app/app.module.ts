@@ -26,14 +26,17 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ConfigModule } from '@dagonmetric/ng-config';
 import { StaticConfigLoaderModule } from '@dagonmetric/ng-config/static-loader';
 import { LogModule } from '@dagonmetric/ng-log';
+import { ConsoleLoggerModule } from '@dagonmetric/ng-log/console';
 import { TranslitModule } from '@dagonmetric/ng-translit';
 
 import { ZawgyiDetectorModule } from '@myanmartools/ng-zawgyi-detector';
 
 import { environment } from '../environments/environment';
 
+import { AppConfig } from './shared/app-config';
 import { CdkTextareaSyncSizeModule } from './shared/cdk-extensions';
 import { CustomIconRegistry } from './shared/mat-extensions';
+import { PageTitleService } from './shared/page-title';
 import { ZgUniTranslitRuleLoaderModule } from './shared/zg-uni-translit-rule-loader';
 
 import { AboutComponent, AboutDialogHandlerComponent } from './about';
@@ -43,7 +46,7 @@ import { SupportComponent, SupportDialogHandlerComponent } from './support';
 import { AppComponent } from './app.component';
 import { appSvgIconProviders } from './app.svg-icons';
 
-export const appId = 'zawgyi-unicode-converter';
+export const appId = 'zawgyi-unicode-converter-web';
 
 export const appRoutes: Routes = [
     {
@@ -64,6 +67,47 @@ export const appRoutes: Routes = [
     },
     { path: '**', redirectTo: '' }
 ];
+
+export const appConfig: AppConfig = {
+    appVersion: '2.0.0-preview1',
+    appName: 'Zawgyi Unicode Converter',
+    appTitleSuffix: 'Myanmar Tools',
+    appDescription: 'Zawgyi Unicode Converter is a free and open source Zawgyi-One and standard Myanmar Unicode online/offline converter created by DagonMetric Myanmar Tools team.',
+    navLinks: [
+        {
+            url: 'https://www.facebook.com/DagonMetric',
+            label: 'Facebook',
+            iconName: 'logo-facebook'
+        },
+        {
+            url: 'https://www.youtube.com/channel/UCbJLAOU-kG6vkBOU1TSM5Cw',
+            label: 'YouTube',
+            iconName: 'logo-youtube'
+        },
+        {
+            url: 'https://medium.com/myanmartools',
+            label: 'Medium',
+            iconName: 'logo-medium'
+        },
+        {
+            url: 'https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa',
+            label: 'GitHub',
+            iconName: 'logo-github'
+        },
+        {
+            url: 'https://myanmartools.org',
+            label: 'Myanmar Tools',
+            iconName: 'logo-myanmartools'
+        }
+    ],
+    socialSharing: {
+        subject: 'Zawgyi Unicode Converter app you may also like',
+        message: 'သူငယ်ချင်းတို့တွေထဲမှာ ဇော်ဂျီ ယူနီကုဒ် အခက်အခဲရှိနေရင်\nZawgyi Unicode Converter app ကိုသုံးပြီး ဇော်ဂျီကနေ ယူနီကုဒ်၊ ယူနီကုဒ်ကနေ ဇော်ဂျီ အပြန်အလှန်ပြောင်းကြည့်လို့ရတယ်နော်။\nDownload link: ',
+        linkUrl: 'https://zawgyi-unicode-converter.myanmartools.org/'
+    },
+    facebookAppId: '461163654621837',
+    privacyUrl: 'https://privacy.dagonmetric.com/privacy-statement'
+};
 
 /**
  * App shared module for server, browser and test platforms.
@@ -95,6 +139,18 @@ export const appRoutes: Routes = [
 
         CdkTextareaSyncSizeModule,
 
+        // ng-config modules
+        ConfigModule.init(),
+        StaticConfigLoaderModule.withSettings(appConfig),
+
+        // ng-log modules
+        LogModule.withConfig({
+            minLevel: environment.production ? 'warn' : 'trace'
+        }),
+        ConsoleLoggerModule.withOptions({
+            enableDebug: !environment.production
+        }),
+
         // ng-translit module
         TranslitModule,
 
@@ -104,51 +160,6 @@ export const appRoutes: Routes = [
         // ng-zawgyi-detector module
         ZawgyiDetectorModule,
 
-        // ng-log modules
-        LogModule,
-
-        // ng-config modules
-        ConfigModule.init(),
-        StaticConfigLoaderModule.withSettings({
-            appVersion: '2.0.0-preview1',
-            appName: 'Zawgyi Unicode Converter',
-            appTitleSuffix: 'Myanmar Tools',
-            appDescription: 'Zawgyi Unicode Converter is a free and open source Zawgyi-One and standard Myanmar Unicode online/offline converter created by DagonMetric Myanmar Tools team.',
-            baseUrl: 'https://zawgyi-unicode-converter.myanmartools.org/',
-            communityLinks: [
-                {
-                    url: 'https://www.facebook.com/DagonMetric',
-                    label: 'Facebook',
-                    iconName: 'logo-facebook'
-                },
-                {
-                    url: 'https://www.youtube.com/channel/UCbJLAOU-kG6vkBOU1TSM5Cw',
-                    label: 'YouTube',
-                    iconName: 'logo-youtube'
-                },
-                {
-                    url: 'https://medium.com/myanmartools',
-                    label: 'Medium',
-                    iconName: 'logo-medium'
-                },
-                {
-                    url: 'https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa',
-                    label: 'GitHub',
-                    iconName: 'logo-github'
-                },
-                {
-                    url: 'https://myanmartools.org',
-                    label: 'Myanmar Tools',
-                    iconName: 'logo-myanmartools'
-                }
-            ],
-            facebookAppId: '461163654621837',
-            socialSharingSubject: 'Zawgyi Unicode Converter app you may also like',
-            socialSharingMessage: 'သူငယ်ချင်းတို့တွေထဲမှာ ဇော်ဂျီ ယူနီကုဒ် အခက်အခဲရှိနေရင်\nZawgyi Unicode Converter app ကိုသုံးပြီး ဇော်ဂျီကနေ ယူနီကုဒ်၊ ယူနီကုဒ်ကနေ ဇော်ဂျီ အပြန်အလှန်ပြောင်းကြည့်လို့ရတယ်နော်။\nDownload link: ',
-            socialSharingLink: 'https://zawgyi-unicode-converter.myanmartools.org/',
-            privacyUrl: 'https://privacy.dagonmetric.com/privacy-statement/',
-        }),
-
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ],
     providers: [
@@ -156,7 +167,8 @@ export const appRoutes: Routes = [
             provide: MatIconRegistry,
             useClass: CustomIconRegistry
         },
-        appSvgIconProviders
+        appSvgIconProviders,
+        PageTitleService
     ],
     entryComponents: [
         AboutComponent,

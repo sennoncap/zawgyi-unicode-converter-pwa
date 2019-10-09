@@ -6,5 +6,6 @@
  * found under the LICENSE file in the root directory of this source tree.
  */
 
-export * from './cdk-textarea-syncsize';
-export * from './cdk-textarea-syncsize.module';
+export * from './firebase-analytics-logger-provider';
+export * from './firebase-analytics-logger';
+export * from './firebase-analytics-logger.module';

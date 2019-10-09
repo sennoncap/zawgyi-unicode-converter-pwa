@@ -28,15 +28,15 @@ describe('AppComponent', () => {
         expect(app).toBeTruthy();
     });
 
-    it('should have title in header', () => {
+    it("should have 'appTitle'", () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.debugElement.componentInstance as AppComponent;
         expect(app.appTitle).toEqual('Zawgyi Unicode Converter');
     });
 
-    it('should have app version in header', () => {
+    it("should have 'appTitleFull'", () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.debugElement.componentInstance as AppComponent;
-        expect(app.appVersion).toEqual('2.0.0-preview1');
+        expect(app.appTitleFull).toEqual('Zawgyi Unicode Converter | Myanmar Tools');
     });
 });

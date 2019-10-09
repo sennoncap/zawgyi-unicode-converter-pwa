@@ -8,32 +8,18 @@
 
 import { analytics } from 'firebase/app';
 
-// tslint:disable-next-line: no-import-side-effect
-import 'firebase/analytics';
-
-import { isPlatformBrowser } from '@angular/common';
-
 import { EventInfo, Logger, LogInfo, LogLevel, PageViewInfo } from '@dagonmetric/ng-log';
 
 /**
  * Firebase analytics implementation for `Logger`.
  */
-export class FirebaseLogger extends Logger {
-    private readonly _isBrowser: boolean;
-    private readonly _analyticsService?: analytics.Analytics;
-
-    constructor(
-        readonly name: string,
-        platformId: Object) {
+export class FirebaseAnalyticsLogger extends Logger {
+    constructor(readonly name: string, private readonly _analytics?: analytics.Analytics) {
         super();
-        this._isBrowser = isPlatformBrowser(platformId);
-        if (this._isBrowser) {
-            this._analyticsService = analytics();
-        }
     }
 
     log(logLevel: LogLevel, message: string | Error, logInfo?: LogInfo): void {
-        if (logLevel === LogLevel.None || !this._isBrowser || !this._analyticsService) {
+        if (!this._analytics || logLevel === LogLevel.None) {
             return;
         }
 
@@ -44,7 +30,7 @@ export class FirebaseLogger extends Logger {
             properties.description = typeof message === 'string' ? message : `${message}`;
             properties.fatal = logLevel === LogLevel.Critical;
 
-            analytics().logEvent('exception', properties);
+            this._analytics.logEvent('exception', properties);
         } else {
             let level: string;
             if (logLevel === LogLevel.Trace) {
@@ -60,7 +46,7 @@ export class FirebaseLogger extends Logger {
             properties.message = typeof message === 'string' ? message : `${message}`;
             properties.level = level;
 
-            this._analyticsService.logEvent('trace', properties);
+            this._analytics.logEvent('trace', properties);
         }
     }
 
@@ -73,12 +59,13 @@ export class FirebaseLogger extends Logger {
     }
 
     trackPageView(pageViewInfo?: PageViewInfo): void {
-        if (!pageViewInfo || !pageViewInfo.name || !this._isBrowser || !this._analyticsService) {
+        if (!this._analytics) {
             return;
         }
 
-        const screenName = pageViewInfo.name;
-        this._analyticsService.setCurrentScreen(screenName);
+        // TODO:
+        const screenName = pageViewInfo && pageViewInfo.name ? pageViewInfo.name : '';
+        this._analytics.setCurrentScreen(screenName);
     }
 
     startTrackEvent(): void {
@@ -90,7 +77,7 @@ export class FirebaseLogger extends Logger {
     }
 
     trackEvent(eventInfo: EventInfo): void {
-        if (!this._isBrowser || !this._analyticsService) {
+        if (!this._analytics) {
             return;
         }
 
@@ -105,7 +92,7 @@ export class FirebaseLogger extends Logger {
             properties.event_label = eventInfo.event_label;
         }
 
-        this._analyticsService.logEvent(eventInfo.name, properties);
+        this._analytics.logEvent(eventInfo.name, properties);
     }
 
     flush(): void {
