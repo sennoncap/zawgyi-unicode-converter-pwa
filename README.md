@@ -1,5 +1,6 @@
-# Zawgyi Unicode Converter
+# Zawgyi Unicode Converter Angular PWA
 
+[![Build Status](https://dev.azure.com/myanmartools/zawgyi-unicode-converter-angular-pwa/_apis/build/status/myanmartools.zawgyi-unicode-converter-angular-pwa?branchName=master)](https://dev.azure.com/myanmartools/zawgyi-unicode-converter-angular-pwa/_build/latest?definitionId=7&branchName=master)
 [![CircleCI](https://circleci.com/gh/myanmartools/zawgyi-unicode-converter-angular-pwa.svg?style=svg)](https://circleci.com/gh/myanmartools/zawgyi-unicode-converter-angular-pwa)
 [![Gitter](https://badges.gitter.im/myanmartools/community.svg)](https://gitter.im/myanmartools/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
@@ -12,6 +13,10 @@ Let's start converting now to Unicode to improve Myanmar language in digital wor
 [![Zawgyi Unicode Converter](https://zawgyi-unicode-converter.myanmartools.org/assets/images/screenshot-v2.jpg)](https://zawgyi-unicode-converter.myanmartools.org)
 
 [https://zawgyi-unicode-converter.myanmartools.org](https://zawgyi-unicode-converter.myanmartools.org)
+
+## Mobile Applications
+
+[![Zawgyi Unicode Converter App on Google Play](https://zawgyi-unicode-converter.myanmartools.org/assets/images/google-play-badge.png)](https://play.google.com/store/apps/details?id=com.dagonmetric.zawgyiunicodeconverter&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1)
 
 ## Features
 
