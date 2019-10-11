@@ -136,7 +136,6 @@ export class AppComponent implements OnDestroy {
         // tslint:disable-next-line: no-floating-promises
         this.sidenav.toggle().then(drawerResult => {
             this._logService.trackEvent({
-                event_category: 'engagement',
                 name: 'toggle_drawer_menu',
                 properties: {
                     action: drawerResult === 'open' ? 'open' : 'close',
@@ -161,7 +160,6 @@ export class AppComponent implements OnDestroy {
                 url: socialSharingLink
             }).then(() => {
                 this._logService.trackEvent({
-                    event_category: 'engagement',
                     name: 'share',
                     properties: {
                         method: 'Web Share API'
@@ -204,7 +202,6 @@ export class AppComponent implements OnDestroy {
             `toolbar=0,status=0,resizable=yes,width=${winWidth},height=${winHeight},top=${winTop},left=${winLeft}`);
 
         this._logService.trackEvent({
-            event_category: 'engagement',
             name: 'share',
             properties: {
                 method: 'Facebook Share Dialog'
