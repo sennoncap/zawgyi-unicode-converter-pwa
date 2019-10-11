@@ -88,7 +88,7 @@ export class FirebaseAnalyticsLogger extends Logger {
                 runOutsideAngular(this._zone)
             ).subscribe();
         } else {
-            const pagePath = pageViewInfo.uri && pageViewInfo.uri.startsWith('/') ? pageViewInfo.uri : undefined;
+            const pagePath = pageViewInfo.uri || '/';
 
             this._analytics$.pipe(
                 tap((analyticsService) => {
@@ -115,18 +115,9 @@ export class FirebaseAnalyticsLogger extends Logger {
             return;
         }
 
-        // tslint:disable-next-line: no-any
-        const properties: { [key: string]: any } = {
-            ...eventInfo.properties
-        };
-
-        if (eventInfo.event_label) {
-            properties.event_label = eventInfo.event_label;
-        }
-
         this._analytics$.pipe(
             tap((analyticsService) => {
-                analyticsService.logEvent(eventInfo.name, properties);
+                analyticsService.logEvent(eventInfo.name, eventInfo.properties);
             }),
             runOutsideAngular(this._zone)
         ).subscribe();
@@ -135,5 +126,4 @@ export class FirebaseAnalyticsLogger extends Logger {
     flush(): void {
         // Do nothing
     }
-
 }
