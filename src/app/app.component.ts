@@ -7,7 +7,7 @@
  */
 
 import { Component, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatSidenav } from '@angular/material/sidenav';
@@ -17,9 +17,11 @@ import { Observable, Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 
 import { ConfigService } from '@dagonmetric/ng-config';
-import { LogService } from '@dagonmetric/ng-log';
+import { LogService, PageViewInfo } from '@dagonmetric/ng-log';
 
+import { AppConfig } from './shared/app-config';
 import { NavLinkItem } from './shared/nav-link-item';
+import { PageTitleService } from './shared/page-title';
 
 const SMALL_WIDTH_BREAKPOINT = 720;
 
@@ -38,42 +40,78 @@ export class AppComponent implements OnDestroy {
     @ViewChild('sidenav', { static: false })
     sidenav?: MatSidenav;
 
-    get appTitle(): string {
-        return this._configService.getValue<string>('appName');
+    get appTitle(): string | undefined {
+        return this._appConfig.appName;
     }
 
     get appTitleFull(): string {
-        const appTitleSuffix = this._configService.getValue<string>('appTitleSuffix');
-
-        return `${this.appTitle} | ${appTitleSuffix}`;
+        return `${this.appTitle} | Myanmar Tools`;
     }
 
-    get privacyUrl(): string {
-        return this._configService.getValue<string>('privacyUrl');
+    get appVersion(): string | undefined {
+        return this._appConfig.appVersion;
+    }
+
+    get privacyUrl(): string | undefined {
+        return this._appConfig.privacyUrl;
     }
 
     get navLinks(): NavLinkItem[] {
-        return this._configService.getValue<NavLinkItem[]>('navLinks', []);
+        return this._appConfig.navLinks || [];
     }
 
+    private readonly _appConfig: AppConfig;
     private readonly _onDestroy = new Subject<void>();
+    private _isFirstNavigation = true;
 
     constructor(
         private readonly _configService: ConfigService,
         private readonly _logService: LogService,
         private readonly _snackBar: MatSnackBar,
+        pageTitleService: PageTitleService,
         router: Router,
+        activatedRoute: ActivatedRoute,
         breakpointObserver: BreakpointObserver) {
+        this._appConfig = this._configService.getValue<AppConfig>('app');
         router.events
             .pipe(
                 filter(event => event instanceof NavigationEnd),
+                map((event: NavigationEnd) => {
+                    let child = activatedRoute.firstChild;
+                    while (child && child.firstChild) {
+                        child = child.firstChild;
+                    }
+
+                    if (!child) {
+                        return undefined;
+                    }
+
+                    return {
+                        name: child.snapshot.data.title,
+                        uri: event.urlAfterRedirects,
+                        page_type: child.snapshot.data.pageType
+                    };
+                }),
                 takeUntil(this._onDestroy)
             )
-            .subscribe((data: NavigationEnd) => {
-                const urlAfterRedirects = data.urlAfterRedirects;
-                this._logService.trackPageView({
-                    name: urlAfterRedirects
-                });
+            .subscribe((pageViewInfo?: PageViewInfo) => {
+                if (pageViewInfo && pageViewInfo.name) {
+                    pageTitleService.setTitle(pageViewInfo.name, '-');
+                } else {
+                    pageTitleService.setTitle(this.appTitleFull, undefined, true);
+                }
+
+                if (pageViewInfo) {
+                    pageViewInfo.properties = pageViewInfo.properties || {};
+                    pageViewInfo.properties.app_name = this.appTitle;
+                    pageViewInfo.properties.app_version = this.appVersion;
+                    pageViewInfo.properties.app_id = this._appConfig.appId;
+
+                    pageViewInfo.name = pageTitleService.title;
+                }
+
+                this._logService.trackPageView(this._isFirstNavigation ? undefined : pageViewInfo);
+                this._isFirstNavigation = false;
             });
 
         this.isScreenSmall = breakpointObserver.observe(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`)

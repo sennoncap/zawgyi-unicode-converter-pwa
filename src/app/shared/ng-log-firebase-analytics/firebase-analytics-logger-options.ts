@@ -14,5 +14,10 @@ export interface FirebaseOptions {
     [key: string]: any;
 }
 
-export const FIREBASE_OPTIONS_TOKEN = new InjectionToken<FirebaseOptions>('FirebaseOptions');
-export const FIREBASE_APP_NAME_TOKEN = new InjectionToken<string>('FirebaseAppConfig');
+export interface FirebaseAnalyticsLoggerOptions {
+    firebase: FirebaseOptions;
+    appName?: string;
+    logError?: boolean;
+}
+
+export const FIREBASE_ANALYTICS_LOGGER_OPTIONS_TOKEN = new InjectionToken<FirebaseAnalyticsLoggerOptions>('FirebaseAnalyticsLoggerOptions');

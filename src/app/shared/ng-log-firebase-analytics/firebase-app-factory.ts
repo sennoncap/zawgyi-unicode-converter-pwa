@@ -8,8 +8,8 @@
 
 import * as firebase from 'firebase/app';
 
+import { FirebaseOptions } from './firebase-analytics-logger-options';
 import { FirebaseApp } from './firebase-app';
-import { FirebaseOptions } from './firebase-options';
 
 export function firebaseAppFactory(options: FirebaseOptions, appNname?: string): FirebaseApp {
     appNname = appNname || '[DEFAULT]';

@@ -33,7 +33,11 @@ import { appId, AppModule } from './app.module';
 
         BrowserAnimationsModule,
 
-        FirebaseAnalyticsLoggerModule.initialize(environment.firebase),
+        FirebaseAnalyticsLoggerModule.initialize({
+            firebase: environment.firebase,
+            appName: appId,
+            logError: !environment.production
+        }),
 
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ]

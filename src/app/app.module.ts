@@ -53,60 +53,72 @@ export const appRoutes: Routes = [
         path: '',
         component: HomeComponent,
         // pathMatch: 'full',
-        // data: {},
+        data: {
+            pageType: 'home_page'
+        },
         children: [
             {
                 path: 'about',
-                component: AboutDialogHandlerComponent
+                component: AboutDialogHandlerComponent,
+                data: {
+                    title: 'About',
+                    pageType: 'about_page'
+                }
             },
             {
                 path: 'support',
-                component: SupportDialogHandlerComponent
+                component: SupportDialogHandlerComponent,
+                data: {
+                    title: 'Support',
+                    pageType: 'support_page'
+                }
             }
         ]
     },
     { path: '**', redirectTo: '' }
 ];
 
-export const appConfig: AppConfig = {
-    appVersion: '2.0.0-preview1',
-    appName: 'Zawgyi Unicode Converter',
-    appTitleSuffix: 'Myanmar Tools',
-    appDescription: 'Zawgyi Unicode Converter is a free and open source Zawgyi-One and standard Myanmar Unicode online/offline converter created by DagonMetric Myanmar Tools team.',
-    navLinks: [
-        {
-            url: 'https://www.facebook.com/DagonMetric',
-            label: 'Facebook',
-            iconName: 'logo-facebook'
+export const settings: { app: AppConfig } = {
+    app: {
+        appId: appId,
+        appVersion: '2.0.0-preview1',
+        appName: 'Zawgyi Unicode Converter',
+        appDescription: 'Zawgyi Unicode Converter is a free and open source Zawgyi-One and standard Myanmar Unicode online/offline converter created by DagonMetric Myanmar Tools team.',
+        navLinks: [
+            {
+                url: 'https://www.facebook.com/DagonMetric',
+                label: 'Facebook',
+                iconName: 'logo-facebook'
+            },
+            {
+                url: 'https://www.youtube.com/channel/UCbJLAOU-kG6vkBOU1TSM5Cw',
+                label: 'YouTube',
+                iconName: 'logo-youtube'
+            },
+            {
+                url: 'https://medium.com/myanmartools',
+                label: 'Medium',
+                iconName: 'logo-medium'
+            },
+            {
+                url: 'https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa',
+                label: 'GitHub',
+                iconName: 'logo-github'
+            },
+            {
+                url: 'https://myanmartools.org',
+                label: 'Myanmar Tools',
+                iconName: 'logo-myanmartools'
+            }
+        ],
+        socialSharing: {
+            subject: 'Zawgyi Unicode Converter app you may also like',
+            message: 'သူငယ်ချင်းတို့တွေထဲမှာ ဇော်ဂျီ ယူနီကုဒ် အခက်အခဲရှိနေရင်\nZawgyi Unicode Converter app ကိုသုံးပြီး ဇော်ဂျီကနေ ယူနီကုဒ်၊ ယူနီကုဒ်ကနေ ဇော်ဂျီ အပြန်အလှန်ပြောင်းကြည့်လို့ရတယ်နော်။\nDownload link: ',
+            linkUrl: 'https://zawgyi-unicode-converter.myanmartools.org/'
         },
-        {
-            url: 'https://www.youtube.com/channel/UCbJLAOU-kG6vkBOU1TSM5Cw',
-            label: 'YouTube',
-            iconName: 'logo-youtube'
-        },
-        {
-            url: 'https://medium.com/myanmartools',
-            label: 'Medium',
-            iconName: 'logo-medium'
-        },
-        {
-            url: 'https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa',
-            label: 'GitHub',
-            iconName: 'logo-github'
-        },
-        {
-            url: 'https://myanmartools.org',
-            label: 'Myanmar Tools',
-            iconName: 'logo-myanmartools'
-        }
-    ],
-    socialSharing: {
-        subject: 'Zawgyi Unicode Converter app you may also like',
-        message: 'သူငယ်ချင်းတို့တွေထဲမှာ ဇော်ဂျီ ယူနီကုဒ် အခက်အခဲရှိနေရင်\nZawgyi Unicode Converter app ကိုသုံးပြီး ဇော်ဂျီကနေ ယူနီကုဒ်၊ ယူနီကုဒ်ကနေ ဇော်ဂျီ အပြန်အလှန်ပြောင်းကြည့်လို့ရတယ်နော်။\nDownload link: ',
-        linkUrl: 'https://zawgyi-unicode-converter.myanmartools.org/'
-    },
-    facebookAppId: '461163654621837',
-    privacyUrl: 'https://privacy.dagonmetric.com/privacy-statement'
+        facebookAppId: '461163654621837',
+        privacyUrl: 'https://privacy.dagonmetric.com/privacy-statement'
+    }
 };
 
 /**
@@ -141,7 +153,7 @@ export const appConfig: AppConfig = {
 
         // ng-config modules
         ConfigModule.init(),
-        StaticConfigLoaderModule.withSettings(appConfig),
+        StaticConfigLoaderModule.withSettings(settings),
 
         // ng-log modules
         LogModule.withConfig({

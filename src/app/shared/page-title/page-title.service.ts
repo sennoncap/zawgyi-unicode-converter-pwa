@@ -11,34 +11,33 @@ import { Title } from '@angular/platform-browser';
 
 import { ConfigService } from '@dagonmetric/ng-config';
 
+import { AppConfig } from '../app-config';
+
 /**
  * App page title service.
  */
 @Injectable()
 export class PageTitleService {
+    private readonly _appConfig: AppConfig;
     private _pageTitle = '';
 
     get title(): string { return this._pageTitle; }
 
-    set title(title: string) {
-        if (title) {
-            this._pageTitle = `${this.appName} - ${title}`;
+    constructor(private readonly _titleService: Title, configService: ConfigService) {
+        this._appConfig = configService.getValue<AppConfig>('app');
+    }
+
+    setTitle(title: string, separator?: string, isFullTitle?: boolean): void {
+        if (isFullTitle) {
+            this._pageTitle = title;
         } else {
-            this._pageTitle = this.defaultHomeTitle;
+            this._pageTitle = `${this.appName} ${separator || '|'} ${title}`;
         }
 
         this._titleService.setTitle(this._pageTitle);
     }
 
-    constructor(private readonly _titleService: Title, private readonly _configService: ConfigService) { }
-
-    private get defaultHomeTitle(): string {
-        const appTitleSuffix = this._configService.getValue<string>('appTitleSuffix');
-
-        return `${this.appName} | ${appTitleSuffix}`;
-    }
-
-    private get appName(): string {
-        return this._configService.getValue<string>('appName');
+    private get appName(): string | undefined {
+        return this._appConfig.appName;
     }
 }

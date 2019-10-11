@@ -9,6 +9,9 @@
 export const environment = {
     production: false,
     firebase: {
-        measurementId: ''
+        apiKey: 'AIzaSyAwVZSslntnTjb46uAyKzASiUOyitkapr8',
+        projectId: 'zuc-test',
+        appId: '1:430221426292:web:b04c48ca68299b8396db21',
+        measurementId: 'G-FFDRVTJ05Z'
     }
 };

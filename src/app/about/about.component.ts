@@ -10,6 +10,7 @@ import { Component } from '@angular/core';
 
 import { ConfigService } from '@dagonmetric/ng-config';
 
+import { AppConfig } from '../shared/app-config';
 /**
  * App about component.
  */
@@ -19,17 +20,21 @@ import { ConfigService } from '@dagonmetric/ng-config';
     styleUrls: ['./about.component.scss']
 })
 export class AboutComponent {
-    get appVersion(): string {
-        return this._configService.getValue<string>('appVersion');
+    get appName(): string | undefined {
+        return this._appConfig.appName;
     }
 
-    get appName(): string {
-        return this._configService.getValue<string>('appName');
+    get appVersion(): string | undefined {
+        return this._appConfig.appVersion;
     }
 
-    get appDescription(): string {
-        return this._configService.getValue<string>('appDescription');
+    get appDescription(): string | undefined {
+        return this._appConfig.appDescription;
     }
 
-    constructor(private readonly _configService: ConfigService) { }
+    private readonly _appConfig: AppConfig;
+
+    constructor(configService: ConfigService) {
+        this._appConfig = configService.getValue<AppConfig>('app');
+    }
 }

@@ -11,8 +11,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { MatDialog } from '@angular/material/dialog';
 
-import { PageTitleService } from '../shared/page-title';
-
 import { SupportComponent } from './support.component';
 
 /**
@@ -26,18 +24,14 @@ export class SupportDialogHandlerComponent {
     constructor(
         private readonly _dialog: MatDialog,
         private readonly _router: Router,
-        private readonly _route: ActivatedRoute,
-        private readonly _pageTitleService: PageTitleService) {
+        private readonly _route: ActivatedRoute) {
         this.openDialog();
     }
 
     openDialog(): void {
         const dialogRef = this._dialog.open(SupportComponent);
 
-        this._pageTitleService.title = 'Support';
-
         dialogRef.afterClosed().subscribe(() => {
-            this._pageTitleService.title = '';
 
             // tslint:disable-next-line: no-floating-promises
             this._router.navigate(['../'], { relativeTo: this._route });

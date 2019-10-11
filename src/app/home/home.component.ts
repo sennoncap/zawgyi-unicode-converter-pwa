@@ -1,3 +1,12 @@
+
+/**
+ * @license
+ * Copyright DagonMetric. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found under the LICENSE file in the root directory of this source tree.
+ */
+
 import { isPlatformBrowser } from '@angular/common';
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 
@@ -10,6 +19,7 @@ import { TranslitResult, TranslitService } from '@dagonmetric/ng-translit';
 
 import { DetectedEnc, ZawgyiDetector } from '@myanmartools/ng-zawgyi-detector';
 
+import { AppConfig } from '../shared/app-config';
 import { CdkTextareaSyncSize } from '../shared/cdk-extensions';
 
 export type SourceEnc = 'auto' | DetectedEnc;
@@ -60,12 +70,12 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         return this._outText;
     }
 
-    get appVersion(): string {
-        return this._configService.getValue<string>('appVersion');
+    get appVersion(): string | undefined {
+        return this._appConfig.appVersion;
     }
 
-    get appDescription(): string {
-        return this._configService.getValue<string>('appDescription');
+    get appDescription(): string | undefined {
+        return this._appConfig.appDescription;
     }
 
     get sourcePlaceholderText(): string {
@@ -76,6 +86,7 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         return this._targetPlaceholderText || this._targetPlaceholderAuto;
     }
 
+    private readonly _appConfig: AppConfig;
     private readonly _sourcePlaceholderAuto = 'Enter Zawgyi or Unicode text here';
     private readonly _sourcePlaceholderZg = 'Enter Zawgyi text here';
     private readonly _sourcePlaceholderUni = 'Enter Unicode text here';
@@ -89,11 +100,13 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
 
     constructor(
         @Inject(PLATFORM_ID) platformId: Object,
-        private readonly _configService: ConfigService,
         private readonly _translitService: TranslitService,
         private readonly _zawgyiDetector: ZawgyiDetector,
-        private readonly _logService: LogService) {
+        private readonly _logService: LogService,
+        configService: ConfigService) {
         this._isBrowser = isPlatformBrowser(platformId);
+        this._appConfig = configService.getValue<AppConfig>('app');
+
         const appUsedCount = this.getAppUsedCount();
         if (appUsedCount && appUsedCount > 1) {
             this.aboutSection = false;
@@ -125,7 +138,6 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
 
                 if (this.sourceEnc === 'auto' || !this.detectedEnc) {
                     const detectorResult = this._zawgyiDetector.detect(input, { detectMixType: false });
-                    this._detectedEnc = detectorResult.detectedEnc;
 
                     if (detectorResult.detectedEnc === 'zg') {
                         this.resetAutoEncText('ZAWGYI DETECTED');
@@ -163,10 +175,14 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
                 this.aboutSection = false;
             }
 
-            if (this._outText.length && this._sourceText.length && this._curRuleName) {
+            if (this._outText.length && this._sourceText.length && this._curRuleName && result.replaced) {
                 this._logService.trackEvent({
+                    event_category: 'engagement',
                     name: `convert_${this._curRuleName}`,
-                    event_category: 'convert'
+                    properties: {
+                        source_length: this._sourceText.length,
+                        duration: result.duration
+                    }
                 });
             }
         });
@@ -216,6 +232,11 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
             this.targetEnc = 'zg';
         }
 
+        this._logService.trackEvent({
+            event_category: 'engagement',
+            name: `touch_source_${this.sourceEnc}`
+        });
+
         this.translitNext();
     }
 
@@ -237,6 +258,11 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
             this._detectedEnc = this.sourceEnc = 'zg';
             this.resetAutoEncText();
         }
+
+        this._logService.trackEvent({
+            event_category: 'engagement',
+            name: `touch_target_${this.targetEnc}`
+        });
 
         this.translitNext();
     }

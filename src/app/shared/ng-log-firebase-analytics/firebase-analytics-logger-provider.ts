@@ -7,7 +7,10 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Inject, Injectable, NgZone, PLATFORM_ID } from '@angular/core';
+
+import { from, Observable } from 'rxjs';
+import { map, shareReplay, tap } from 'rxjs/operators';
 
 import {
     EventInfo,
@@ -20,11 +23,10 @@ import {
 
 import { analytics } from 'firebase/app';
 
-import { FirebaseApp } from './firebase-app';
-import { firebaseAppFactory } from './firebase-app-factory';
-import { FIREBASE_APP_NAME_TOKEN, FIREBASE_OPTIONS_TOKEN, FirebaseOptions } from './firebase-options';
-
 import { FirebaseAnalyticsLogger } from './firebase-analytics-logger';
+import { FIREBASE_ANALYTICS_LOGGER_OPTIONS_TOKEN, FirebaseAnalyticsLoggerOptions } from './firebase-analytics-logger-options';
+import { firebaseAppFactory } from './firebase-app-factory';
+import { runOutsideAngular } from './zone-helper';
 
 /**
  * Logger provider factory for `FirebaseAnalyticsLogger`.
@@ -33,11 +35,8 @@ import { FirebaseAnalyticsLogger } from './firebase-analytics-logger';
     providedIn: 'root'
 })
 export class FirebaseAnalyticsLoggerProvider extends Logger implements LoggerProvider {
-    private readonly _app?: FirebaseApp;
-    private readonly _isBrowser: boolean;
-
-    private _analytics?: analytics.Analytics;
     private _currentLogger?: FirebaseAnalyticsLogger;
+    private readonly _analytics$?: Observable<analytics.Analytics>;
 
     get name(): string {
         return 'firebaseAnalytics';
@@ -48,65 +47,75 @@ export class FirebaseAnalyticsLoggerProvider extends Logger implements LoggerPro
             return this._currentLogger;
         }
 
-        if (this._isBrowser && this._app && !this._analytics) {
-            this._analytics = this._app.analytics();
-        }
-
         this._currentLogger = new FirebaseAnalyticsLogger(
             '',
-            this._analytics);
+            this._zone,
+            this._analytics$);
 
         return this._currentLogger;
     }
 
     constructor(
         @Inject(PLATFORM_ID) platformId: Object,
-        @Inject(FIREBASE_OPTIONS_TOKEN) options: FirebaseOptions,
-        @Inject(FIREBASE_APP_NAME_TOKEN) appName?: string) {
+        private readonly _zone: NgZone,
+        @Inject(FIREBASE_ANALYTICS_LOGGER_OPTIONS_TOKEN) private readonly _options: FirebaseAnalyticsLoggerOptions) {
         super();
+        const isBrowser = isPlatformBrowser(platformId);
+        if (isBrowser && this._options.firebase && this._options.firebase.measurementId) {
+            const firebaseOptions = this._options.firebase;
+            const appName = this._options.appName;
 
-        this._isBrowser = isPlatformBrowser(platformId);
+            const analyticsModule = from(import('firebase/analytics'));
 
-        if (this._isBrowser && options && options.measurementId) {
-            this._app = firebaseAppFactory(options, appName);
+            this._analytics$ = analyticsModule.pipe(
+                map(() => this._zone.runOutsideAngular(() => {
+                    const app = firebaseAppFactory(firebaseOptions, appName);
+
+                    return app.analytics();
+                })),
+                shareReplay(1)
+            );
         }
     }
 
     createLogger(category: string): Logger {
-        if (this._isBrowser && this._app && !this._analytics) {
-            this._analytics = this._app.analytics();
-        }
-
         return new FirebaseAnalyticsLogger(
             category,
-            this._analytics);
+            this._zone,
+            this._analytics$);
     }
 
     setUserProperties(userId: string, accountId?: string): void {
-        if (this._isBrowser && this._app && !this._analytics) {
-            this._analytics = this._app.analytics();
+        if (!this._analytics$) {
+            return;
         }
 
-        if (this._analytics) {
-            this._analytics.setUserId(userId);
-            if (accountId) {
-                this._analytics.setUserProperties({
-                    account_id: accountId
-                });
-            }
+        this._analytics$.pipe(
+            tap((analyticsService) => {
+                analyticsService.setUserId(userId);
+                if (accountId) {
+                    analyticsService.setUserProperties({
+                        account_id: accountId
+                    });
+                }
 
-        }
+            }),
+            runOutsideAngular(this._zone)
+        ).subscribe();
     }
 
     clearUserProperties(): void {
-        if (this._isBrowser && this._app && !this._analytics) {
-            this._analytics = this._app.analytics();
+        if (!this._analytics$) {
+            return;
         }
 
-        if (this._analytics) {
-            // tslint:disable-next-line: no-any
-            this._analytics.setUserId(null as any);
-        }
+        this._analytics$.pipe(
+            tap((analyticsService) => {
+                // tslint:disable-next-line: no-any
+                analyticsService.setUserId(null as any);
+            }),
+            runOutsideAngular(this._zone)
+        ).subscribe();
     }
 
     log(logLevel: LogLevel, message: string | Error, logInfo?: LogInfo): void {
