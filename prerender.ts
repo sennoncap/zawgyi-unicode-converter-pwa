@@ -23,7 +23,9 @@ import { renderModuleFactory } from '@angular/platform-server';
 import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 
 export const ROUTES = [
-    '/'
+    '/',
+    '/about',
+    '/support'
 ];
 
 const PUBLIC_FOLDER = join(__dirname, 'app');
