@@ -88,22 +88,17 @@ export class FirebaseAnalyticsLogger extends Logger {
                 runOutsideAngular(this._zone)
             ).subscribe();
         } else {
-            if (pageViewInfo && pageViewInfo.properties && pageViewInfo.properties.app_name) {
-                this.trackScreenView(pageViewInfo);
-            } else {
-                const pagePath = pageViewInfo.uri && pageViewInfo.uri.startsWith('/') ? pageViewInfo.uri : undefined;
+            const pagePath = pageViewInfo.uri && pageViewInfo.uri.startsWith('/') ? pageViewInfo.uri : undefined;
 
-                this._analytics$.pipe(
-                    tap((analyticsService) => {
-                        // tslint:disable-next-line: no-any
-                        analyticsService.logEvent('page_view' as any, {
-                            page_title: pageViewInfo.name,
-                            page_path: pagePath
-                        });
-                    }),
-                    runOutsideAngular(this._zone)
-                ).subscribe();
-            }
+            this._analytics$.pipe(
+                tap((analyticsService) => {
+                    // tslint:disable-next-line: no-any
+                    analyticsService.logEvent('page_view' as any, {
+                        page_path: pagePath
+                    });
+                }),
+                runOutsideAngular(this._zone)
+            ).subscribe();
         }
     }
 
@@ -139,28 +134,6 @@ export class FirebaseAnalyticsLogger extends Logger {
 
     flush(): void {
         // Do nothing
-    }
-
-    private trackScreenView(pageViewInfo: PageViewInfo): void {
-        if (!this._analytics$) {
-            return;
-        }
-
-        const screenName = pageViewInfo && pageViewInfo.properties && pageViewInfo.properties.screen_name ?
-            pageViewInfo.properties.screen_name as string : pageViewInfo.name || '';
-        const appName = pageViewInfo && pageViewInfo.properties && pageViewInfo.properties.app_name ?
-            pageViewInfo.properties.app_name as string : '';
-
-        this._analytics$.pipe(
-            tap((analyticsService) => {
-                analyticsService.logEvent('screen_view', {
-                    ...pageViewInfo.properties,
-                    app_name: appName,
-                    screen_name: screenName
-                });
-            }),
-            runOutsideAngular(this._zone)
-        ).subscribe();
     }
 
 }
