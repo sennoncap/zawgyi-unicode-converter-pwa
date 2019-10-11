@@ -48,10 +48,6 @@ export class AppComponent implements OnDestroy {
         return `${this.appTitle} | Myanmar Tools`;
     }
 
-    get appVersion(): string | undefined {
-        return this._appConfig.appVersion;
-    }
-
     get privacyUrl(): string | undefined {
         return this._appConfig.privacyUrl;
     }
@@ -99,15 +95,6 @@ export class AppComponent implements OnDestroy {
                     pageTitleService.setTitle(pageViewInfo.name, '-');
                 } else {
                     pageTitleService.setTitle(this.appTitleFull, undefined, true);
-                }
-
-                if (pageViewInfo) {
-                    pageViewInfo.properties = pageViewInfo.properties || {};
-                    pageViewInfo.properties.app_name = this.appTitle;
-                    pageViewInfo.properties.app_version = this.appVersion;
-                    pageViewInfo.properties.app_id = this._appConfig.appId;
-
-                    pageViewInfo.name = pageTitleService.title;
                 }
 
                 this._logService.trackPageView(this._isFirstNavigation ? undefined : pageViewInfo);
