@@ -65,14 +65,14 @@ export class AppComponent implements OnDestroy {
     private _isFirstNavigation = true;
 
     constructor(
-        private readonly _configService: ConfigService,
         private readonly _logService: LogService,
         private readonly _snackBar: MatSnackBar,
+        configService: ConfigService,
         pageTitleService: PageTitleService,
         router: Router,
         activatedRoute: ActivatedRoute,
         breakpointObserver: BreakpointObserver) {
-        this._appConfig = this._configService.getValue<AppConfig>('app');
+        this._appConfig = configService.getValue<AppConfig>('app');
         router.events
             .pipe(
                 filter(event => event instanceof NavigationEnd),
@@ -146,9 +146,11 @@ export class AppComponent implements OnDestroy {
     }
 
     openSharing(): void {
-        const socialSharingSubject = this._configService.getValue<string>('socialSharingSubject');
-        const socialSharingLink = this._configService.getValue<string>('socialSharingLink');
-        const socialSharingMessage = this._configService.getValue<string>('socialSharingMessage');
+        this._appConfig.socialSharing = this._appConfig.socialSharing || {};
+
+        const socialSharingSubject = this._appConfig.socialSharing.subject;
+        const socialSharingLink = this._appConfig.socialSharing.linkUrl;
+        const socialSharingMessage = this._appConfig.socialSharing.message;
 
         // tslint:disable-next-line: no-any
         if (typeof navigator === 'object' && (navigator as any).share) {
@@ -178,9 +180,11 @@ export class AppComponent implements OnDestroy {
     }
 
     private shareTofacebook(): void {
-        const socialSharingLink = this._configService.getValue<string>('socialSharingLink');
-        const appId = this._configService.getValue<string>('facebookAppId');
-        const socialSharingMessage = this._configService.getValue<string>('socialSharingMessage');
+        this._appConfig.socialSharing = this._appConfig.socialSharing || {};
+
+        const appId = this._appConfig.facebookAppId || '';
+        const socialSharingLink = this._appConfig.socialSharing.linkUrl || '';
+        const socialSharingMessage = this._appConfig.socialSharing.message || '';
 
         let urlString = 'https://www.facebook.com/dialog/share?';
         urlString += `&app_id=${encodeURIComponent(appId)}`;
