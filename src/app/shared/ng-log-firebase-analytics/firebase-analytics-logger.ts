@@ -124,9 +124,7 @@ export class FirebaseAnalyticsLogger extends Logger {
         const properties: { [key: string]: any } = {
             ...eventInfo.properties
         };
-        if (eventInfo.event_category) {
-            properties.event_category = eventInfo.event_category;
-        }
+
         if (eventInfo.event_label) {
             properties.event_label = eventInfo.event_label;
         }
