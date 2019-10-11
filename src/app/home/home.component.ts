@@ -177,9 +177,9 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
 
             if (this._outText.length && this._sourceText.length && this._curRuleName && result.replaced) {
                 this._logService.trackEvent({
-                    event_category: 'engagement',
-                    name: `convert_${this._curRuleName}`,
+                    name: 'convert',
                     properties: {
+                        rule: this._curRuleName,
                         source_length: this._sourceText.length,
                         duration: result.duration
                     }
@@ -233,8 +233,10 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         }
 
         this._logService.trackEvent({
-            event_category: 'engagement',
-            name: `touch_source_${this.sourceEnc}`
+            name: 'change_input_font_enc',
+            properties: {
+                font_enc: this.sourceEnc
+            }
         });
 
         this.translitNext();
@@ -260,8 +262,10 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         }
 
         this._logService.trackEvent({
-            event_category: 'engagement',
-            name: `touch_target_${this.targetEnc}`
+            name: 'change_output_font_enc',
+            properties: {
+                font_enc: this.targetEnc
+            }
         });
 
         this.translitNext();
