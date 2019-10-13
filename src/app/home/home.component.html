@@ -1,4 +1,4 @@
-<div class="container page">
+<div class="container main-content">
     <div class="form-container" fxLayout="row" fxLayout.xs="column" fxLayoutGap="24px">
         <div class="form-field-container" fxLayout="column" fxFlex="1 1 100%">
             <mat-button-toggle-group aria-label="Select input font" [value]="sourceEnc"
@@ -28,7 +28,7 @@
             </mat-form-field>
         </div>
     </div>
-    <div class="about" fxLayout="column" *ngIf="aboutSection">
+    <div class="about-section" [class.fade-hide]="hideAboutSection">
         <div class="description" fxLayout="column">
             {{appDescription}}
         </div>

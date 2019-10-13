@@ -54,7 +54,7 @@ export const appRoutes: Routes = [
         component: HomeComponent,
         // pathMatch: 'full',
         data: {
-            pageType: 'home_page'
+            pageType: 'home-page'
         },
         children: [
             {
@@ -62,7 +62,7 @@ export const appRoutes: Routes = [
                 component: AboutDialogHandlerComponent,
                 data: {
                     title: 'About',
-                    pageType: 'about_page'
+                    pageType: 'about-page'
                 }
             },
             {
@@ -70,7 +70,7 @@ export const appRoutes: Routes = [
                 component: SupportDialogHandlerComponent,
                 data: {
                     title: 'Support',
-                    pageType: 'support_page'
+                    pageType: 'support-page'
                 }
             }
         ]
@@ -81,7 +81,7 @@ export const appRoutes: Routes = [
 export const settings: { app: AppConfig } = {
     app: {
         appId: appId,
-        appVersion: '2.0.0',
+        appVersion: '2.0.1',
         appName: 'Zawgyi Unicode Converter',
         appDescription: 'Zawgyi Unicode Converter is a free and open source Zawgyi-One and standard Myanmar Unicode online/offline converter created by DagonMetric Myanmar Tools team.',
         navLinks: [

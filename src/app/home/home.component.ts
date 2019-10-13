@@ -36,7 +36,7 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
     autoEncText = 'AUTO';
     sourceEnc?: SourceEnc;
     targetEnc?: DetectedEnc;
-    aboutSection = true;
+    hideAboutSection = false;
 
     @ViewChild('sourceTextareaSyncSize', { static: false })
     sourceTextareaSyncSize?: CdkTextareaSyncSize;
@@ -109,7 +109,7 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
 
         const appUsedCount = this.getAppUsedCount();
         if (appUsedCount && appUsedCount > 1) {
-            this.aboutSection = false;
+            this.hideAboutSection = true;
         }
         this.increaseAppUsedCount(appUsedCount);
     }
@@ -171,8 +171,8 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
             })
         ).subscribe((result: TranslitResult) => {
             this._outText = result.outputText || '';
-            if (this.aboutSection) {
-                this.aboutSection = false;
+            if (!this.hideAboutSection) {
+                this.hideAboutSection = true;
             }
 
             if (this._sourceText.length && this._curRuleName && result.replaced) {

@@ -6,15 +6,16 @@
  * found under the LICENSE file in the root directory of this source tree.
  */
 
-import { Component, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ApplicationRef, Component, HostBinding, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { SwUpdate } from '@angular/service-worker';
 
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { Observable, Subject } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { concat, interval, Observable, Subject } from 'rxjs';
+import { filter, first, map, takeUntil } from 'rxjs/operators';
 
 import { ConfigService } from '@dagonmetric/ng-config';
 import { LogService } from '@dagonmetric/ng-log';
@@ -40,6 +41,8 @@ export class AppComponent implements OnDestroy {
     @ViewChild('sidenav', { static: false })
     sidenav?: MatSidenav;
 
+    @HostBinding('class') pageClass?: string;
+
     get appTitle(): string | undefined {
         return this._appConfig.appName;
     }
@@ -56,6 +59,7 @@ export class AppComponent implements OnDestroy {
         return this._appConfig.navLinks || [];
     }
 
+    private readonly _checkInterval = 1000 * 60 * 60 * 6;
     private readonly _appConfig: AppConfig;
     private readonly _onDestroy = new Subject<void>();
     private _isFirstNavigation = true;
@@ -63,12 +67,16 @@ export class AppComponent implements OnDestroy {
     constructor(
         private readonly _logService: LogService,
         private readonly _snackBar: MatSnackBar,
+        private readonly _appRef: ApplicationRef,
+        private readonly _swUpdate: SwUpdate,
         configService: ConfigService,
         pageTitleService: PageTitleService,
         router: Router,
         activatedRoute: ActivatedRoute,
         breakpointObserver: BreakpointObserver) {
         this._appConfig = configService.getValue<AppConfig>('app');
+        this.checkUpdate();
+
         router.events
             .pipe(
                 filter(event => event instanceof NavigationEnd),
@@ -95,6 +103,10 @@ export class AppComponent implements OnDestroy {
                     pageTitleService.setTitle(routeData.title, '-');
                 } else {
                     pageTitleService.setTitle(this.appTitleFull, undefined, true);
+                }
+
+                if (routeData) {
+                    this.pageClass = routeData.pageType;
                 }
 
                 const currentTitle = pageTitleService.title;
@@ -221,5 +233,44 @@ export class AppComponent implements OnDestroy {
         this._snackBar.open('Thank you for sharing 😄.', undefined, {
             duration: 3000
         });
+    }
+
+    private checkUpdate(): void {
+        if (!this._swUpdate.isEnabled) {
+            return;
+        }
+
+        const appIsStable = this._appRef.isStable.pipe(first(isStable => isStable === true));
+        concat(appIsStable, interval(this._checkInterval))
+            .pipe(
+                takeUntil(this._onDestroy),
+            )
+            .subscribe(() => this._swUpdate.checkForUpdate());
+
+        this._swUpdate.available
+            .pipe(
+                takeUntil(this._onDestroy),
+            )
+            .subscribe((evt) => {
+                const snackBarRef = this._snackBar.open('Update available.', 'RELOAD');
+                snackBarRef
+                    .onAction()
+                    .subscribe(() => {
+                        this._logService.trackEvent({
+                            name: 'reload_update',
+                            properties: {
+                                app_version: this._appConfig.appVersion,
+                                current_hash: evt.current.hash,
+                                available_hash: evt.available.hash
+                            }
+                        });
+
+                        // tslint:disable-next-line: no-floating-promises
+                        this._swUpdate.activateUpdate()
+                            .then(() => {
+                                document.location.reload();
+                            });
+                    });
+            });
     }
 }

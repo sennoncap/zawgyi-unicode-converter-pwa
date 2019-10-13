@@ -101,3 +101,9 @@ app-root {
     flex: 1 1 auto;
     box-sizing: border-box;
 }
+
+
+.about-page .main-content .about-section, .support-page .main-content .about-section {
+    opacity: 0;
+    visibility: hidden;
+}

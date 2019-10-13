@@ -13,13 +13,18 @@
     flex: 1 1 100%;
 }
 
-.page {
-    .about {
+.main-content {
+    .about-section {
         .description {
             justify-content: center;
             text-align: center;
             margin-bottom: $default-gap-width / 2;
         }
+    }
+
+    .about-section.fade-hide {
+        opacity: 0;
+        transition: opacity 3s;
     }
 }
 
