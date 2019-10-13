@@ -9,13 +9,11 @@
 export const environment = {
     production: false,
     firebase: {
-        apiKey: 'AIzaSyC87QEcczYL31XW67LgM85vTi0EDeDWUgA',
-        authDomain: 'zuc-dev-test.firebaseapp.com',
-        databaseURL: 'https://zuc-dev-test.firebaseio.com',
-        projectId: 'zuc-dev-test',
-        storageBucket: 'zuc-dev-test.appspot.com',
-        messagingSenderId: '969466587462',
-        appId: '1:969466587462:web:07d463b66351154a6e5d47',
-        measurementId: 'G-7MFBENRQWK'
+        apiKey: 'AIzaSyA36z0x1U4abf5I-foqYeCTvovFz8ELgVo',
+        projectId: 'zawgyi-unicode-converter-dev',
+        storageBucket: 'zawgyi-unicode-converter-dev.appspot.com',
+        messagingSenderId: '1037103917475',
+        appId: '1:1037103917475:web:a7c97d09be77ee2b505216',
+        measurementId: 'G-RVFGJ06DVN'
     }
 };
