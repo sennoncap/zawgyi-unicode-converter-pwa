@@ -17,7 +17,7 @@ import { Observable, Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 
 import { ConfigService } from '@dagonmetric/ng-config';
-import { LogService, PageViewInfo } from '@dagonmetric/ng-log';
+import { LogService } from '@dagonmetric/ng-log';
 
 import { AppConfig } from './shared/app-config';
 import { NavLinkItem } from './shared/nav-link-item';
@@ -83,22 +83,34 @@ export class AppComponent implements OnDestroy {
                     }
 
                     return {
-                        name: child.snapshot.data.title,
-                        uri: event.urlAfterRedirects,
-                        page_type: child.snapshot.data.pageType
+                        pagePath: event.urlAfterRedirects,
+                        title: child.snapshot.data.title,
+                        pageType: child.snapshot.data.pageType
                     };
                 }),
                 takeUntil(this._onDestroy)
             )
-            .subscribe((pageViewInfo?: PageViewInfo) => {
-                if (pageViewInfo && pageViewInfo.name) {
-                    pageTitleService.setTitle(pageViewInfo.name, '-');
+            .subscribe((routeData?: { pagePath: string; title?: string; pageType?: string }) => {
+                if (routeData && routeData.title) {
+                    pageTitleService.setTitle(routeData.title, '-');
                 } else {
                     pageTitleService.setTitle(this.appTitleFull, undefined, true);
                 }
 
-                this._logService.trackPageView(this._isFirstNavigation ? undefined : pageViewInfo);
-                this._isFirstNavigation = false;
+                const currentTitle = pageTitleService.title;
+
+                this._logService.trackPageView({
+                    name: currentTitle,
+                    uri: !this._isFirstNavigation && routeData && routeData.pagePath ? routeData.pagePath : undefined,
+                    page_type: routeData && routeData.pageType ? routeData.pageType : undefined,
+                    properties: {
+                        app_version: this._appConfig.appVersion
+                    }
+                });
+
+                if (this._isFirstNavigation) {
+                    this._isFirstNavigation = false;
+                }
             });
 
         this.isScreenSmall = breakpointObserver.observe(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`)
@@ -126,6 +138,7 @@ export class AppComponent implements OnDestroy {
                 name: 'toggle_drawer_menu',
                 properties: {
                     action: drawerResult === 'open' ? 'open' : 'close',
+                    app_version: this._appConfig.appVersion
                 }
             });
         });
@@ -149,13 +162,18 @@ export class AppComponent implements OnDestroy {
                 this._logService.trackEvent({
                     name: 'share',
                     properties: {
-                        method: 'Web Share API'
+                        method: 'Web Share API',
+                        app_version: this._appConfig.appVersion
                     }
                 });
                 this.showThankYouMessage();
             }).catch((err: Error) => {
                 const errMsg = err && err.message ? ` ${err.message}` : '';
-                this._logService.warn(`An error occurs when sharing via Web API.${errMsg}`);
+                this._logService.warn(`An error occurs when sharing via Web API.${errMsg}`, {
+                    properties: {
+                        app_version: this._appConfig.appVersion
+                    }
+                });
 
                 this.shareTofacebook();
             });
@@ -191,7 +209,8 @@ export class AppComponent implements OnDestroy {
         this._logService.trackEvent({
             name: 'share',
             properties: {
-                method: 'Facebook Share Dialog'
+                method: 'Facebook Share Dialog',
+                app_version: this._appConfig.appVersion
             }
         });
 

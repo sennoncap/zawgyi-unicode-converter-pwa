@@ -175,13 +175,14 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
                 this.aboutSection = false;
             }
 
-            if (this._outText.length && this._sourceText.length && this._curRuleName && result.replaced) {
+            if (this._sourceText.length && this._curRuleName && result.replaced) {
                 this._logService.trackEvent({
                     name: 'convert',
                     properties: {
-                        rule: this._curRuleName,
-                        source_length: this._sourceText.length,
-                        duration: result.duration
+                        method: this._curRuleName,
+                        input_length: this._sourceText.length,
+                        duration_msec: result.duration,
+                        app_version: this._appConfig.appVersion
                     }
                 });
             }
@@ -235,7 +236,8 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         this._logService.trackEvent({
             name: 'change_input_font_enc',
             properties: {
-                font_enc: this.sourceEnc
+                font_enc: this.sourceEnc,
+                app_version: this._appConfig.appVersion
             }
         });
 
@@ -264,7 +266,8 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         this._logService.trackEvent({
             name: 'change_output_font_enc',
             properties: {
-                font_enc: this.targetEnc
+                font_enc: this.targetEnc,
+                app_version: this._appConfig.appVersion
             }
         });
 

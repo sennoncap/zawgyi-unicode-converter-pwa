@@ -917,17 +917,17 @@
   dependencies:
     tslib "^1.10.0"
 
-"@dagonmetric/ng-log-gtag@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@dagonmetric/ng-log-gtag/-/ng-log-gtag-2.1.1.tgz#35328097526ca0027f8424b5a298d7a5dae460bf"
-  integrity sha512-HsmWMDoe4Ib0KL/XDvq0MazXdi6bq9gSIsU3HHOSsueV6jRM0bEnWAtVu2/CyJmSvB/kA+poDeaRHFXPkpOzzg==
+"@dagonmetric/ng-log-firebase-analytics@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@dagonmetric/ng-log-firebase-analytics/-/ng-log-firebase-analytics-1.0.0.tgz#e2fde160be2721673c98e7429434e21da8c2e154"
+  integrity sha512-FTIGN3tR+EfY89DfYGu3zNCljoOKvqY9AAC9qYm1LvuX7JHrLmqcGJTei0uBg/eQwfRWp6/UYvy94036GXiOGw==
   dependencies:
     tslib "^1.10.0"
 
-"@dagonmetric/ng-log@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@dagonmetric/ng-log/-/ng-log-2.1.1.tgz#cf4ea668a4dd0ff5cf0377877afcfe409c08fc63"
-  integrity sha512-hQdlBNjQiES5CTZAzuo8Mgk7nDrlFS0etWN/tMHtF0ywkf1hZgMzpBlK2Lc4B9JjBjsn62+yV58Jn6plBxGVkQ==
+"@dagonmetric/ng-log@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@dagonmetric/ng-log/-/ng-log-2.2.0.tgz#adc2acb94efeb30aad598cfdbabe7be05739dfb3"
+  integrity sha512-5DytRZEoShQbkHoiw7kjHACKT/fPdm5ntNiBKH2QrhwO5t3TsaaUXxy+rYhy8pWrlLBtmtAUy0x9vFDe/CxJOA==
   dependencies:
     tslib "^1.10.0"
 
@@ -3204,9 +3204,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.3.191, electron-to-chromium@^1.3.247:
-  version "1.3.280"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.280.tgz#5f8950c8329e3e11b59c705fd59b4b8d9b3de5b9"
-  integrity sha512-qYWNMjKLEfQAWZF2Sarvo+ahigu0EArnpCFSoUuZJS3W5wIeVfeEvsgmT2mgIrieQkeQ0+xFmykK3nx2ezekPQ==
+  version "1.3.282"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.282.tgz#16118ae9c79a32ea93a17591d5b16e28d10fc08d"
+  integrity sha512-irSaDeCGgfMu1OA30bhqIBr+dx+pDJjRbwCpob7YWqVZbzXblybNzPGklVnWqv4EXxbkEAzQYqiNCqNTgu00lQ==
 
 elliptic@^6.0.0:
   version "6.5.1"

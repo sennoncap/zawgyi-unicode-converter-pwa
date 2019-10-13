@@ -14,7 +14,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { environment } from '../environments/environment';
 
-import { FirebaseAnalyticsLoggerModule } from './shared/ng-log-firebase-analytics';
+import { FirebaseAnalyticsLoggerModule } from '@dagonmetric/ng-log-firebase-analytics';
 
 import { AppComponent } from './app.component';
 import { appId, AppModule } from './app.module';
@@ -33,10 +33,8 @@ import { appId, AppModule } from './app.module';
 
         BrowserAnimationsModule,
 
-        FirebaseAnalyticsLoggerModule.initialize({
-            firebase: environment.firebase,
-            appName: appId,
-            logError: !environment.production
+        FirebaseAnalyticsLoggerModule.config({
+            firebase: environment.firebase
         }),
 
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
