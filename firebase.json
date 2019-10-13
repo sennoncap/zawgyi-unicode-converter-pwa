@@ -1,6 +1,5 @@
 {
   "hosting": {
-    "site": "zawgyi-unicode-converter-web",
     "public": "app",
     "cleanUrls": true,
     "ignore": [
