@@ -1,14 +1,12 @@
 # Zawgyi Unicode Converter Angular PWA
 
+[![Build Status](https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa/workflows/Build/badge.svg)](https://github.com/myanmartools/zawgyi-unicode-converter-angular-pwa/actions)
 [![Build Status](https://dev.azure.com/myanmartools/zawgyi-unicode-converter-angular-pwa/_apis/build/status/myanmartools.zawgyi-unicode-converter-angular-pwa?branchName=master)](https://dev.azure.com/myanmartools/zawgyi-unicode-converter-angular-pwa/_build/latest?definitionId=7&branchName=master)
-[![CircleCI](https://circleci.com/gh/myanmartools/zawgyi-unicode-converter-angular-pwa.svg?style=svg)](https://circleci.com/gh/myanmartools/zawgyi-unicode-converter-angular-pwa)
 [![Gitter](https://badges.gitter.im/myanmartools/community.svg)](https://gitter.im/myanmartools/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Zawgyi Unicode Converter is a progressive web application (PWA) designed to automatically detect and convert Zawgyi-One and standard Myanmar Unicode written in Angular, Typescript, SCSS and powered with Material Design.
 
 ## Live Application
-
-Let's start converting now to Unicode to improve Myanmar language in digital world!
 
 [![Zawgyi Unicode Converter](https://zawgyi-unicode-converter.myanmartools.org/assets/images/screenshot-v2.jpg)](https://zawgyi-unicode-converter.myanmartools.org)
 
@@ -20,12 +18,12 @@ Let's start converting now to Unicode to improve Myanmar language in digital wor
 
 ## Features
 
-* Ability to convert Zawgyi to Unicode and Unicode to Zawgyi
+* Ability to convert Zawgyi to standard Myanmar Unicode and standard Myanmar Unicode to Zawgyi
 * Amazing correctness in every conversion
-* Intelligent understanding of your input and convert automatically
+* Intelligent understanding of input font encoding and convert automatically
 * Ability to use anytime even disconnected from internet
-* Fully tested with Myanmar Spelling Book (မြန်မာ စာလုံးပေါင်း သတ်ပုံကျမ်း) data
-* Open source and MIT license!
+* Fully tested with words and text from Myanmar Dictionaries, Myanmar Spelling Book and social media posts
+* Free, open source and MIT license!
 
 ## Programming Languages & Frameworks
 
