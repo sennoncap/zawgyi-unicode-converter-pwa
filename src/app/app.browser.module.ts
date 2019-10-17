@@ -14,7 +14,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { environment } from '../environments/environment';
 
-import { FirebaseAnalyticsLoggerModule } from '@dagonmetric/ng-log-firebase-analytics';
+// import { FirebaseAnalyticsLoggerModule } from '@dagonmetric/ng-log-firebase-analytics';
+import { FirebaseAnalyticsLoggerModule } from './shared/ng-log-firebase-analytics';
 
 import { AppComponent } from './app.component';
 import { appId, AppModule } from './app.module';
