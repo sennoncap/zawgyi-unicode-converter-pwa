@@ -4,6 +4,7 @@
     flex-direction: row;
     box-sizing: border-box;
     display: flex;
+    margin-top: $default-gap-width / 2;
 }
 
 .form-field-container {
