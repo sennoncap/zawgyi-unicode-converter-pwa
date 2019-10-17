@@ -10,16 +10,18 @@ Zawgyi Unicode Converter is a progressive web application (PWA) designed to auto
 
 [![Zawgyi Unicode Converter](https://zawgyi-unicode-converter.myanmartools.org/assets/images/screenshot-v2.jpg)](https://zawgyi-unicode-converter.myanmartools.org)
 
-[https://zawgyi-unicode-converter.myanmartools.org](https://zawgyi-unicode-converter.myanmartools.org)
+[Zawgyi Unicode Converter | Myanmar Tools](https://zawgyi-unicode-converter.myanmartools.org)
 
 ## Mobile Applications
 
-[![Zawgyi Unicode Converter App on Google Play](https://zawgyi-unicode-converter.myanmartools.org/assets/images/google-play-badge.png)](https://play.google.com/store/apps/details?id=com.dagonmetric.zawgyiunicodeconverter&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1)
+### Android
+
+[![Zawgyi Unicode Converter App on Google Play](https://zawgyi-unicode-converter.myanmartools.org/assets/images/google-play-badge-140w.png)](https://play.google.com/store/apps/details?id=com.dagonmetric.zawgyiunicodeconverter&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1)
 
 ## Features
 
 * Ability to convert Zawgyi to standard Myanmar Unicode and standard Myanmar Unicode to Zawgyi
-* Amazing correctness in every conversion
+* 100% accuracy in every Zawgyi Unicode conversion
 * Intelligent understanding of input font encoding and convert automatically
 * Ability to use anytime even disconnected from internet
 * Fully tested with words and text from Myanmar Dictionaries, Myanmar Spelling Book and social media posts
