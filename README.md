@@ -6,7 +6,7 @@
 
 Zawgyi Unicode Converter is a progressive web application (PWA) designed to automatically detect and convert Zawgyi-One and standard Myanmar Unicode written in Angular, Typescript, SCSS and powered with Material Design.
 
-## Live Application
+## Live Progressive Web Application
 
 [![Zawgyi Unicode Converter](https://zawgyi-unicode-converter.myanmartools.org/assets/images/screenshot-v2.jpg)](https://zawgyi-unicode-converter.myanmartools.org)
 
