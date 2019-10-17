@@ -49,6 +49,11 @@ Zawgyi Unicode Converter is a progressive web application (PWA) designed to auto
 [@myanmartools/zawgyi-unicode-translit-rules](https://www.npmjs.com/package/@myanmartools/zawgyi-unicode-translit-rules)
 [![npm version](https://img.shields.io/npm/v/@myanmartools/zawgyi-unicode-translit-rules.svg)](https://www.npmjs.com/package/@myanmartools/zawgyi-unicode-translit-rules)
 
+## More Myanmar Tools
+
+* [Open Source Myanmar Tools on GitHub](https://github.com/myanmartools)
+* [Myanmar Tools Website](https://myanmartools.org/)
+
 ## Sponsoring Zawgyi Unicode Converter
 
 ### Core Sponsor
