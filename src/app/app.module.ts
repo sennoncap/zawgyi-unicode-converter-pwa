@@ -81,7 +81,7 @@ export const appRoutes: Routes = [
 export const settings: { app: AppConfig } = {
     app: {
         appId: appId,
-        appVersion: '2.0.1',
+        appVersion: '2.0.2',
         appName: 'Zawgyi Unicode Converter',
         appDescription: 'Zawgyi Unicode Converter is a free and open source Zawgyi-One and standard Myanmar Unicode online/offline converter created by DagonMetric Myanmar Tools team.',
         navLinks: [
