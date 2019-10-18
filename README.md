@@ -12,11 +12,9 @@ Zawgyi Unicode Converter (Myanmar Tools) is a progressive web application (PWA) 
 
 [Zawgyi Unicode Converter | Myanmar Tools](https://zawgyi-unicode-converter.myanmartools.org)
 
-## Mobile Applications
+## Mobile Applications (Android / iOS)
 
-### Android
-
-[![Zawgyi Unicode Converter App on Google Play](https://zawgyi-unicode-converter.myanmartools.org/assets/images/google-play-badge-140w.png)](https://play.google.com/store/apps/details?id=com.dagonmetric.zawgyiunicodeconverter&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1)
+The mobile project repo is at [github.com/myanmartools/zawgyi-unicode-converter-native](https://github.com/myanmartools/zawgyi-unicode-converter-native)
 
 ## Features
 
