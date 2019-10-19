@@ -19,8 +19,9 @@ import { TranslitResult, TranslitService } from '@dagonmetric/ng-translit';
 
 import { DetectedEnc, ZawgyiDetector } from '@myanmartools/ng-zawgyi-detector';
 
+import { CdkTextareaSyncSize } from '../../modules/cdk-extensions';
+
 import { AppConfig } from '../shared/app-config';
-import { CdkTextareaSyncSize } from '../shared/cdk-extensions';
 
 export type SourceEnc = 'auto' | DetectedEnc;
 
