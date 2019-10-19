@@ -17,7 +17,7 @@ import { environment } from '../environments/environment';
 import { FacebookAnalyticsLoggerModule } from '@dagonmetric/ng-log-facebook-analytics';
 
 // import { FirebaseAnalyticsLoggerModule } from '@dagonmetric/ng-log-firebase-analytics';
-import { FirebaseAnalyticsLoggerModule } from './shared/ng-log-firebase-analytics';
+import { FirebaseAnalyticsLoggerModule } from '../modules/ng-log-firebase-analytics';
 
 import { AppComponent } from './app.component';
 import { appId, AppModule } from './app.module';
