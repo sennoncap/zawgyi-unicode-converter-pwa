@@ -9,10 +9,13 @@
 export const environment = {
     production: true,
     firebase: {
-        apiKey: 'AIzaSyCE7acVhjrqhfG9R0lmvoWH3BjkrcFnqco',
-        projectId: 'zawgyi-unicode-converter-live',
-        messagingSenderId: '255698229454',
-        appId: '1:255698229454:web:8650714a0dd1b71ec2189f',
-        measurementId: 'G-M9T8KYSVEB'
+        apiKey: 'AIzaSyDU7Ty6y3DK4i49pJRm8vgICnIbMBv457E',
+        authDomain: 'myanmartools.firebaseapp.com',
+        databaseURL: 'https://myanmartools.firebaseio.com',
+        projectId: 'myanmartools',
+        storageBucket: 'myanmartools.appspot.com',
+        messagingSenderId: '660201840730',
+        appId: '1:660201840730:web:7fd06b918dcb51362ef863',
+        measurementId: 'G-7RXRTS82K3'
     }
 };
