@@ -11,7 +11,7 @@
 @import "~@dagonmetric/app-styles-base/core";
 
 @import "app/app.theme";
-@import "app/shared/cdk-extensions/cdk-textarea-syncsize";
+@import "modules/cdk-extensions/cdk-textarea-syncsize";
 
 @import "variables";
 
@@ -75,7 +75,7 @@ $app-color-mat-palette: (
 );
 
 $primary: mat-palette($app-color-mat-palette, 500);
-$accent: mat-palette($mat-pink, A200, A100, A400);
+$accent: mat-palette($app-color-mat-palette, A200, A100, A400);
 
 $theme: mat-light-theme($primary, $accent);
 @include angular-material-theme($theme);
