@@ -16,6 +16,9 @@
 
 .main-content {
     .about-section {
+        height: auto;
+        visibility: visible;
+
         .description {
             justify-content: center;
             text-align: center;
@@ -25,7 +28,10 @@
 
     .about-section.fade-hide {
         opacity: 0;
-        transition: opacity 3s;
+        visibility: hidden;
+        height: 0;
+        overflow: hidden;
+        transition: height 0s, visibility 0s, opacity 0.5s linear;
     }
 }
 
