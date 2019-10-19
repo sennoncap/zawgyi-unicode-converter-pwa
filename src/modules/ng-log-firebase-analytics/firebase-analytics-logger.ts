@@ -173,9 +173,15 @@ export class FirebaseAnalyticsLogger extends Logger {
             return;
         }
 
-        const properties = this.getMappedEventProps(eventInfo);
+        if (eventInfo.name === 'screen_view' && eventInfo.properties && eventInfo.properties.screen_name) {
+            const screenName = eventInfo.properties.screen_name as string;
 
-        this._analytics.logEvent(eventInfo.name, eventInfo.properties || properties);
+            this._analytics.setCurrentScreen(screenName);
+        } else {
+            const properties = this.getMappedEventProps(eventInfo);
+
+            this._analytics.logEvent(eventInfo.name, eventInfo.properties || properties);
+        }
     }
 
     flush(): void {
