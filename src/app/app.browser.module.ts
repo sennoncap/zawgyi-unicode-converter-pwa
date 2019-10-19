@@ -36,7 +36,7 @@ import { appId, AppModule } from './app.module';
 
         BrowserAnimationsModule,
 
-        environment.production ? FacebookAnalyticsLoggerModule : [],
+        FacebookAnalyticsLoggerModule,
         FirebaseAnalyticsLoggerModule.config({
             firebase: environment.firebase
         }),
