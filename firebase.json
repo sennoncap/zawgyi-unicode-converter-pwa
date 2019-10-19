@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "zawgyi-unicode-converter-prod",
     "public": "app",
     "cleanUrls": true,
     "ignore": [
@@ -7,9 +8,11 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [{
-      "source": "**/!(*.@(js|html|css|json|svg|png|jpg|jpeg|xml|txt|ico))",
-      "destination": "/index.html"
-    }]
+    "rewrites": [
+      {
+        "source": "**/!(*.@(js|html|css|json|svg|png|jpg|jpeg|xml|txt|ico))",
+        "destination": "/index.html"
+      }
+    ]
   }
 }
