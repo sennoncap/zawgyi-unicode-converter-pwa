@@ -33,11 +33,12 @@ import { ZawgyiDetectorModule } from '@myanmartools/ng-zawgyi-detector';
 
 import { environment } from '../environments/environment';
 
+import { CdkTextareaSyncSizeModule } from '../modules/cdk-extensions';
+import { CustomIconRegistry } from '../modules/mat-extensions';
+import { ZgUniTranslitRuleLoaderModule } from '../modules/zg-uni-translit-rule-loader';
+
 import { AppConfig } from './shared/app-config';
-import { CdkTextareaSyncSizeModule } from './shared/cdk-extensions';
-import { CustomIconRegistry } from './shared/mat-extensions';
 import { PageTitleService } from './shared/page-title';
-import { ZgUniTranslitRuleLoaderModule } from './shared/zg-uni-translit-rule-loader';
 
 import { AboutComponent, AboutDialogHandlerComponent } from './about';
 import { HomeComponent } from './home';
@@ -46,7 +47,7 @@ import { SupportComponent, SupportDialogHandlerComponent } from './support';
 import { AppComponent } from './app.component';
 import { appSvgIconProviders } from './app.svg-icons';
 
-export const appId = 'zawgyi-unicode-converter-web';
+export const appId = 'zawgyi-unicode-converter-angular-pwa';
 
 export const appRoutes: Routes = [
     {
@@ -61,16 +62,16 @@ export const appRoutes: Routes = [
                 path: 'about',
                 component: AboutDialogHandlerComponent,
                 data: {
-                    title: 'About',
-                    pageType: 'about-page'
+                    pageType: 'about-page',
+                    screenName: 'About'
                 }
             },
             {
                 path: 'support',
                 component: SupportDialogHandlerComponent,
                 data: {
-                    title: 'Support',
-                    pageType: 'support-page'
+                    pageType: 'support-page',
+                    screenName: 'Support'
                 }
             }
         ]
@@ -80,8 +81,7 @@ export const appRoutes: Routes = [
 
 export const settings: { app: AppConfig } = {
     app: {
-        appId: appId,
-        appVersion: '2.0.2',
+        appVersion: '2.0.3',
         appName: 'Zawgyi Unicode Converter',
         appDescription: 'Zawgyi Unicode Converter is a free and open source Zawgyi-One and standard Myanmar Unicode online/offline converter created by DagonMetric Myanmar Tools team.',
         navLinks: [
@@ -113,7 +113,7 @@ export const settings: { app: AppConfig } = {
         ],
         socialSharing: {
             subject: 'Zawgyi Unicode Converter app you may also like',
-            message: 'သူငယ်ချင်းတို့တွေထဲမှာ ဇော်ဂျီ ယူနီကုဒ် အခက်အခဲရှိနေရင်\nZawgyi Unicode Converter app ကိုသုံးပြီး ဇော်ဂျီကနေ ယူနီကုဒ်၊ ယူနီကုဒ်ကနေ ဇော်ဂျီ အပြန်အလှန်ပြောင်းကြည့်လို့ရတယ်နော်။\nDownload link: ',
+            message: 'ဇော်ဂျီ ယူနီကုဒ် အခက်အခဲရှိနေသူများအတွက် ဇော်ဂျီကနေ ယူနီကုဒ်၊ ယူနီကုဒ်ကနေ ဇော်ဂျီ အပြန်အလှန် အလိုအလျောက် ပြောင်းပေးတဲ့ app တစ်ခု မျှဝေလိုက်ပါတယ်။ \nLink က:\n',
             linkUrl: 'https://zawgyi-unicode-converter.myanmartools.org/'
         },
         facebookAppId: '461163654621837',
