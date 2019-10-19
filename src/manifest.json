@@ -1,15 +1,21 @@
 {
   "name": "Zawgyi Unicode Converter",
   "short_name": "Zawgyi Unicode Converter",
-  "description": "Zawgyi Unicode Converter - Myanmar Tools",
+  "description": "Zawgyi Unicode Converter is a free and open source Zawgyi-One and standard Myanmar Unicode auto converter app created by DagonMetric MyanmarTools team.",
   "theme_color": "#8764b8",
-  "background_color": "#ffffff",
+  "background_color": "#573691",
   "display": "standalone",
   "orientation": "portrait",
   "start_url": "/",
   "scope": "/",
-  "related_applications": [],
-  "prefer_related_applications": false,
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.dagonmetric.zawgyiunicodeconverter",
+      "id": "com.dagonmetric.zawgyiunicodeconverter"
+    }
+  ],
+  "prefer_related_applications": true,
   "icons": [
     {
       "src": "assets/appicons/v1/android/android-launchericon-512x512.png",
