@@ -10,12 +10,11 @@ import { NavLinkItem } from './nav-link-item';
 import { SocialSharingOptions } from './social-sharing-options';
 
 export interface AppConfig {
-    appId?: string;
-    appName?: string;
-    appVersion?: string;
-    appDescription?: string;
-    navLinks?: NavLinkItem[];
-    socialSharing?: SocialSharingOptions;
-    facebookAppId?: string;
-    privacyUrl?: string;
+    appName: string;
+    appVersion: string;
+    appDescription: string;
+    navLinks: NavLinkItem[];
+    socialSharing: SocialSharingOptions;
+    facebookAppId: string;
+    privacyUrl: string;
 }
