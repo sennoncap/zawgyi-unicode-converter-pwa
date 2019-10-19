@@ -92,15 +92,15 @@ export class AppComponent implements OnDestroy {
 
                     return {
                         pagePath: event.urlAfterRedirects,
-                        title: child.snapshot.data.title,
+                        screenName: child.snapshot.data.screenName,
                         pageType: child.snapshot.data.pageType
                     };
                 }),
                 takeUntil(this._onDestroy)
             )
-            .subscribe((routeData?: { pagePath: string; title?: string; pageType?: string }) => {
-                if (routeData && routeData.title) {
-                    pageTitleService.setTitle(routeData.title, '-');
+            .subscribe((routeData?: { pagePath: string; screenName?: string; pageType?: string }) => {
+                if (routeData && routeData.screenName && routeData.pageType !== 'home-page') {
+                    pageTitleService.setTitle(routeData.screenName, '-');
                 } else {
                     pageTitleService.setTitle(this.appTitleFull, undefined, true);
                 }
@@ -181,7 +181,7 @@ export class AppComponent implements OnDestroy {
                 this.showThankYouMessage();
             }).catch((err: Error) => {
                 const errMsg = err && err.message ? ` ${err.message}` : '';
-                this._logService.warn(`An error occurs when sharing via Web API.${errMsg}`, {
+                this._logService.error(`An error occurs when sharing via Web API.${errMsg}`, {
                     properties: {
                         app_version: this._appConfig.appVersion
                     }
