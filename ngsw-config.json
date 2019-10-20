@@ -6,27 +6,14 @@
       "installMode": "prefetch",
       "resources": {
         "files": [
-          "/favicon.ico",
           "/index.html",
-          "/assets/appicons/v[0-9]+/favicon.ico",
+          "/manifest.json",
+          "/assets/appicons/favicon.ico",
           "/*.css",
           "/*.js"
         ],
         "urls": [
-          "https://fontassets.firebaseapp.com/**",
-          "https://fonts.googleapis.com/**",
-          "https://fonts.gstatic.com/s/**"
-        ]
-      }
-    },
-    {
-      "name": "assets-eager",
-      "installMode": "prefetch",
-      "updateMode": "prefetch",
-      "resources": {
-        "files": [
-          "/assets/images/**",
-          "!/assets/appicons/**"
+          "https://fontassets.firebaseapp.com/**"
         ]
       }
     },
@@ -36,9 +23,9 @@
       "updateMode": "prefetch",
       "resources": {
         "files": [
+          "/assets/appicons/**",
           "/assets/images/**",
-          "!/assets/appicons/**",
-          "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
+          "!/assets/images/uploads/**"
         ]
       }
     }
