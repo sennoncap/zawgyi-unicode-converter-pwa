@@ -13,6 +13,14 @@
         "source": "**/!(*.@(js|html|css|json|svg|png|jpg|jpeg|xml|txt|ico))",
         "destination": "/index.html"
       }
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(gif|jpg|jpeg|png|svg|webp|eot|otf|ttf|ttc|woff|woff2)",
+        "headers": [
+          {"key": "Cache-Control", "value": "max-age=86400"}
+        ]
+      }
     ]
   }
 }
