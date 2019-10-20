@@ -28,18 +28,22 @@
             </mat-form-field>
         </div>
     </div>
-    <div class="about-section" [class.fade-hide]="hideAboutSection">
-        <div class="description" fxLayout="column">
-            {{appDescription}}
+    <div class="about-section">
+        <div class="description" fxLayout="column" [class.fade-hide]="hideAboutSection">
+            <p>{{appDescription}}</p>
+            <div>Version: {{appVersion}}</div>
         </div>
     </div>
-    <div class="mobile-apps" fxLayout="row">
-        <a mat-icon-button class="app-badge-button"
-            href='https://play.google.com/store/apps/details?id=com.dagonmetric.zawgyiunicodeconverter&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'
-            title="Get the mobile app from Google Play">
-            <img alt='Get it on Google Play' src='assets/images/google-play-badge.png' />
+    <div class="mobile-app-badges" fxLayout="column">
+        <div fxFlex="1 1 100%">
+            <a mat-icon-button class="app-badge-button"
+                href='https://play.google.com/store/apps/details?id=com.dagonmetric.zawgyiunicodeconverter&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'
+                title="Get the mobile app on Google Play">
+                <mat-icon svgIcon="logo-google-play-badge"></mat-icon>
+            </a>
+        </div>
 
-        </a>
     </div>
+
     <router-outlet></router-outlet>
 </div>
