@@ -8,7 +8,7 @@ Zawgyi Unicode Converter (Myanmar Tools) is a progressive web application (PWA) 
 
 ## Live Progressive Web Application
 
-[![Zawgyi Unicode Converter](https://zawgyi-unicode-converter.myanmartools.org/assets/images/screenshot-v2.jpg)](https://zawgyi-unicode-converter.myanmartools.org)
+[![Zawgyi Unicode Converter](https://zawgyi-unicode-converter.myanmartools.org/assets/images/uploads/screenshot-v2.jpg)](https://zawgyi-unicode-converter.myanmartools.org)
 
 [Zawgyi Unicode Converter | Myanmar Tools](https://zawgyi-unicode-converter.myanmartools.org)
 
