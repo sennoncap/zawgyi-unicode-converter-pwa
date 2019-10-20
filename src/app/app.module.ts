@@ -81,7 +81,7 @@ export const appRoutes: Routes = [
 
 export const settings: { app: AppConfig } = {
     app: {
-        appVersion: '2.0.4',
+        appVersion: '2.0.5',
         appName: 'Zawgyi Unicode Converter',
         appDescription: 'Zawgyi Unicode Converter is a free and open source Zawgyi-One and standard Myanmar Unicode online/offline converter created by DagonMetric Myanmar Tools team.',
         navLinks: [
@@ -114,7 +114,7 @@ export const settings: { app: AppConfig } = {
         socialSharing: {
             subject: 'Zawgyi Unicode Converter app you may also like',
             message: 'ဇော်ဂျီ ယူနီကုဒ် အခက်အခဲရှိနေသူများအတွက် ဇော်ဂျီကနေ ယူနီကုဒ်၊ ယူနီကုဒ်ကနေ ဇော်ဂျီ အပြန်အလှန် အလိုအလျောက် ပြောင်းပေးတဲ့ app တစ်ခု မျှဝေလိုက်ပါတယ်။',
-            linkUrl: 'https://zawgyi-unicode-converter.myanmartools.org/'
+            linkUrl: 'https://myanmartools.org/apps/zawgyi-unicode-converter'
         },
         facebookAppId: '461163654621837',
         privacyUrl: 'https://privacy.dagonmetric.com/privacy-statement'
