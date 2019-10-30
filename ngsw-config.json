@@ -10,10 +10,8 @@
           "/manifest.json",
           "/assets/appicons/favicon.ico",
           "/*.css",
-          "/*.js"
-        ],
-        "urls": [
-          "https://fontassets.firebaseapp.com/**"
+          "/*.js",
+          "/assets/fonts/**"
         ]
       }
     },
