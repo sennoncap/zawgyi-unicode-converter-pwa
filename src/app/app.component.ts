@@ -6,18 +6,31 @@
  * found under the LICENSE file in the root directory of this source tree.
  */
 
-import { ApplicationRef, Component, HostBinding, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import {
+    ApplicationRef,
+    Component,
+    HostBinding,
+    Inject,
+    OnDestroy,
+    OnInit,
+    PLATFORM_ID,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { concat, interval, Observable, Subject } from 'rxjs';
 import { filter, first, map, takeUntil } from 'rxjs/operators';
 
+import { CacheService } from '@dagonmetric/ng-cache';
 import { ConfigService } from '@dagonmetric/ng-config';
 import { LogService } from '@dagonmetric/ng-log';
 
@@ -39,13 +52,33 @@ const SMALL_WIDTH_BREAKPOINT = 720;
     styleUrls: ['./app.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
     isScreenSmall?: Observable<boolean>;
 
     @ViewChild('sidenav', { static: false })
     sidenav?: MatSidenav;
 
-    @HostBinding('class') pageClass?: string;
+    @HostBinding('class') componentClass?: string;
+
+    get isDarkMode(): boolean {
+        this._isDarkMode = this._cacheService.getItem<boolean>('isDarkMode');
+
+        return this._isDarkMode == null ? false : this._isDarkMode;
+    }
+    set isDarkMode(value: boolean) {
+        this._isDarkMode = value;
+        this._cacheService.setItem('isDarkMode', value);
+        this.updateTheme();
+        this.updateComponentClass();
+
+        this._logService.trackEvent({
+            name: 'change_dark_mode',
+            properties: {
+                is_dark: value,
+                app_version: this._appConfig.appVersion
+            }
+        });
+    }
 
     get appTitle(): string | undefined {
         return this._appConfig.appName;
@@ -63,32 +96,46 @@ export class AppComponent implements OnDestroy {
         return this._appConfig.navLinks || [];
     }
 
+    private readonly _isBrowser: boolean;
     private readonly _checkInterval = 1000 * 60 * 60 * 6;
     private readonly _appConfig: AppConfig;
     private readonly _onDestroy = new Subject<void>();
     private _isFirstNavigation = true;
+    private _pageClass?: string;
+    private _themeClass?: string;
+    private _isDarkMode?: boolean | null = null;
 
     constructor(
+        @Inject(PLATFORM_ID) platformId: Object,
         private readonly _logService: LogService,
         private readonly _snackBar: MatSnackBar,
         private readonly _appRef: ApplicationRef,
         private readonly _swUpdate: SwUpdate,
+        private readonly _cacheService: CacheService,
+        private readonly _overlayContainer: OverlayContainer,
         configService: ConfigService,
         pageTitleService: PageTitleService,
         linkService: LinkService,
         metaService: Meta,
         urlHelper: UrlHelper,
-        router: Router,
-        activatedRoute: ActivatedRoute,
+        private readonly _router: Router,
+        private readonly _activatedRoute: ActivatedRoute,
         breakpointObserver: BreakpointObserver) {
+        this._isBrowser = isPlatformBrowser(platformId);
         this._appConfig = configService.getValue<AppConfig>('app');
+
+        if (this._isBrowser) {
+            this.updateTheme();
+            this.updateComponentClass();
+        }
+
         this.checkUpdate();
 
-        router.events
+        this._router.events
             .pipe(
                 filter(event => event instanceof NavigationEnd),
                 map((event: NavigationEnd) => {
-                    let child = activatedRoute.firstChild;
+                    let child = this._activatedRoute.firstChild;
                     while (child && child.firstChild) {
                         child = child.firstChild;
                     }
@@ -128,7 +175,8 @@ export class AppComponent implements OnDestroy {
                 }
 
                 if (routeData) {
-                    this.pageClass = routeData.pageType;
+                    this._pageClass = routeData.pageType;
+                    this.updateComponentClass();
                 }
 
                 const currentTitle = pageTitleService.title;
@@ -144,6 +192,21 @@ export class AppComponent implements OnDestroy {
 
                 if (this._isFirstNavigation) {
                     this._isFirstNavigation = false;
+
+                    if (this._isBrowser && routeData && routeData.pageType === 'home-page' && typeof localStorage === 'object') {
+                        try {
+                            const prevVersionStr = localStorage.getItem(`appUsedCount-v${this._appConfig.previousAppVersion}`);
+                            const curVersionStr = localStorage.getItem(`appUsedCount-v${this._appConfig.appVersion}`);
+                            if (prevVersionStr && !curVersionStr) {
+                                localStorage.setItem(`appUsedCount-v${this._appConfig.appVersion}`, '1');
+
+                                // tslint:disable-next-line: no-floating-promises
+                                this._router.navigate(['about'], { relativeTo: this._activatedRoute });
+                            }
+                        } catch (err) {
+                            // Do nothing
+                        }
+                    }
                 }
             });
 
@@ -152,6 +215,10 @@ export class AppComponent implements OnDestroy {
                 // tslint:disable-next-line: no-unsafe-any
                 map(breakpoint => breakpoint.matches)
             );
+    }
+
+    ngOnInit(): void {
+        // Do nothing
     }
 
     ngOnDestroy(): void {
@@ -213,6 +280,29 @@ export class AppComponent implements OnDestroy {
             });
         } else {
             this.shareTofacebook();
+        }
+    }
+
+    private updateTheme(): void {
+        if (this.isDarkMode) {
+            this._themeClass = 'dark-theme';
+            this._overlayContainer.getContainerElement().classList.add(this._themeClass);
+        } else {
+            this._themeClass = '';
+            this._overlayContainer.getContainerElement().classList.remove('dark-theme');
+        }
+    }
+
+    private updateComponentClass(): void {
+        this.componentClass = '';
+        if (this._pageClass) {
+            this.componentClass += this._pageClass;
+        }
+        if (this._themeClass) {
+            if (this.componentClass) {
+                this.componentClass += ' ';
+            }
+            this.componentClass += this._themeClass;
         }
     }
 
