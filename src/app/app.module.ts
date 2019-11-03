@@ -12,17 +12,21 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
+import { OverlayModule } from '@angular/cdk/overlay';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { CacheLocalStorageModule, CacheModule, MemoryCacheModule } from '@dagonmetric/ng-cache';
 import { ConfigModule } from '@dagonmetric/ng-config';
 import { StaticConfigLoaderModule } from '@dagonmetric/ng-config/static-loader';
 import { LogModule } from '@dagonmetric/ng-log';
@@ -83,7 +87,8 @@ export const appRoutes: Routes = [
 
 export const settings: { app: AppConfig } = {
     app: {
-        appVersion: '2.0.7',
+        appVersion: '2.1.0-preview0',
+        previousAppVersion: '2.0.7',
         appName: 'Zawgyi Unicode Converter',
         appDescription: 'Zawgyi Unicode Converter is a free and open source Zawgyi-One and standard Myanmar Unicode online/offline converter created by DagonMetric Myanmar Tools team.',
         baseUrl: 'https://zawgyi-unicode-converter.myanmartools.org/',
@@ -155,14 +160,17 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
         FormsModule,
         RouterModule.forRoot(appRoutes),
 
+        OverlayModule,
         FlexLayoutModule,
         MatButtonModule,
         MatButtonToggleModule,
+        MatCardModule,
         MatDialogModule,
         MatIconModule,
         MatInputModule,
         MatListModule,
         MatSidenavModule,
+        MatSlideToggleModule,
         MatSnackBarModule,
         MatToolbarModule,
 
@@ -179,6 +187,11 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
         ConsoleLoggerModule.withOptions({
             enableDebug: !environment.production
         }),
+
+        // ng-cache modules
+        CacheModule,
+        CacheLocalStorageModule,
+        MemoryCacheModule,
 
         // ng-translit module
         TranslitModule,
