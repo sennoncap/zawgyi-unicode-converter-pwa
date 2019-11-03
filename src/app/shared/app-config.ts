@@ -13,6 +13,7 @@ export interface AppConfig {
     appName: string;
     appVersion: string;
     appDescription: string;
+    baseUrl: string;
     navLinks: NavLinkItem[];
     socialSharing: SocialSharingOptions;
     facebookAppId: string;

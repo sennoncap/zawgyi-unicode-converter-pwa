@@ -7,6 +7,7 @@
  */
 
 import { ApplicationRef, Component, HostBinding, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Meta } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 
@@ -20,9 +21,12 @@ import { filter, first, map, takeUntil } from 'rxjs/operators';
 import { ConfigService } from '@dagonmetric/ng-config';
 import { LogService } from '@dagonmetric/ng-log';
 
+import { LinkService } from '../modules/seo';
+
 import { AppConfig } from './shared/app-config';
 import { NavLinkItem } from './shared/nav-link-item';
 import { PageTitleService } from './shared/page-title';
+import { UrlHelper } from './shared/url-helper';
 
 const SMALL_WIDTH_BREAKPOINT = 720;
 
@@ -71,6 +75,9 @@ export class AppComponent implements OnDestroy {
         private readonly _swUpdate: SwUpdate,
         configService: ConfigService,
         pageTitleService: PageTitleService,
+        linkService: LinkService,
+        metaService: Meta,
+        urlHelper: UrlHelper,
         router: Router,
         activatedRoute: ActivatedRoute,
         breakpointObserver: BreakpointObserver) {
@@ -103,6 +110,21 @@ export class AppComponent implements OnDestroy {
                     pageTitleService.setTitle(routeData.screenName, '-');
                 } else {
                     pageTitleService.setTitle(this.appTitleFull, undefined, true);
+                }
+
+                if (routeData && routeData.pagePath) {
+                    const urlAbs = urlHelper.toAbsoluteUrl(routeData.pagePath);
+
+                    // Set canonical link
+                    linkService.updateTag({
+                        rel: 'canonical',
+                        href: urlAbs
+                    });
+
+                    metaService.updateTag({
+                        property: 'og:url',
+                        content: urlAbs
+                    });
                 }
 
                 if (routeData) {

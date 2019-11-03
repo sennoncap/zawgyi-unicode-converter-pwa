@@ -6,7 +6,7 @@
  * found under the LICENSE file in the root directory of this source tree.
  */
 
-import { CommonModule } from '@angular/common';
+import { APP_BASE_HREF, CommonModule, DOCUMENT } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
@@ -35,11 +35,12 @@ import { environment } from '../environments/environment';
 
 import { CdkTextareaSyncSizeModule } from '../modules/cdk-extensions';
 import { CustomIconRegistry } from '../modules/mat-extensions';
-import { ZgUniTranslitRuleLoaderModule } from '../modules/zg-uni-translit-rule-loader';
 import { LinkService } from '../modules/seo';
+import { ZgUniTranslitRuleLoaderModule } from '../modules/zg-uni-translit-rule-loader';
 
 import { AppConfig } from './shared/app-config';
 import { PageTitleService } from './shared/page-title';
+import { UrlHelper } from './shared/url-helper';
 
 import { AboutComponent, AboutDialogHandlerComponent } from './about';
 import { HomeComponent } from './home';
@@ -85,6 +86,7 @@ export const settings: { app: AppConfig } = {
         appVersion: '2.0.7',
         appName: 'Zawgyi Unicode Converter',
         appDescription: 'Zawgyi Unicode Converter is a free and open source Zawgyi-One and standard Myanmar Unicode online/offline converter created by DagonMetric Myanmar Tools team.',
+        baseUrl: 'https://zawgyi-unicode-converter.myanmartools.org/',
         navLinks: [
             {
                 url: 'https://www.facebook.com/DagonMetric',
@@ -121,6 +123,20 @@ export const settings: { app: AppConfig } = {
         privacyUrl: 'https://privacy.dagonmetric.com/privacy-statement'
     }
 };
+
+export function baseHrefFactory(doc: Document): string | null | undefined {
+    // return document.getElementsByTagName('base')[0].href;
+
+    if (doc && doc.head) {
+        const baseEle = doc.head.querySelector('base') as HTMLBaseElement;
+
+        if (baseEle) {
+            return baseEle.getAttribute('href');
+        }
+    }
+
+    return undefined;
+}
 
 /**
  * App shared module for server, browser and test platforms.
@@ -176,7 +192,13 @@ export const settings: { app: AppConfig } = {
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ],
     providers: [
+        {
+            provide: APP_BASE_HREF,
+            useFactory: baseHrefFactory,
+            deps: [DOCUMENT]
+        },
         LinkService,
+        UrlHelper,
         {
             provide: MatIconRegistry,
             useClass: CustomIconRegistry
