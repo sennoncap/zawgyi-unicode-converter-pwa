@@ -1,0 +1,42 @@
+.about-card {
+    max-width: 620px;
+}
+
+.about-dialog-container .mat-dialog-container {
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.about-features {
+    ul {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+    }
+
+    .app-badge-button.mat-icon-button {
+        border-radius: 0;
+        width: 135px;
+        height: 40px;
+        line-height: 40px;
+
+        .mat-icon {
+            color: #000000 !important;
+            width: 135px;
+            height: 40px;
+            line-height: 40px;
+
+            &.mat-primary {
+                color: #000000 !important;
+              }
+
+              &.mat-accent {
+                color: #000000 !important;
+              }
+
+              &.mat-warn {
+                color: #000000 !important;
+              }
+        }
+    }
+}
