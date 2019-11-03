@@ -41,6 +41,13 @@
                 </p>
             </mat-list-item>
         </mat-nav-list>
+        <mat-list>
+            <mat-divider></mat-divider>
+            <h3 mat-subheader>Personalization</h3>
+            <mat-list-item>
+                <mat-slide-toggle [(ngModel)]="isDarkMode">Dark mode</mat-slide-toggle>
+            </mat-list-item>
+        </mat-list>
         <mat-list class="app-footer" dense>
             <mat-list-item>
                 <span>&copy; DagonMetric</span>
