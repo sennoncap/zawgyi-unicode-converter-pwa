@@ -17,8 +17,7 @@ import { AboutComponent } from './about.component';
  * App About dialog handler component.
  */
 @Component({
-    template: '',
-
+    template: ''
 })
 export class AboutDialogHandlerComponent {
     constructor(
@@ -29,7 +28,9 @@ export class AboutDialogHandlerComponent {
     }
 
     openDialog(): void {
-        const dialogRef = this._dialog.open(AboutComponent);
+        const dialogRef = this._dialog.open(AboutComponent, {
+            panelClass: 'about-dialog-container'
+        });
 
         dialogRef.afterClosed().subscribe(() => {
             // tslint:disable-next-line: no-floating-promises
