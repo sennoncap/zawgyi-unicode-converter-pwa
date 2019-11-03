@@ -41,14 +41,27 @@
 
         .app-badge-button.mat-icon-button {
             border-radius: 0;
-            width: 155px;
-            height: 60px;
-            line-height: 60px;
+            width: 135px;
+            height: 40px;
+            line-height: 40px;
 
             .mat-icon {
-                width: 155px;
-                height: 60px;
-                line-height: 60px;
+                color: #000000 !important;
+                width: 135px;
+                height: 40px;
+                line-height: 40px;
+
+                &.mat-primary {
+                    color: #000000 !important;
+                  }
+
+                  &.mat-accent {
+                    color: #000000 !important;
+                  }
+
+                  &.mat-warn {
+                    color: #000000 !important;
+                  }
             }
         }
     }
