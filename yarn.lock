@@ -910,6 +910,13 @@
   resolved "https://registry.yarnpkg.com/@dagonmetric/app-styles-base/-/app-styles-base-0.1.1.tgz#a9da329de48403584df04810fa4586715709f33e"
   integrity sha512-vh4iWCYum2Anw7pYgvd8csoTLZnC4qz8kYn17JbLephdmxIVAduN5ygFqfvCumfPUO1D2yn/DSol4q75i8ibLQ==
 
+"@dagonmetric/ng-cache@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@dagonmetric/ng-cache/-/ng-cache-2.0.3.tgz#f5f31ed0264064036c3b582d9dd06ffeceaf56d1"
+  integrity sha512-IoOQbdOmQOrcAaln38D/ePbDkk4TPDiF7Jy8jBTQPS8Xm7agVzG8PJS2LK5NvchlavRyviz2jXGX/91eYRhE0g==
+  dependencies:
+    tslib "^1.10.0"
+
 "@dagonmetric/ng-config@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@dagonmetric/ng-config/-/ng-config-2.2.1.tgz#d731bb48af08c726a0097cb192c213f2f488c35b"

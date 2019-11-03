@@ -45,6 +45,7 @@
     "@angular/router": "^8.2.13",
     "@angular/service-worker": "^8.2.13",
     "@dagonmetric/app-styles-base": "^0.1.1",
+    "@dagonmetric/ng-cache": "^2.0.3",
     "@dagonmetric/ng-config": "^2.2.1",
     "@dagonmetric/ng-log": "^2.2.1",
     "@dagonmetric/ng-log-facebook-analytics": "^1.0.0",
