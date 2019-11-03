@@ -36,6 +36,7 @@ import { environment } from '../environments/environment';
 import { CdkTextareaSyncSizeModule } from '../modules/cdk-extensions';
 import { CustomIconRegistry } from '../modules/mat-extensions';
 import { ZgUniTranslitRuleLoaderModule } from '../modules/zg-uni-translit-rule-loader';
+import { LinkService } from '../modules/seo';
 
 import { AppConfig } from './shared/app-config';
 import { PageTitleService } from './shared/page-title';
@@ -175,6 +176,7 @@ export const settings: { app: AppConfig } = {
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ],
     providers: [
+        LinkService,
         {
             provide: MatIconRegistry,
             useClass: CustomIconRegistry
