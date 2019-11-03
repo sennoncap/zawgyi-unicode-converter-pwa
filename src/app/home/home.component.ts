@@ -13,6 +13,7 @@ import { AfterViewInit, Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewC
 import { of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 
+import { CacheService } from '@dagonmetric/ng-cache';
 import { ConfigService } from '@dagonmetric/ng-config';
 import { LogService } from '@dagonmetric/ng-log';
 import { TranslitResult, TranslitService } from '@dagonmetric/ng-translit';
@@ -54,6 +55,7 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
 
     private _detectedEnc: DetectedEnc = null;
     private _curRuleName = '';
+    private _autoSaveEnabled?: boolean | null = null;
 
     get detectedEnc(): DetectedEnc {
         return this._detectedEnc;
@@ -65,6 +67,24 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
     set sourceText(value: string) {
         this._sourceText = value;
         this.translitNext();
+    }
+
+    get autoSaveEnabled(): boolean {
+        this._autoSaveEnabled = this._cacheService.getItem<boolean>('autoSaveEnabled');
+
+        return this._autoSaveEnabled == null ? true : this._autoSaveEnabled;
+    }
+    set autoSaveEnabled(value: boolean) {
+        this._autoSaveEnabled = value;
+        this._cacheService.setItem('autoSaveEnabled', value);
+
+        this._logService.trackEvent({
+            name: 'change_auto_save',
+            properties: {
+                is_auto_save: value,
+                app_version: this._appConfig.appVersion
+            }
+        });
     }
 
     get outText(): string {
@@ -96,6 +116,8 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
     private readonly _targetPlaceholderZg = 'Converted Zawgyi text will be appeared here';
     private readonly _targetPlaceholderUni = 'Converted Unicode text will be appeared here';
 
+    private readonly _lastInputTextKey = 'last_input_text';
+
     private _sourcePlaceholderText = '';
     private _targetPlaceholderText = '';
 
@@ -104,6 +126,7 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         private readonly _translitService: TranslitService,
         private readonly _zawgyiDetector: ZawgyiDetector,
         private readonly _logService: LogService,
+        private readonly _cacheService: CacheService,
         configService: ConfigService) {
         this._isBrowser = isPlatformBrowser(platformId);
         this._appConfig = configService.getValue<AppConfig>('app');
@@ -176,7 +199,11 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
                 this.hideAboutSection = true;
             }
 
-            if (this._sourceText.length && this._curRuleName && result.replaced) {
+            if (this._isBrowser && this.autoSaveEnabled) {
+                this._cacheService.setItem(this._lastInputTextKey, this._sourceText);
+            }
+
+            if (this._isBrowser && this._sourceText.length && this._curRuleName && result.replaced) {
                 this._logService.trackEvent({
                     name: 'convert',
                     properties: {
@@ -188,6 +215,13 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
                 });
             }
         });
+
+        if (this._isBrowser && this.autoSaveEnabled) {
+            const lastSavedText = this._cacheService.getItem<string>(this._lastInputTextKey);
+            if (lastSavedText && lastSavedText.length && lastSavedText.trim().length) {
+                this.sourceText = lastSavedText;
+            }
+        }
     }
 
     ngAfterViewInit(): void {
