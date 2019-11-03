@@ -26,7 +26,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
-import { CacheLocalStorageModule, CacheModule, MemoryCacheModule } from '@dagonmetric/ng-cache';
+import { CacheModule, MemoryCacheModule } from '@dagonmetric/ng-cache';
 import { ConfigModule } from '@dagonmetric/ng-config';
 import { StaticConfigLoaderModule } from '@dagonmetric/ng-config/static-loader';
 import { LogModule } from '@dagonmetric/ng-log';
@@ -87,7 +87,7 @@ export const appRoutes: Routes = [
 
 export const settings: { app: AppConfig } = {
     app: {
-        appVersion: '2.1.0-preview0',
+        appVersion: '3.0.0',
         previousAppVersion: '2.0.7',
         appName: 'Zawgyi Unicode Converter',
         appDescription: 'Zawgyi Unicode Converter is a free and open source Zawgyi-One and standard Myanmar Unicode online/offline converter created by DagonMetric Myanmar Tools team.',
@@ -190,7 +190,6 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
 
         // ng-cache modules
         CacheModule,
-        CacheLocalStorageModule,
         MemoryCacheModule,
 
         // ng-translit module
