@@ -48,6 +48,7 @@ import { UrlHelper } from './shared/url-helper';
 
 import { AboutComponent, AboutDialogHandlerComponent } from './about';
 import { HomeComponent } from './home';
+import { PrivacyComponent, PrivacyDialogHandlerComponent } from './privacy';
 import { SupportComponent, SupportDialogHandlerComponent } from './support';
 
 import { AppComponent } from './app.component';
@@ -79,6 +80,14 @@ export const appRoutes: Routes = [
                     pageType: 'support-page',
                     screenName: 'Support'
                 }
+            },
+            {
+                path: 'privacy',
+                component: PrivacyDialogHandlerComponent,
+                data: {
+                    pageType: 'privacy-page',
+                    screenName: 'Privacy'
+                }
             }
         ]
     },
@@ -87,35 +96,35 @@ export const appRoutes: Routes = [
 
 export const settings: { app: AppConfig } = {
     app: {
-        appVersion: '3.0.0',
-        previousAppVersion: '2.0.7',
+        appVersion: '3.1.0',
+        previousAppVersion: '3.0.0',
         appName: 'Zawgyi Unicode Converter',
         appDescription: 'Zawgyi Unicode Converter is a free & open source Zawgyi to Unicode or Unicode to Zawgyi online / offline font converter by DagonMetric Myanmar Tools team.',
         baseUrl: 'https://zawgyi-unicode-converter.myanmartools.org/',
         navLinks: [
             {
                 url: 'https://www.facebook.com/DagonMetric',
-                label: 'Facebook',
+                label: 'More posts on Facebook',
                 iconName: 'logo-facebook'
             },
             {
                 url: 'https://www.youtube.com/channel/UCbJLAOU-kG6vkBOU1TSM5Cw',
-                label: 'YouTube',
+                label: 'Usage guide videos on YouTube',
                 iconName: 'logo-youtube'
             },
             {
                 url: 'https://medium.com/myanmartools',
-                label: 'Medium',
+                label: 'Articles on Medium',
                 iconName: 'logo-medium'
             },
             {
                 url: 'https://github.com/myanmartools/zawgyi-unicode-converter-web',
-                label: 'GitHub',
+                label: 'Source code on GitHub',
                 iconName: 'logo-github'
             },
             {
                 url: 'https://myanmartools.org',
-                label: 'Myanmar Tools',
+                label: 'Explore more Myanmar Tools',
                 iconName: 'logo-myanmartools'
             }
         ],
@@ -152,6 +161,8 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
         AboutComponent,
         AboutDialogHandlerComponent,
         HomeComponent,
+        PrivacyComponent,
+        PrivacyDialogHandlerComponent,
         SupportComponent,
         SupportDialogHandlerComponent
     ],
@@ -220,6 +231,7 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
     ],
     entryComponents: [
         AboutComponent,
+        PrivacyComponent,
         SupportComponent
     ],
     bootstrap: [AppComponent]
