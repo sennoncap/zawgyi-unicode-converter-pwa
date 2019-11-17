@@ -16,14 +16,23 @@
       }
     },
     {
+      "name": "assets-eager",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/images/**",
+          "!/assets/images/uploads/**"
+        ]
+      }
+    },
+    {
       "name": "assets-lazy",
       "installMode": "lazy",
       "updateMode": "prefetch",
       "resources": {
         "files": [
-          "/assets/appicons/**",
-          "/assets/images/**",
-          "!/assets/images/uploads/**"
+          "/assets/appicons/**"
         ]
       }
     }
