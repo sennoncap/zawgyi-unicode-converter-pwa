@@ -15,7 +15,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
 import { CacheLocalStorageModule } from '@dagonmetric/ng-cache';
-import { FacebookAnalyticsLoggerModule } from '@dagonmetric/ng-log-facebook-analytics';
+// import { FacebookAnalyticsLoggerModule } from '@dagonmetric/ng-log-facebook-analytics';
 
 // import { FirebaseAnalyticsLoggerModule } from '@dagonmetric/ng-log-firebase-analytics';
 import { FirebaseAnalyticsLoggerModule } from '../modules/ng-log-firebase-analytics';
@@ -39,7 +39,7 @@ import { appId, AppModule } from './app.module';
 
         CacheLocalStorageModule,
 
-        FacebookAnalyticsLoggerModule,
+        // FacebookAnalyticsLoggerModule,
         FirebaseAnalyticsLoggerModule.config({
             firebase: environment.firebase
         }),
