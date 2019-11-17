@@ -14,6 +14,8 @@ import { ConfigService } from '@dagonmetric/ng-config';
 import { LogService } from '@dagonmetric/ng-log';
 
 import { AppConfig } from '../shared/app-config';
+import { NavLinkItem } from '../shared/nav-link-item';
+
 /**
  * App about component.
  */
@@ -36,6 +38,10 @@ export class AboutComponent {
 
     get appDescription(): string | undefined {
         return this._appConfig.appDescription;
+    }
+
+    get navLinks(): NavLinkItem[] {
+        return this._appConfig.navLinks;
     }
 
     private readonly _appConfig: AppConfig;

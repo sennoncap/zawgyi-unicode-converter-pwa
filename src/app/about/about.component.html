@@ -11,11 +11,8 @@
         <mat-card-content>
             <div lang="my-MM" class="myanmar-text my-uni">
                 <p>
-                    Zawgyi Unicode Converter ရဲ့ ယခုဗားရှင်းအသစ်တွင် သင်ရိုက်ထားသော စာသားများကို မတော်တဆ
-                    browser ပိတ်မိလို့ ပျောက်ဆုံးမသွားအောင် အလိုအလျောက် save ပေးသည့် လုပ်ဆောင်ချက် ထည့်ပေးထားခြင်း၊ Dark
-                    mode ပြောင်းနိုင်အောင် လုပ်ဆောင်ပေးထားခြင်းနှင့်
+                    Zawgyi Unicode Converter ရဲ့ ယခုဗားရှင်းအသစ်တွင် UI design ပြောင်းလဲမှု အချို့နှင့်
                     အခြားတိုးတက်မှုများ ပါဝင်ပါတယ်။
-
                 </p>
 
                 <p>
@@ -25,11 +22,11 @@
                 <div class="about-features" *ngIf="featureExpanded">
                     <p>
                         Zawgyi Unicode Converter သည် ဇော်ဂျီ နှင့် မြန်မာ ယူနီကုဒ် တို့ကို အပြန်အလှန်
-                        ပြောင်းပေးနိုင်တဲ့ Progressive Web Application တစ်ခုပါ။ ၎င်းကို ဒဂုန်မက်ထရစ် Myanmar Tools
+                        ပြောင်းပေးနိုင်တဲ့ Progressive Web Application တစ်ခုပါ။ ၎င်းကို DagonMetric Myanmar Tools
                         အဖွဲ့ကနေ
-                        ဖန်တီးခဲ့ပြီး အခမဲ့ နှင့် open source အနေနှင့်ပါ မျှဝေထားခြင်းဖြစ်ပါတယ်။
+                        ဖန်တီးခဲ့ပြီး အခမဲ့၊ open source အနေနှင့် မျှဝေထားခြင်းဖြစ်ပါတယ်။
                     </p>
-                    <p><b>ထူးခြားချက်များ</b> </p>
+                    <p><b>ထူးခြားချက်များ</b></p>
                     <ul>
                         <li>ဇော်ဂျီ နှင့် မြန်မာ ယူနီကုဒ် တို့ကို အပြန်အလှန် အမှားအယွင်းမရှိ တိကျမှန်ကန်စွာ
                             ပြောင်းပေးနိုင်ခြင်း
@@ -52,7 +49,17 @@
                             <mat-icon svgIcon="logo-google-play-badge"></mat-icon>
                         </a>
                     </p>
-                    <p>ဤ Zawgyi Unicode Converter ကို အသုံးပြုရတာ ကြိုက်နှစ်သက်လိမ့်မယ်လို့ ထင်ပါတယ်။ သင့်မိတ်ဆွေများထံ
+                    <p><b>Community နှင့် အသုံးဝင်နိုင်မည့် Link များ</b></p>
+                    <mat-nav-list>
+                        <a mat-list-item [href]="navLink.url" *ngFor="let navLink of navLinks" target="_blank"
+                            rel="noopener nofollow">
+                            <mat-icon mat-list-icon [svgIcon]="navLink.iconName"></mat-icon>
+                            <p matLine>
+                                {{navLink.label}}
+                            </p>
+                        </a>
+                    </mat-nav-list>
+                    <p>ဤ Zawgyi Unicode Converter ကို အသုံးပြုရတာ ကြိုက်နှစ်သက်လိမ့်မယ်လို့ ယုံကြည်ပါတယ်။ သင့်မိတ်ဆွေများထံ
                         မျှဝေခြင်းဖြင့် ကူညီလိုက်ပါ။</p>
                 </div>
             </div>
