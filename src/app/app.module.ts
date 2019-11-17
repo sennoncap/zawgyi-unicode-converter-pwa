@@ -90,7 +90,7 @@ export const settings: { app: AppConfig } = {
         appVersion: '3.0.0',
         previousAppVersion: '2.0.7',
         appName: 'Zawgyi Unicode Converter',
-        appDescription: 'Zawgyi Unicode Converter is a free and open source Zawgyi-One and standard Myanmar Unicode online/offline converter created by DagonMetric Myanmar Tools team.',
+        appDescription: 'Zawgyi Unicode Converter is a free & open source Zawgyi to Unicode or Unicode to Zawgyi online / offline font converter by DagonMetric Myanmar Tools team.',
         baseUrl: 'https://zawgyi-unicode-converter.myanmartools.org/',
         navLinks: [
             {
