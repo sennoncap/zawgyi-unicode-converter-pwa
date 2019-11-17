@@ -13,14 +13,6 @@
     <mat-sidenav #sidenav class="app-sidenav" position="end" [opened]="(isScreenSmall | async) ? false : true"
         [mode]="(isScreenSmall | async) ? 'over' : 'side'" [fixedInViewport]="(isScreenSmall | async) ? true : false">
         <mat-nav-list>
-            <h3 mat-subheader>Community and Links</h3>
-            <a mat-list-item [href]="navLink.url" *ngFor="let navLink of navLinks">
-                <mat-icon mat-list-icon [svgIcon]="navLink.iconName"></mat-icon>
-                <p matLine>
-                    {{navLink.label}}
-                </p>
-            </a>
-            <mat-divider></mat-divider>
             <h3 mat-subheader>Info and Support</h3>
             <a mat-list-item routerLink="about">
                 <mat-icon mat-list-icon svgIcon="info"></mat-icon>
@@ -48,10 +40,22 @@
                 <mat-slide-toggle [(ngModel)]="isDarkMode">Dark mode</mat-slide-toggle>
             </mat-list-item>
         </mat-list>
+        <mat-list>
+            <mat-divider></mat-divider>
+            <h3 mat-subheader>Mobile Apps</h3>
+            <mat-list-item>
+                <a mat-icon-button class="app-badge-button"
+                    href='https://play.google.com/store/apps/details?id=com.dagonmetric.zawgyiunicodeconverter&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'
+                    title="Get the mobile app on Google Play">
+                    <mat-icon svgIcon="logo-google-play-badge"></mat-icon>
+                </a>
+            </mat-list-item>
+
+        </mat-list>
         <mat-list class="app-footer" dense>
             <mat-list-item>
                 <span>&copy; DagonMetric</span>
-                <a [href]="privacyUrl">Privacy</a>
+                <a routerLink="privacy">Privacy</a>
             </mat-list-item>
         </mat-list>
     </mat-sidenav>

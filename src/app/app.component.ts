@@ -37,7 +37,6 @@ import { LogService } from '@dagonmetric/ng-log';
 import { LinkService } from '../modules/seo';
 
 import { AppConfig } from './shared/app-config';
-import { NavLinkItem } from './shared/nav-link-item';
 import { PageTitleService } from './shared/page-title';
 import { UrlHelper } from './shared/url-helper';
 
@@ -86,14 +85,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
     get appTitleFull(): string {
         return `${this.appTitle} | Myanmar Tools`;
-    }
-
-    get privacyUrl(): string | undefined {
-        return this._appConfig.privacyUrl;
-    }
-
-    get navLinks(): NavLinkItem[] {
-        return this._appConfig.navLinks || [];
     }
 
     private readonly _isBrowser: boolean;
@@ -190,22 +181,22 @@ export class AppComponent implements OnInit, OnDestroy {
                     }
                 });
 
-                if (this._isFirstNavigation) {
+                if (this._isFirstNavigation && this._isBrowser && routeData && routeData.pageType === 'home-page') {
                     this._isFirstNavigation = false;
-
-                    if (this._isBrowser && routeData && routeData.pageType === 'home-page' && typeof localStorage === 'object') {
-                        try {
-                            const prevVersionStr = localStorage.getItem(`appUsedCount-v${this._appConfig.previousAppVersion}`);
-                            const curVersionStr = localStorage.getItem(`appUsedCount-v${this._appConfig.appVersion}`);
-                            if (prevVersionStr && !curVersionStr) {
-                                localStorage.setItem(`appUsedCount-v${this._appConfig.appVersion}`, '1');
-
-                                // tslint:disable-next-line: no-floating-promises
-                                this._router.navigate(['about'], { relativeTo: this._activatedRoute });
-                            }
-                        } catch (err) {
-                            // Do nothing
+                    const prevVerCountStr = this._cacheService.getItem<string>(`appUsedCount-v${this._appConfig.previousAppVersion}`);
+                    const curVerCountStr = this._cacheService.getItem<string>(`appUsedCount-v${this._appConfig.appVersion}`);
+                    const appUpdated = this._cacheService.getItem<string>('appUpdated');
+                    if (appUpdated === 'true' || (prevVerCountStr && !curVerCountStr)) {
+                        if (appUpdated === 'true') {
+                            this._cacheService.setItem('appUpdated', 'false');
                         }
+
+                        this.increaseAppUsedCount();
+
+                        // tslint:disable-next-line: no-floating-promises
+                        this._router.navigate(['about'], { relativeTo: this._activatedRoute });
+                    } else {
+                        this.increaseAppUsedCount(curVerCountStr);
                     }
                 }
             });
@@ -377,6 +368,8 @@ export class AppComponent implements OnInit, OnDestroy {
                             }
                         });
 
+                        this._cacheService.setItem('appUpdated', 'true');
+
                         // tslint:disable-next-line: no-floating-promises
                         this._swUpdate.activateUpdate()
                             .then(() => {
@@ -384,5 +377,20 @@ export class AppComponent implements OnInit, OnDestroy {
                             });
                     });
             });
+    }
+
+    private increaseAppUsedCount(curVerCountStr?: string | null): void {
+        if (!this._isBrowser) {
+            return;
+        }
+
+        try {
+            let count = curVerCountStr ? parseInt(curVerCountStr, 10) : 0;
+            ++count;
+
+            this._cacheService.setItem(`appUsedCount-v${this._appConfig.appVersion}`, `${count}`);
+        } catch (err) {
+            // Do nothing
+        }
     }
 }
