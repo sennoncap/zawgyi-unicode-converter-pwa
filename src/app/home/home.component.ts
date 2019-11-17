@@ -135,7 +135,6 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         if (appUsedCount && appUsedCount > 1) {
             this.hideAboutSection = true;
         }
-        this.increaseAppUsedCount(appUsedCount);
     }
 
     ngOnInit(): void {
@@ -318,12 +317,12 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
     }
 
     private getAppUsedCount(): number | null {
-        if (!this._isBrowser || typeof localStorage !== 'object') {
+        if (!this._isBrowser) {
             return null;
         }
 
         try {
-            const str = localStorage.getItem(`appUsedCount-v${this.appVersion}`);
+            const str = this._cacheService.getItem<string>(`appUsedCount-v${this.appVersion}`);
             if (!str) {
                 return null;
             }
@@ -334,19 +333,5 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         }
 
         return null;
-    }
-
-    private increaseAppUsedCount(count?: number | null): void {
-        if (!this._isBrowser || typeof localStorage !== 'object') {
-            return;
-        }
-
-        try {
-            count = count || 0;
-            ++count;
-            localStorage.setItem(`appUsedCount-v${this.appVersion}`, `${count}`);
-        } catch (err) {
-            // Do nothing
-        }
     }
 }

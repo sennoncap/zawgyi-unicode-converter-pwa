@@ -32,36 +32,10 @@
 
                 transition: max-height 2s ease-out 5s, visibility 0s linear 7s;
             }
-        }
-    }
 
-    .mobile-app-badges {
-        justify-content: center;
-        text-align: center;
-
-        .app-badge-button.mat-icon-button {
-            border-radius: 0;
-            width: 135px;
-            height: 40px;
-            line-height: 40px;
-
-            .mat-icon {
-                color: #000000 !important;
-                width: 135px;
-                height: 40px;
-                line-height: 40px;
-
-                &.mat-primary {
-                    color: #000000 !important;
-                  }
-
-                  &.mat-accent {
-                    color: #000000 !important;
-                  }
-
-                  &.mat-warn {
-                    color: #000000 !important;
-                  }
+            h2 {
+                font-weight: 600;
+                font-size: 15px;
             }
         }
     }
