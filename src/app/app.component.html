@@ -1,11 +1,12 @@
 <mat-toolbar color="primary" class="app-header" role="banner">
-    <a mat-icon-button class="app-header-logo" routerLink="/"
-        [attr.aria-label]="(isScreenSmall | async) ? appTitle : appTitleFull">
-        <mat-icon svgIcon="logo-app"></mat-icon>
+    <a mat-icon-button class="app-header-logo" routerLink="/" [attr.aria-label]="appTitleFull">
+        <!-- <mat-icon svgIcon="logo-app"></mat-icon> -->
+        <img [src]="logoUrl" alt="appTitleFull" role="presentation" aria-hidden="true">
     </a>
-    <h1 role="presentation" aria-hidden="true">{{(isScreenSmall | async) ? appTitle : appTitleFull}}</h1>
+    <h1 role="presentation" aria-hidden="true" *ngIf="isHomePage">{{(isScreenSmall | async) ? appTitle : appTitleFull}}
+    </h1>
     <div class="flex-spacer" fxFlex="1 1 auto"></div>
-    <button type="button" mat-icon-button (click)="toggleSideNav()">
+    <button type="button" mat-icon-button (click)="toggleSideNav()" aria-label="Toggle drawer menu">
         <mat-icon svgIcon="menu"></mat-icon>
     </button>
 </mat-toolbar>
@@ -13,6 +14,16 @@
     <mat-sidenav #sidenav class="app-sidenav" position="end" [opened]="(isScreenSmall | async) ? false : true"
         [mode]="(isScreenSmall | async) ? 'over' : 'side'" [fixedInViewport]="(isScreenSmall | async) ? true : false">
         <mat-nav-list>
+            <h3 *ngIf="communityLinksVisible" mat-subheader>Community and Links</h3>
+            <a mat-list-item *ngFor="let communityLink of communityLinks" [href]="communityLink.url" target="_blank"
+                rel="noopener nofollow">
+                <mat-icon mat-list-icon [svgIcon]="communityLink.iconName"></mat-icon>
+                <p matLine>
+                    {{communityLink.label}}
+                </p>
+            </a>
+            <mat-divider *ngIf="communityLinksVisible"></mat-divider>
+
             <h3 mat-subheader>Info and Support</h3>
             <a mat-list-item routerLink="about">
                 <mat-icon mat-list-icon svgIcon="info"></mat-icon>
@@ -26,12 +37,12 @@
                     Support
                 </p>
             </a>
-            <mat-list-item (click)="openSharing()">
+            <a mat-list-item routerLink="/" (click)="openSharing()">
                 <mat-icon mat-list-icon svgIcon="share"></mat-icon>
                 <p matLine>
                     Share
                 </p>
-            </mat-list-item>
+            </a>
         </mat-nav-list>
         <mat-list>
             <mat-divider></mat-divider>
@@ -61,5 +72,21 @@
     </mat-sidenav>
     <mat-sidenav-content>
         <router-outlet></router-outlet>
+        <div class="container about-section">
+            <div class="description" fxLayout="column" role="presentation" *ngIf="aboutSectionVisible">
+                <h2>Convert Zawgyi to Unicode or Unicode to Zawgyi effortlessly!</h2>
+                <p>{{appDescription}}</p>
+                <div>Version: {{appVersion}}</div>
+                <div lang="my-MM" class="myanmar-text my-uni">
+                    <p>
+                        ဤ Zawgyi Unicode Converter သည် ဇော်ဂျီ နှင့် မြန်မာ ယူနီကုဒ် တို့ကို အပြန်အလှန်
+                        ပြောင်းပေးနိုင်သည့်အပြင် အင်တာနက်မရှိချိန်တွင်လည်း offline အသုံးပြုနိုင်တဲ့ converter တစ်ခုပါ။
+                    </p>
+                    <p>
+                        <a mat-button routerLink="/about">ထူးခြားချက်များ ဆက်ဖတ်ရန်</a>
+                    </p>
+                </div>
+            </div>
+        </div>
     </mat-sidenav-content>
 </mat-sidenav-container>

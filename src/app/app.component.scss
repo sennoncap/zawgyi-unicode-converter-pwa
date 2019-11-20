@@ -32,10 +32,67 @@
         display: block;
         margin-right: $default-gap-width / 4;
 
+        img {
+            box-sizing: border-box;
+            display: inline-block;
+
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+
+            animation: header-logo-img-ani 2.8s ease-in .2s forwards;
+        }
+
         .mat-icon {
             width: 32px;
             height: 32px;
             line-height: 32px;
+        }
+    }
+}
+
+@keyframes header-logo-img-ani {
+    0% {
+        filter: saturate(100%) brightness(100%) invert(0);
+    }
+
+    50% {
+        filter: saturate(50%) brightness(150%) invert(0);
+    }
+
+    99.99% {
+        filter: saturate(0) brightness(300%) invert(0);
+    }
+
+    100% {
+        filter: saturate(0) brightness(0) invert(1);
+    }
+}
+
+// Main
+// ------------------------------------------------------------
+
+.about-section {
+    .description {
+        justify-content: center;
+        text-align: center;
+        margin-bottom: $default-gap-width / 2;
+
+        // visibility: visible;
+        // max-height: 300px;
+        // height: auto;
+        // overflow: hidden;
+
+        // &.fade-hide {
+        //     visibility: hidden;
+        //     max-height: 0;
+
+        //     transition: max-height 2s ease-out 5s, visibility 0s linear 7s;
+        // }
+
+        h2 {
+            font-weight: 600;
+            font-size: 15px;
         }
     }
 }

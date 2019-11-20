@@ -34,9 +34,11 @@ import { CacheService } from '@dagonmetric/ng-cache';
 import { ConfigService } from '@dagonmetric/ng-config';
 import { LogService } from '@dagonmetric/ng-log';
 
+import { environment } from '../environments/environment';
 import { LinkService } from '../modules/seo';
 
 import { AppConfig } from './shared/app-config';
+import { NavLinkItem } from './shared/nav-link-item';
 import { PageTitleService } from './shared/page-title';
 import { UrlHelper } from './shared/url-helper';
 
@@ -53,6 +55,7 @@ const SMALL_WIDTH_BREAKPOINT = 720;
 })
 export class AppComponent implements OnInit, OnDestroy {
     isScreenSmall?: Observable<boolean>;
+    isHomePage = true;
 
     @ViewChild('sidenav', { static: false })
     sidenav?: MatSidenav;
@@ -60,26 +63,21 @@ export class AppComponent implements OnInit, OnDestroy {
     @HostBinding('class') componentClass?: string;
 
     get isDarkMode(): boolean {
-        this._isDarkMode = this._cacheService.getItem<boolean>('isDarkMode');
-
         return this._isDarkMode == null ? false : this._isDarkMode;
     }
     set isDarkMode(value: boolean) {
-        this._isDarkMode = value;
-        this._cacheService.setItem('isDarkMode', value);
-        this.updateTheme();
-        this.updateComponentClass();
+        this.setDarkMode(value);
 
         this._logService.trackEvent({
-            name: 'change_dark_mode',
+            name: value ? 'change_dark_mode' : 'change_light_mode',
             properties: {
-                is_dark: value,
-                app_version: this._appConfig.appVersion
+                app_version: this._appConfig.appVersion,
+                app_platform: 'web'
             }
         });
     }
 
-    get appTitle(): string | undefined {
+    get appTitle(): string {
         return this._appConfig.appName;
     }
 
@@ -87,7 +85,33 @@ export class AppComponent implements OnInit, OnDestroy {
         return `${this.appTitle} | Myanmar Tools`;
     }
 
+    get appVersion(): string {
+        return this._appConfig.appVersion;
+    }
+
+    get appDescription(): string {
+        return this._appConfig.appDescription;
+    }
+
+    get logoUrl(): string {
+        return environment.production ? this._urlHelper.toAbsoluteUrl(this._logoUrl) : this._logoUrl;
+    }
+
+    get communityLinksVisible(): boolean {
+        return this._isBrowser && this._appUsedCount > 0 ? true : false;
+    }
+
+    get communityLinks(): NavLinkItem[] {
+        return this.communityLinksVisible ? this._appConfig.navLinks : [];
+    }
+
+    get aboutSectionVisible(): boolean {
+        return this._appUsedCount < 1 && this.isHomePage && !this._aboutPageNavigated ? true : false;
+    }
+
+    private readonly _logoUrl = 'assets/appicons/logo.png';
     private readonly _isBrowser: boolean;
+    private readonly _appUsedCount: number = 0;
     private readonly _checkInterval = 1000 * 60 * 60 * 6;
     private readonly _appConfig: AppConfig;
     private readonly _onDestroy = new Subject<void>();
@@ -95,6 +119,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private _pageClass?: string;
     private _themeClass?: string;
     private _isDarkMode?: boolean | null = null;
+    private _aboutPageNavigated = false;
 
     constructor(
         @Inject(PLATFORM_ID) platformId: Object,
@@ -104,11 +129,11 @@ export class AppComponent implements OnInit, OnDestroy {
         private readonly _swUpdate: SwUpdate,
         private readonly _cacheService: CacheService,
         private readonly _overlayContainer: OverlayContainer,
+        private readonly _urlHelper: UrlHelper,
         configService: ConfigService,
         pageTitleService: PageTitleService,
         linkService: LinkService,
         metaService: Meta,
-        urlHelper: UrlHelper,
         private readonly _router: Router,
         private readonly _activatedRoute: ActivatedRoute,
         breakpointObserver: BreakpointObserver) {
@@ -116,8 +141,12 @@ export class AppComponent implements OnInit, OnDestroy {
         this._appConfig = configService.getValue<AppConfig>('app');
 
         if (this._isBrowser) {
-            this.updateTheme();
-            this.updateComponentClass();
+            const appUsedCountStr = this._cacheService.getItem<string>(`appUsedCount-v${this._appConfig.appVersion}`);
+            if (appUsedCountStr) {
+                this._appUsedCount = parseInt(appUsedCountStr, 10);
+            }
+
+            this.detectDarkTheme();
         }
 
         this.checkUpdate();
@@ -144,6 +173,8 @@ export class AppComponent implements OnInit, OnDestroy {
                 takeUntil(this._onDestroy)
             )
             .subscribe((routeData?: { pagePath: string; screenName?: string; pageType?: string }) => {
+                this.isHomePage = routeData && routeData.pageType === 'home-page' ? true : false;
+
                 if (routeData && routeData.screenName && routeData.pageType !== 'home-page') {
                     pageTitleService.setTitle(routeData.screenName, '-');
                 } else {
@@ -151,7 +182,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 }
 
                 if (routeData && routeData.pagePath) {
-                    const urlAbs = urlHelper.toAbsoluteUrl(routeData.pagePath);
+                    const urlAbs = this._urlHelper.toAbsoluteUrl(routeData.pagePath);
 
                     // Set canonical link
                     linkService.updateTag({
@@ -181,23 +212,20 @@ export class AppComponent implements OnInit, OnDestroy {
                     }
                 });
 
-                if (this._isFirstNavigation && this._isBrowser && routeData && routeData.pageType === 'home-page') {
+                if (!this._aboutPageNavigated && this._isBrowser && routeData && routeData.pageType === 'about-page') {
+                    this._aboutPageNavigated = true;
+                }
+
+                if (this._isBrowser && routeData && routeData.pageType === 'home-page' &&
+                    this._isFirstNavigation && this.isNewAppUpdated()) {
                     this._isFirstNavigation = false;
-                    const prevVerCountStr = this._cacheService.getItem<string>(`appUsedCount-v${this._appConfig.previousAppVersion}`);
-                    const curVerCountStr = this._cacheService.getItem<string>(`appUsedCount-v${this._appConfig.appVersion}`);
-                    const appUpdated = this._cacheService.getItem<string>('appUpdated');
-                    if (appUpdated === 'true' || (prevVerCountStr && !curVerCountStr)) {
-                        if (appUpdated === 'true') {
-                            this._cacheService.setItem('appUpdated', 'false');
-                        }
+                    this.increaseAppUsedCount();
 
-                        this.increaseAppUsedCount();
-
-                        // tslint:disable-next-line: no-floating-promises
-                        this._router.navigate(['about'], { relativeTo: this._activatedRoute });
-                    } else {
-                        this.increaseAppUsedCount(curVerCountStr);
-                    }
+                    // tslint:disable-next-line: no-floating-promises
+                    this._router.navigate(['/about'], { relativeTo: this._activatedRoute });
+                } else if (this._isFirstNavigation) {
+                    this._isFirstNavigation = false;
+                    this.increaseAppUsedCount();
                 }
             });
 
@@ -227,10 +255,10 @@ export class AppComponent implements OnInit, OnDestroy {
         // tslint:disable-next-line: no-floating-promises
         this.sidenav.toggle().then(drawerResult => {
             this._logService.trackEvent({
-                name: 'toggle_drawer_menu',
+                name: drawerResult === 'open' ? 'open_drawer_menu' : 'close_drawer_menu',
                 properties: {
-                    action: drawerResult === 'open' ? 'open' : 'close',
-                    app_version: this._appConfig.appVersion
+                    app_version: this._appConfig.appVersion,
+                    app_platform: 'web'
                 }
             });
         });
@@ -255,7 +283,8 @@ export class AppComponent implements OnInit, OnDestroy {
                     name: 'share',
                     properties: {
                         method: 'Web Share API',
-                        app_version: this._appConfig.appVersion
+                        app_version: this._appConfig.appVersion,
+                        app_platform: 'web'
                     }
                 });
                 this.showThankYouMessage();
@@ -263,7 +292,8 @@ export class AppComponent implements OnInit, OnDestroy {
                 const errMsg = err && err.message ? ` ${err.message}` : '';
                 this._logService.error(`An error occurs when sharing via Web API.${errMsg}`, {
                     properties: {
-                        app_version: this._appConfig.appVersion
+                        app_version: this._appConfig.appVersion,
+                        app_platform: 'web'
                     }
                 });
 
@@ -271,29 +301,6 @@ export class AppComponent implements OnInit, OnDestroy {
             });
         } else {
             this.shareTofacebook();
-        }
-    }
-
-    private updateTheme(): void {
-        if (this.isDarkMode) {
-            this._themeClass = 'dark-theme';
-            this._overlayContainer.getContainerElement().classList.add(this._themeClass);
-        } else {
-            this._themeClass = '';
-            this._overlayContainer.getContainerElement().classList.remove('dark-theme');
-        }
-    }
-
-    private updateComponentClass(): void {
-        this.componentClass = '';
-        if (this._pageClass) {
-            this.componentClass += this._pageClass;
-        }
-        if (this._themeClass) {
-            if (this.componentClass) {
-                this.componentClass += ' ';
-            }
-            this.componentClass += this._themeClass;
         }
     }
 
@@ -325,7 +332,8 @@ export class AppComponent implements OnInit, OnDestroy {
             name: 'share',
             properties: {
                 method: 'Facebook Share Dialog',
-                app_version: this._appConfig.appVersion
+                app_version: this._appConfig.appVersion,
+                app_platform: 'web'
             }
         });
 
@@ -363,12 +371,11 @@ export class AppComponent implements OnInit, OnDestroy {
                             name: 'reload_update',
                             properties: {
                                 app_version: this._appConfig.appVersion,
+                                app_platform: 'web',
                                 current_hash: evt.current.hash,
                                 available_hash: evt.available.hash
                             }
                         });
-
-                        this._cacheService.setItem('appUpdated', 'true');
 
                         // tslint:disable-next-line: no-floating-promises
                         this._swUpdate.activateUpdate()
@@ -379,18 +386,101 @@ export class AppComponent implements OnInit, OnDestroy {
             });
     }
 
-    private increaseAppUsedCount(curVerCountStr?: string | null): void {
+    private updateComponentClass(): void {
+        this.componentClass = '';
+        if (this._pageClass) {
+            this.componentClass += this._pageClass;
+        }
+        if (this._themeClass) {
+            if (this.componentClass) {
+                this.componentClass += ' ';
+            }
+            this.componentClass += this._themeClass;
+        }
+    }
+
+    private detectDarkTheme(): void {
+        const isDarkModeStr = this._cacheService.getItem('isDarkMode');
+        this.detectDarkThemeChange(isDarkModeStr == null ? true : isDarkModeStr === 'true', true);
+    }
+
+    private detectDarkThemeChange(defaultValue: boolean, forceDefaultValue?: boolean): void {
+        if (window.matchMedia('(prefers-color-scheme)').media !== 'not all') {
+            const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            if (forceDefaultValue) {
+                this.setDarkMode(defaultValue);
+            } else {
+                this.setDarkMode(darkModeMediaQuery.matches);
+            }
+
+            if (darkModeMediaQuery.addEventListener) {
+                darkModeMediaQuery.addEventListener('change', (mediaQuery) => {
+                    this.setDarkMode(mediaQuery.matches);
+                });
+            }
+        } else {
+            this.setDarkMode(defaultValue);
+        }
+    }
+
+    private setDarkMode(value: boolean): void {
+        this._isDarkMode = value;
+        this._cacheService.setItem('isDarkMode', `${value}`.toLowerCase());
+        this.toggleDarkTheme(value);
+        this.updateComponentClass();
+    }
+
+    private toggleDarkTheme(isDark: boolean): void {
+        this._themeClass = isDark ? 'dark' : '';
+        this._overlayContainer.getContainerElement().classList.toggle('dark', isDark);
+    }
+
+    private isNewAppUpdated(): boolean {
+        if (!this._isBrowser) {
+            return false;
+        }
+
+        let foundOldVer = false;
+        const oldVersions = [
+            '3.1.0',
+            '3.0.0',
+            '2.0.7',
+            '2.0.6',
+            '2.0.5',
+            '2.0.4',
+            '2.0.3',
+            '2.0.2',
+            '2.0.1',
+            '2.0.0',
+            '2.0.0-preview1',
+            '1.1.5',
+            '1.1.4',
+            '1.1.3',
+            '1.1.2',
+            '1.1.1',
+            '1.0.1',
+            '1.0.0'
+
+        ];
+
+        for (const ver of oldVersions) {
+            const str = this._cacheService.getItem<string>(`appUsedCount-v${ver}`);
+            if (str) {
+                foundOldVer = true;
+                break;
+            }
+        }
+
+        const cachedCurVer = this._cacheService.getItem<string>(`appUsedCount-v${this._appConfig.appVersion}`);
+
+        return foundOldVer && !cachedCurVer ? true : false;
+    }
+
+    private increaseAppUsedCount(): void {
         if (!this._isBrowser) {
             return;
         }
 
-        try {
-            let count = curVerCountStr ? parseInt(curVerCountStr, 10) : 0;
-            ++count;
-
-            this._cacheService.setItem(`appUsedCount-v${this._appConfig.appVersion}`, `${count}`);
-        } catch (err) {
-            // Do nothing
-        }
+        this._cacheService.setItem(`appUsedCount-v${this._appConfig.appVersion}`, `${this._appUsedCount + 1}`);
     }
 }
