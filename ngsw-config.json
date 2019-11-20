@@ -12,7 +12,7 @@
           "/assets/appicons/logo.png",
           "/*.css",
           "/*.js",
-          "/assets/fonts/**"
+          "/*.woff2"
         ]
       }
     },
@@ -34,7 +34,10 @@
       "updateMode": "prefetch",
       "resources": {
         "files": [
-          "/assets/appicons/**"
+          "/assets/appicons/**",
+          "/*.woff",
+          "/*.ttf",
+          "/*.eot"
         ]
       }
     }
