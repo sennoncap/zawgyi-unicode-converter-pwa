@@ -38,7 +38,6 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
     autoEncText = 'AUTO';
     sourceEnc?: SourceEnc;
     targetEnc?: DetectedEnc;
-    hideAboutSection = false;
 
     @ViewChild('sourceTextareaSyncSize', { static: false })
     sourceTextareaSyncSize?: CdkTextareaSyncSize;
@@ -79,24 +78,16 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         this._cacheService.setItem('autoSaveEnabled', value);
 
         this._logService.trackEvent({
-            name: 'change_auto_save',
+            name: value ? 'turn_auto_save_on' : 'turn_auto_save_off',
             properties: {
-                is_auto_save: value,
-                app_version: this._appConfig.appVersion
+                app_version: this._appConfig.appVersion,
+                app_platform: 'web'
             }
         });
     }
 
     get outText(): string {
         return this._outText;
-    }
-
-    get appVersion(): string | undefined {
-        return this._appConfig.appVersion;
-    }
-
-    get appDescription(): string | undefined {
-        return this._appConfig.appDescription;
     }
 
     get sourcePlaceholderText(): string {
@@ -130,11 +121,6 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         configService: ConfigService) {
         this._isBrowser = isPlatformBrowser(platformId);
         this._appConfig = configService.getValue<AppConfig>('app');
-
-        const appUsedCount = this.getAppUsedCount();
-        if (appUsedCount && appUsedCount > 1) {
-            this.hideAboutSection = true;
-        }
     }
 
     ngOnInit(): void {
@@ -194,9 +180,6 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
             })
         ).subscribe((result: TranslitResult) => {
             this._outText = result.outputText || '';
-            if (!this.hideAboutSection) {
-                this.hideAboutSection = true;
-            }
 
             if (this._isBrowser && this.autoSaveEnabled) {
                 this._cacheService.setItem(this._lastInputTextKey, this._sourceText);
@@ -204,12 +187,12 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
 
             if (this._isBrowser && this._sourceText.length && this._curRuleName && result.replaced) {
                 this._logService.trackEvent({
-                    name: 'convert',
+                    name: `convert_${this._curRuleName}`,
                     properties: {
-                        method: this._curRuleName,
                         input_length: this._sourceText.length,
                         duration_msec: result.duration,
-                        app_version: this._appConfig.appVersion
+                        app_version: this._appConfig.appVersion,
+                        app_platform: 'web'
                     }
                 });
             }
@@ -268,10 +251,10 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         }
 
         this._logService.trackEvent({
-            name: 'change_input_font_enc',
+            name: `change_input_font_${this.sourceEnc}`,
             properties: {
-                font_enc: this.sourceEnc,
-                app_version: this._appConfig.appVersion
+                app_version: this._appConfig.appVersion,
+                app_platform: 'web'
             }
         });
 
@@ -298,10 +281,10 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         }
 
         this._logService.trackEvent({
-            name: 'change_output_font_enc',
+            name: `change_output_font_${this.targetEnc}`,
             properties: {
-                font_enc: this.targetEnc,
-                app_version: this._appConfig.appVersion
+                app_version: this._appConfig.appVersion,
+                app_platform: 'web'
             }
         });
 
@@ -314,24 +297,5 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
 
     private translitNext(): void {
         this._translitSubject.next(`${this.sourceEnc},${this.targetEnc}|${this.sourceText}`);
-    }
-
-    private getAppUsedCount(): number | null {
-        if (!this._isBrowser) {
-            return null;
-        }
-
-        try {
-            const str = this._cacheService.getItem<string>(`appUsedCount-v${this.appVersion}`);
-            if (!str) {
-                return null;
-            }
-
-            return parseInt(str, 10);
-        } catch (err) {
-            // Do nothing
-        }
-
-        return null;
     }
 }

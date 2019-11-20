@@ -1,4 +1,4 @@
-<div class="container main-content">
+<div class="container">
     <div class="form-container" fxLayout="row" fxLayout.xs="column" fxLayoutGap="24px">
         <div class="form-field-container" fxLayout="column" fxFlex="1 1 100%">
             <mat-button-toggle-group aria-label="Select input font" [value]="sourceEnc"
@@ -30,13 +30,6 @@
     </div>
     <div class="app-options">
         <mat-slide-toggle [(ngModel)]="autoSaveEnabled">Auto save as you type</mat-slide-toggle>
-    </div>
-    <div class="about-section">
-        <div class="description" fxLayout="column" [class.fade-hide]="hideAboutSection">
-            <h2>Convert Zawgyi to Unicode or Unicode to Zawgyi effortlessly!</h2>
-            <p>{{appDescription}}</p>
-            <div>Version: {{appVersion}}</div>
-        </div>
     </div>
     <router-outlet></router-outlet>
 </div>
