@@ -53,10 +53,8 @@ $footer-section-ani-duration: 2s;
         }
     }
 
-    .main-content {
-        .about-section {
-            color: mat-color($foreground, secondary-text);
-        }
+    .about-section {
+        color: mat-color($foreground, secondary-text);
     }
 
     .app-footer {
