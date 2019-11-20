@@ -18,6 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
@@ -96,35 +97,35 @@ export const appRoutes: Routes = [
 
 export const settings: { app: AppConfig } = {
     app: {
-        appVersion: '3.1.0',
-        previousAppVersion: '3.0.0',
+        appVersion: '3.2.0',
+        releaseDateUtc: '2019-11-20T03:53:00Z',
         appName: 'Zawgyi Unicode Converter',
         appDescription: 'Zawgyi Unicode Converter is a free & open source Zawgyi to Unicode or Unicode to Zawgyi online / offline font converter by DagonMetric Myanmar Tools team.',
         baseUrl: 'https://zawgyi-unicode-converter.myanmartools.org/',
         navLinks: [
             {
                 url: 'https://www.facebook.com/DagonMetric',
-                label: 'More posts on Facebook',
+                label: 'Facebook',
                 iconName: 'logo-facebook'
             },
             {
                 url: 'https://www.youtube.com/channel/UCbJLAOU-kG6vkBOU1TSM5Cw',
-                label: 'Usage guide videos on YouTube',
+                label: 'YouTube',
                 iconName: 'logo-youtube'
             },
             {
                 url: 'https://medium.com/myanmartools',
-                label: 'Articles on Medium',
+                label: 'Medium',
                 iconName: 'logo-medium'
             },
             {
                 url: 'https://github.com/myanmartools/zawgyi-unicode-converter-web',
-                label: 'Source code on GitHub',
+                label: 'GitHub',
                 iconName: 'logo-github'
             },
             {
                 url: 'https://myanmartools.org',
-                label: 'Explore more Myanmar Tools',
+                label: 'Myanmar Tools',
                 iconName: 'logo-myanmartools'
             }
         ],
@@ -177,6 +178,7 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
         MatButtonToggleModule,
         MatCardModule,
         MatDialogModule,
+        MatGridListModule,
         MatIconModule,
         MatInputModule,
         MatListModule,
