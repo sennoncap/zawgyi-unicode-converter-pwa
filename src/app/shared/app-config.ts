@@ -12,7 +12,7 @@ import { SocialSharingOptions } from './social-sharing-options';
 export interface AppConfig {
     appName: string;
     appVersion: string;
-    previousAppVersion: string;
+    releaseDateUtc: string;
     appDescription: string;
     baseUrl: string;
     navLinks: NavLinkItem[];
