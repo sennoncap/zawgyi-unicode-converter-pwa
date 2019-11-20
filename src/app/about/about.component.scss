@@ -1,10 +1,20 @@
+$mat-card-padding: 16px !default;
+$mat-card-border-radius: 4px !default;
+$mat-card-header-size: 40px !default;
+
+
 .about-card {
     max-width: 620px;
 }
 
 .about-dialog-container .mat-dialog-container {
     padding: 0;
-    overflow-x: hidden;
+    // overflow-x: hidden;
+}
+
+.mat-dialog-content {
+    margin: 0 -16px;
+    padding: 0 16px;
 }
 
 .about-features {

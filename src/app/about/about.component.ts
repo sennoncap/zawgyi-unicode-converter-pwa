@@ -13,8 +13,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfigService } from '@dagonmetric/ng-config';
 import { LogService } from '@dagonmetric/ng-log';
 
+import { environment } from '../../environments/environment';
+
 import { AppConfig } from '../shared/app-config';
 import { NavLinkItem } from '../shared/nav-link-item';
+import { UrlHelper } from '../shared/url-helper';
 
 /**
  * App about component.
@@ -26,7 +29,7 @@ import { NavLinkItem } from '../shared/nav-link-item';
     encapsulation: ViewEncapsulation.None
 })
 export class AboutComponent {
-    featureExpanded = false;
+    private readonly _imageUrl = 'assets/images/social-image.jpg';
 
     get appName(): string | undefined {
         return this._appConfig.appName;
@@ -34,6 +37,10 @@ export class AboutComponent {
 
     get appVersion(): string | undefined {
         return this._appConfig.appVersion;
+    }
+
+    get releaseDate(): Date | undefined {
+        return new Date(this._appConfig.releaseDateUtc);
     }
 
     get appDescription(): string | undefined {
@@ -44,17 +51,18 @@ export class AboutComponent {
         return this._appConfig.navLinks;
     }
 
+    get imageUrl(): string {
+        return environment.production ? this._urlHelper.toAbsoluteUrl(this._imageUrl) : this._imageUrl;
+    }
+
     private readonly _appConfig: AppConfig;
 
     constructor(
         private readonly _logService: LogService,
         private readonly _snackBar: MatSnackBar,
+        private readonly _urlHelper: UrlHelper,
         configService: ConfigService) {
         this._appConfig = configService.getValue<AppConfig>('app');
-    }
-
-    expandFeatures(): void {
-        this.featureExpanded = true;
     }
 
     openSharing(): void {
@@ -76,7 +84,8 @@ export class AboutComponent {
                     name: 'share',
                     properties: {
                         method: 'Web Share API',
-                        app_version: this._appConfig.appVersion
+                        app_version: this._appConfig.appVersion,
+                        app_platform: 'web'
                     }
                 });
                 this.showThankYouMessage();
@@ -123,7 +132,8 @@ export class AboutComponent {
             name: 'share',
             properties: {
                 method: 'Facebook Share Dialog',
-                app_version: this._appConfig.appVersion
+                app_version: this._appConfig.appVersion,
+                app_platform: 'web'
             }
         });
 
