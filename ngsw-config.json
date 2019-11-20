@@ -9,6 +9,7 @@
           "/index.html",
           "/manifest.json",
           "/assets/appicons/favicon.ico",
+          "/assets/appicons/logo.png",
           "/*.css",
           "/*.js",
           "/assets/fonts/**"
@@ -22,6 +23,7 @@
       "resources": {
         "files": [
           "/assets/images/**",
+          "!/assets/images/appicons/**",
           "!/assets/images/uploads/**"
         ]
       }
