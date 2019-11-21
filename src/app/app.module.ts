@@ -69,7 +69,7 @@ export const appRoutes: Routes = [
         data: {
             pageType: 'home-page',
             meta: {
-                keywords: 'zawgyi unicode converter,zawgyi,unicode converter,zawgyi to unicode,unicode to zawgyi,font converter,myanmar tools,myanmar unicode,unicode,converter',
+                keywords: 'zawgyi unicode converter,zawgyi,unicode converter,zawgyi to unicode,unicode to zawgyi,zawgyi unicode,font converter,myanmar tools,myanmar,unicode,converter,dagonmetric',
                 socialTitle: "Let's Convert Zawgyi / Unicode Effortlessly",
                 socialDescription: "Free, open source and the world's most intelligent accurate Zawgyi Unicode converter is here!"
             }
