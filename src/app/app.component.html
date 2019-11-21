@@ -14,15 +14,15 @@
     <mat-sidenav #sidenav class="app-sidenav" position="end" [opened]="(isScreenSmall | async) ? false : true"
         [mode]="(isScreenSmall | async) ? 'over' : 'side'" [fixedInViewport]="(isScreenSmall | async) ? true : false">
         <mat-nav-list>
-            <h3 *ngIf="communityLinksVisible" mat-subheader>Community and Links</h3>
+            <h3 mat-subheader>Community and Links</h3>
             <a mat-list-item *ngFor="let communityLink of communityLinks" [href]="communityLink.url" target="_blank"
-                rel="noopener nofollow">
+                rel="noopener" [title]="communityLink.title">
                 <mat-icon mat-list-icon [svgIcon]="communityLink.iconName"></mat-icon>
                 <p matLine>
                     {{communityLink.label}}
                 </p>
             </a>
-            <mat-divider *ngIf="communityLinksVisible"></mat-divider>
+            <mat-divider></mat-divider>
 
             <h3 mat-subheader>Info and Support</h3>
             <a mat-list-item routerLink="about">
@@ -35,12 +35,6 @@
                 <mat-icon mat-list-icon svgIcon="help"></mat-icon>
                 <p matLine>
                     Support
-                </p>
-            </a>
-            <a mat-list-item routerLink="/" (click)="openSharing()">
-                <mat-icon mat-list-icon svgIcon="share"></mat-icon>
-                <p matLine>
-                    Share
                 </p>
             </a>
         </mat-nav-list>
