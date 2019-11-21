@@ -1,0 +1,10 @@
+<div class="sponsor-banner">
+    <img class="sponsor-logo" [src]="sponsoredLogoLink" alt="sponsoredName">
+    <div lang="my-MM" class="myanmar-text my-uni sponsor-text">ဤ Zawgyi Unicode Converter ကို <b>{{sponsoredName}}</b>
+        {{sponsoredText}} မှ
+        အဓိက ပံ့ပိုးကူညီထားသည်။</div>
+</div>
+<a [href]="sponsoredLink" mat-button (click)="openLink($event)" target="_blank" rel="noopener nofollow">
+    {{sponsoredLinkText}}
+</a>
+<button type="button" mat-button (click)="dismissSheet()">CLOSE</button>
