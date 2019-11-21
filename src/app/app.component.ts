@@ -175,7 +175,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 }),
                 takeUntil(this._onDestroy)
             )
-            .subscribe((routeData: { pagePath?: string; pageType?: string, meta?: { [key: string]: string } }) => {
+            .subscribe((routeData: { pagePath?: string; pageType?: string; meta?: { [key: string]: string } }) => {
                 this.isHomePage = routeData.pageType === 'home-page' ? true : false;
                 this.updateMeta(routeData);
 
