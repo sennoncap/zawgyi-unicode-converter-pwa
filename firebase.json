@@ -10,7 +10,7 @@
     ],
     "rewrites": [
       {
-        "source": "**/!(*.@(js|html|css|json|svg|png|jpg|jpeg|xml|txt|ico))",
+        "source": "**/!(*.@(js|html|css|json|svg|png|gif|jpg|jpeg|webp|eot|otf|ttf|ttc|woff|woff2|xml|txt|ico))",
         "destination": "/index.html"
       }
     ],
@@ -19,6 +19,18 @@
         "source": "**/*.@(gif|jpg|jpeg|png|svg|webp|eot|otf|ttf|ttc|woff|woff2)",
         "headers": [
           {"key": "Cache-Control", "value": "max-age=86400"}
+        ]
+      },
+      {
+        "source": "**/assets/appicons/logo.png",
+        "headers": [
+          {"key": "Cache-Control", "value": "max-age=2592000"}
+        ]
+      },
+      {
+        "source": "**/*.+([0-9a-f]).@(css|js|woff2)",
+        "headers": [
+          {"key": "Cache-Control", "value": "max-age=2592000"}
         ]
       }
     ]
