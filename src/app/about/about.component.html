@@ -3,19 +3,21 @@
     Zawgyi Unicode Converter - About</h1>
 
 <mat-card class="about-card">
-    <mat-card-header>
-        <mat-icon svgIcon="logo-app" mat-card-avatar color="primary">
-        </mat-icon>
-        <mat-card-title>{{appName}}</mat-card-title>
-        <mat-card-subtitle>The world's most intelligent & accurate</mat-card-subtitle>
-    </mat-card-header>
-    <div mat-dialog-content>
+    <div matDialogTitle>
+        <mat-card-header>
+            <mat-icon svgIcon="logo-app" mat-card-avatar color="primary">
+            </mat-icon>
+            <mat-card-title>{{appName}}</mat-card-title>
+        </mat-card-header>
+    </div>
+    <div matDialogContent>
         <img cdkFocusInitial mat-card-image [src]="imageUrl"
             alt="Zawgyi Unicode Converter - The world's most intelligent accurate converter">
         <mat-card-content>
-            <mat-grid-list cols="2" rowHeight="1.8rem">
-                <mat-grid-tile><b>Version</b></mat-grid-tile>
-                <mat-grid-tile><b>Updated</b></mat-grid-tile>
+            <p>The world’s most intelligent accurate free and opensource Zawgyi Unicode converter is here!</p>
+            <mat-grid-list cols="2" rowHeight="2rem">
+                <mat-grid-tile>Version</mat-grid-tile>
+                <mat-grid-tile>Updated</mat-grid-tile>
                 <mat-grid-tile>{{appVersion}}</mat-grid-tile>
                 <mat-grid-tile>{{releaseDate | date:'MMMM d, y'}}</mat-grid-tile>
             </mat-grid-list>
@@ -57,7 +59,7 @@
                     <p><b>Community နှင့် အသုံးဝင်နိုင်မည့် Link များ</b></p>
                     <mat-nav-list>
                         <a mat-list-item [href]="navLink.url" *ngFor="let navLink of navLinks" target="_blank"
-                            rel="noopener nofollow">
+                            rel="noopener">
                             <mat-icon mat-list-icon [svgIcon]="navLink.iconName"></mat-icon>
                             <p matLine>
                                 {{navLink.label}}
@@ -71,7 +73,7 @@
             </div>
         </mat-card-content>
     </div>
-    <mat-card-actions mat-dialog-actions>
+    <mat-card-actions matDialogActions>
         <button type="button" mat-button (click)="openSharing()">SHARE</button>
         <button type="button" mat-button mat-dialog-close>CLOSE</button>
     </mat-card-actions>
