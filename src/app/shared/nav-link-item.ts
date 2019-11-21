@@ -9,6 +9,8 @@
 export interface NavLinkItem {
     url: string;
     label?: string;
+    title?: string;
     iconName?: string;
     imageUrl?: string;
+    expanded?: boolean;
 }
