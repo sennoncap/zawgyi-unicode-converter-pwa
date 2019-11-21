@@ -12,6 +12,19 @@ $mat-card-header-size: 40px !default;
     // overflow-x: hidden;
 }
 
+.mat-dialog-title {
+    margin: 0;
+
+    .mat-card-title {
+        white-space: nowrap;
+
+        @media screen and (max-width: 500px) {
+            font-size: 16px;
+            line-height: 22px;
+        }
+    }
+}
+
 .mat-dialog-content {
     margin: 0 -16px;
     padding: 0 16px;
