@@ -28,10 +28,16 @@ $mat-card-header-size: 40px !default;
 .mat-dialog-content {
     margin: 0 -16px;
     padding: 0 16px;
+}
 
+.mat-grid-tile .mat-figure {
+    justify-content: left;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.dark {
     .mat-grid-tile .mat-figure {
-        justify-content: left;
-        background: rgba(0, 0, 0, 0.1);
+        background: rgba(255, 255, 255, 0.05);
     }
 }
 
