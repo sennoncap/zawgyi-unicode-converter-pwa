@@ -20,7 +20,7 @@ import { AppConfig } from '../app-config';
  * App sponsor component.
  */
 @Component({
-    selector: 'app-sponsor-banner-sheet.component',
+    selector: 'app-sponsor-banner-sheet',
     templateUrl: './sponsor-banner-sheet.component.html',
     styleUrls: ['./sponsor-banner-sheet.component.scss']
 })
