@@ -24,6 +24,7 @@ import { SwUpdate } from '@angular/service-worker';
 
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -40,6 +41,7 @@ import { LinkService } from '../modules/seo';
 import { AppConfig } from './shared/app-config';
 import { NavLinkItem } from './shared/nav-link-item';
 import { PageTitleService } from './shared/page-title';
+import { SocialSharingSheetComponent } from './shared/social-sharing-sheet';
 import { UrlHelper } from './shared/url-helper';
 
 const SMALL_WIDTH_BREAKPOINT = 720;
@@ -101,7 +103,7 @@ export class AppComponent implements OnInit, OnDestroy {
         if (this._isBrowser && this._appUsedCount > 0) {
             return this._appConfig.navLinks;
         } else {
-            return this._appConfig.navLinks.filter(navLink => navLink.expanded);
+            return this._appConfig.navLinks.filter(navLink => navLink.expanded === true);
         }
     }
 
@@ -135,6 +137,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private readonly _metaService: Meta,
         private readonly _router: Router,
         private readonly _activatedRoute: ActivatedRoute,
+        private readonly _bottomSheet: MatBottomSheet,
         configService: ConfigService,
         breakpointObserver: BreakpointObserver) {
         this._isBrowser = isPlatformBrowser(platformId);
@@ -173,7 +176,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 takeUntil(this._onDestroy)
             )
             .subscribe((routeData: { pagePath?: string; pageType?: string, meta?: { [key: string]: string } }) => {
-                this.isHomePage = routeData && routeData.pageType === 'home-page' ? true : false;
+                this.isHomePage = routeData.pageType === 'home-page' ? true : false;
                 this.updateMeta(routeData);
 
                 if (routeData) {
@@ -183,24 +186,32 @@ export class AppComponent implements OnInit, OnDestroy {
 
                 this._logService.trackPageView({
                     name: this._pageTitleService.title,
-                    uri: !this._isFirstNavigation && routeData && routeData.pagePath ? routeData.pagePath : undefined,
-                    page_type: routeData && routeData.pageType ? routeData.pageType : undefined,
+                    uri: !this._isFirstNavigation && routeData.pagePath ? routeData.pagePath : undefined,
+                    page_type: routeData.pageType ? routeData.pageType : undefined,
                     properties: {
                         app_version: this._appConfig.appVersion
                     }
                 });
 
-                if (!this._aboutPageNavigated && this._isBrowser && routeData && routeData.pageType === 'about-page') {
+                if (!this._aboutPageNavigated && this._isBrowser && routeData.pageType === 'about-page') {
                     this._aboutPageNavigated = true;
                 }
 
-                if (this._isBrowser && routeData && routeData.pageType === 'home-page' &&
+                if (this._isBrowser && this.isHomePage &&
                     this._isFirstNavigation && this.isNewAppUpdated()) {
                     this._isFirstNavigation = false;
                     this.increaseAppUsedCount();
 
                     // tslint:disable-next-line: no-floating-promises
                     this._router.navigate(['/about'], { relativeTo: this._activatedRoute });
+                } else if (this._isBrowser && this.isHomePage &&
+                    this._isFirstNavigation && this.shouldShowSocialSharingSheet()) {
+                    this._isFirstNavigation = false;
+                    this.increaseAppUsedCount();
+
+                    this._cacheService.setItem('socialSharingSheetShownIn', this._appUsedCount);
+
+                    this._bottomSheet.open(SocialSharingSheetComponent);
                 } else if (this._isFirstNavigation) {
                     this._isFirstNavigation = false;
                     this.increaseAppUsedCount();
@@ -240,46 +251,6 @@ export class AppComponent implements OnInit, OnDestroy {
                 }
             });
         });
-    }
-
-    openSharing(): void {
-        this._appConfig.socialSharing = this._appConfig.socialSharing || {};
-
-        const socialSharingSubject = this._appConfig.socialSharing.subject;
-        const socialSharingLink = this._appConfig.socialSharing.linkUrl;
-        const socialSharingMessage = this._appConfig.socialSharing.message;
-
-        // tslint:disable-next-line: no-any
-        if (typeof navigator === 'object' && (navigator as any).share) {
-            // tslint:disable-next-line: no-any no-unsafe-any
-            (navigator as any).share({
-                title: socialSharingSubject,
-                text: socialSharingMessage,
-                url: socialSharingLink
-            }).then(() => {
-                this._logService.trackEvent({
-                    name: 'share',
-                    properties: {
-                        method: 'Web Share API',
-                        app_version: this._appConfig.appVersion,
-                        app_platform: 'web'
-                    }
-                });
-                this.showThankYouMessage();
-            }).catch((err: Error) => {
-                const errMsg = err && err.message ? ` ${err.message}` : '';
-                this._logService.error(`An error occurs when sharing via Web API.${errMsg}`, {
-                    properties: {
-                        app_version: this._appConfig.appVersion,
-                        app_platform: 'web'
-                    }
-                });
-
-                this.shareTofacebook();
-            });
-        } else {
-            this.shareTofacebook();
-        }
     }
 
     private updateMeta(routeData: { pagePath?: string; pageType?: string; meta?: { [key: string]: string } }): void {
@@ -330,48 +301,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this._metaService.updateTag({
             name: 'keywords',
             content: keywords
-        });
-    }
-
-    private shareTofacebook(): void {
-        this._appConfig.socialSharing = this._appConfig.socialSharing || {};
-
-        const appId = this._appConfig.facebookAppId || '';
-        const socialSharingLink = this._appConfig.socialSharing.linkUrl || '';
-        const socialSharingMessage = this._appConfig.socialSharing.message || '';
-
-        let urlString = 'https://www.facebook.com/dialog/share?';
-        urlString += `&app_id=${encodeURIComponent(appId)}`;
-        // urlString += `&redirect_uri=${encodeURIComponent(socialSharingLink)}`;
-        urlString += `&href=${encodeURIComponent(socialSharingLink)}`;
-        urlString += `&quote=${encodeURIComponent(socialSharingMessage)}`;
-        // urlString += `&display=${encodeURIComponent('popup')}`;
-
-        const winWidth = 557;
-        const winHeight = 690;
-        const winTop = (window.innerHeight - winHeight) / 2; // (screen.height / 2) - (winHeight / 2);
-        const winLeft = (window.innerWidth - winWidth) / 2; // (screen.width / 2) - (winWidth / 2);
-
-        window.open(
-            urlString,
-            'Facebook',
-            `toolbar=0,status=0,resizable=yes,width=${winWidth},height=${winHeight},top=${winTop},left=${winLeft}`);
-
-        this._logService.trackEvent({
-            name: 'share',
-            properties: {
-                method: 'Facebook Share Dialog',
-                app_version: this._appConfig.appVersion,
-                app_platform: 'web'
-            }
-        });
-
-        this.showThankYouMessage();
-    }
-
-    private showThankYouMessage(): void {
-        this._snackBar.open('Thank you for sharing 😄.', undefined, {
-            duration: 3000
         });
     }
 
@@ -512,4 +441,52 @@ export class AppComponent implements OnInit, OnDestroy {
 
         this._cacheService.setItem(`appUsedCount-v${this._appConfig.appVersion}`, `${this._appUsedCount + 1}`);
     }
+
+    private shouldShowSocialSharingSheet(): boolean {
+        if (this._appUsedCount < 3 || typeof navigator !== 'object' || !navigator.onLine) {
+            return false;
+        }
+
+        const socialSharingYesButtonPressed = this._cacheService.getItem<boolean>('socialSharingYesButtonPressed');
+        if (socialSharingYesButtonPressed) {
+            return false;
+        }
+
+        const socialSharingNoButtonPressed = this._cacheService.getItem<boolean>('socialSharingNoButtonPressed');
+        if (socialSharingNoButtonPressed) {
+            return false;
+        }
+
+        const socialSharingSheetShownIn = this._cacheService.getItem<number>('socialSharingSheetShownIn');
+
+        if (socialSharingSheetShownIn && this._appUsedCount < socialSharingSheetShownIn + 7) {
+            return false;
+        }
+
+        return true;
+    }
+
+    // private shouldShowSponsorSheet(): boolean {
+    //     if (this._appUsedCount < 1000) {
+    //         return false;
+    //     }
+
+    //     const sponsoredLinkPressed = this._cacheService.getItem<boolean>('sponsoredLinkPressed');
+    //     if (sponsoredLinkPressed) {
+    //         return false;
+    //     }
+
+    //     const sponsoredLinkDismissed = this._cacheService.getItem<boolean>('sponsoredLinkDismissed');
+    //     if (sponsoredLinkDismissed) {
+    //         return false;
+    //     }
+
+    //     const sponsorSheetShownIn = this._cacheService.getItem<number>('sponsorSheetShownIn');
+
+    //     if (sponsorSheetShownIn && this._appUsedCount < sponsorSheetShownIn + 10) {
+    //         return false;
+    //     }
+
+    //     return true;
+    // }
 }
