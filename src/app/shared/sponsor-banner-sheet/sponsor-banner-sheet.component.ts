@@ -37,7 +37,7 @@ export class SponsorBannerSheetComponent {
         private readonly _bottomSheetRef: MatBottomSheetRef<SponsorBannerSheetComponent>,
         private readonly _logService: LogService,
         private readonly _cacheService: CacheService,
-        configService: ConfigService, ) {
+        configService: ConfigService) {
         this._appConfig = configService.getValue<AppConfig>('app');
     }
 
