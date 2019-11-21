@@ -14,6 +14,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { OverlayModule } from '@angular/cdk/overlay';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
@@ -47,6 +48,9 @@ import { AppConfig } from './shared/app-config';
 import { PageTitleService } from './shared/page-title';
 import { UrlHelper } from './shared/url-helper';
 
+import { SocialSharingSheetComponent } from './shared/social-sharing-sheet';
+import { SponsorBannerSheetComponent } from './shared/sponsor-banner-sheet';
+
 import { AboutComponent, AboutDialogHandlerComponent } from './about';
 import { HomeComponent } from './home';
 import { PrivacyComponent, PrivacyDialogHandlerComponent } from './privacy';
@@ -63,7 +67,12 @@ export const appRoutes: Routes = [
         component: HomeComponent,
         // pathMatch: 'full',
         data: {
-            pageType: 'home-page'
+            pageType: 'home-page',
+            meta: {
+                keywords: 'zawgyi unicode converter,zawgyi,unicode converter,zawgyi to unicode,unicode to zawgyi,font converter,myanmar tools,myanmar unicode,unicode,converter',
+                socialTitle: "Let's Convert Zawgyi / Unicode Effortlessly",
+                socialDescription: "Free, open source and the world's most intelligent accurate Zawgyi Unicode converter is here!"
+            }
         },
         children: [
             {
@@ -71,7 +80,11 @@ export const appRoutes: Routes = [
                 component: AboutDialogHandlerComponent,
                 data: {
                     pageType: 'about-page',
-                    screenName: 'About'
+                    meta: {
+                        title: 'Zawgyi Unicode Converter - About',
+                        description: 'The world’s most intelligent accurate free and opensource Zawgyi Unicode converter is here!',
+                        keywords: 'zawgyi unicode converter,intelligent,accurate,free and opensource'
+                    }
                 }
             },
             {
@@ -79,7 +92,11 @@ export const appRoutes: Routes = [
                 component: SupportDialogHandlerComponent,
                 data: {
                     pageType: 'support-page',
-                    screenName: 'Support'
+                    meta: {
+                        title: 'Zawgyi Unicode Converter - Support',
+                        description: 'We use the following channels for general feedback and discussions. Facebook Messenger Gitter GitHub Issues',
+                        keywords: 'zawgyi unicode converter,support,feedback'
+                    }
                 }
             },
             {
@@ -87,7 +104,11 @@ export const appRoutes: Routes = [
                 component: PrivacyDialogHandlerComponent,
                 data: {
                     pageType: 'privacy-page',
-                    screenName: 'Privacy'
+                    meta: {
+                        title: 'Zawgyi Unicode Converter - Privacy',
+                        description: 'Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect or otherwise handle your Personally Identifiable Information in accordance with this app - Zawgyi Unicode Converter.',
+                        keywords: 'zawgyi unicode converter,privacy'
+                    }
                 }
             }
         ]
@@ -104,29 +125,35 @@ export const settings: { app: AppConfig } = {
         baseUrl: 'https://zawgyi-unicode-converter.myanmartools.org/',
         navLinks: [
             {
+                url: 'https://myanmartools.org',
+                label: 'Myanmar Tools',
+                title: 'Explore more Myanmar Tools',
+                iconName: 'logo-myanmartools',
+                expanded: true
+            },
+            {
                 url: 'https://www.facebook.com/DagonMetric',
                 label: 'Facebook',
+                title: 'Learn more on Facebook',
                 iconName: 'logo-facebook'
             },
             {
                 url: 'https://www.youtube.com/channel/UCbJLAOU-kG6vkBOU1TSM5Cw',
                 label: 'YouTube',
+                title: 'Watch more on YouTube',
                 iconName: 'logo-youtube'
             },
             {
                 url: 'https://medium.com/myanmartools',
                 label: 'Medium',
+                title: 'Articles on Medium',
                 iconName: 'logo-medium'
             },
             {
                 url: 'https://github.com/myanmartools/zawgyi-unicode-converter-web',
                 label: 'GitHub',
+                title: 'Source code on GitHub',
                 iconName: 'logo-github'
-            },
-            {
-                url: 'https://myanmartools.org',
-                label: 'Myanmar Tools',
-                iconName: 'logo-myanmartools'
             }
         ],
         socialSharing: {
@@ -165,7 +192,9 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
         PrivacyComponent,
         PrivacyDialogHandlerComponent,
         SupportComponent,
-        SupportDialogHandlerComponent
+        SupportDialogHandlerComponent,
+        SocialSharingSheetComponent,
+        SponsorBannerSheetComponent
     ],
     imports: [
         CommonModule,
@@ -174,6 +203,7 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
 
         OverlayModule,
         FlexLayoutModule,
+        MatBottomSheetModule,
         MatButtonModule,
         MatButtonToggleModule,
         MatCardModule,
@@ -234,7 +264,9 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
     entryComponents: [
         AboutComponent,
         PrivacyComponent,
-        SupportComponent
+        SupportComponent,
+        SocialSharingSheetComponent,
+        SponsorBannerSheetComponent
     ],
     bootstrap: [AppComponent]
 })
