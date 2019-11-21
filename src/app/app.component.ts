@@ -97,12 +97,12 @@ export class AppComponent implements OnInit, OnDestroy {
         return environment.production ? this._urlHelper.toAbsoluteUrl(this._logoUrl) : this._logoUrl;
     }
 
-    get communityLinksVisible(): boolean {
-        return this._isBrowser && this._appUsedCount > 0 ? true : false;
-    }
-
     get communityLinks(): NavLinkItem[] {
-        return this.communityLinksVisible ? this._appConfig.navLinks : [];
+        if (this._isBrowser && this._appUsedCount > 0) {
+            return this._appConfig.navLinks;
+        } else {
+            return this._appConfig.navLinks.filter(navLink => navLink.expanded);
+        }
     }
 
     get aboutSectionVisible(): boolean {
@@ -130,12 +130,12 @@ export class AppComponent implements OnInit, OnDestroy {
         private readonly _cacheService: CacheService,
         private readonly _overlayContainer: OverlayContainer,
         private readonly _urlHelper: UrlHelper,
-        configService: ConfigService,
-        pageTitleService: PageTitleService,
-        linkService: LinkService,
-        metaService: Meta,
+        private readonly _pageTitleService: PageTitleService,
+        private readonly _linkService: LinkService,
+        private readonly _metaService: Meta,
         private readonly _router: Router,
         private readonly _activatedRoute: ActivatedRoute,
+        configService: ConfigService,
         breakpointObserver: BreakpointObserver) {
         this._isBrowser = isPlatformBrowser(platformId);
         this._appConfig = configService.getValue<AppConfig>('app');
@@ -161,50 +161,28 @@ export class AppComponent implements OnInit, OnDestroy {
                     }
 
                     if (!child) {
-                        return undefined;
+                        return {};
                     }
 
                     return {
                         pagePath: event.urlAfterRedirects,
-                        screenName: child.snapshot.data.screenName,
-                        pageType: child.snapshot.data.pageType
+                        pageType: child.snapshot.data.pageType,
+                        meta: child.snapshot.data.meta
                     };
                 }),
                 takeUntil(this._onDestroy)
             )
-            .subscribe((routeData?: { pagePath: string; screenName?: string; pageType?: string }) => {
+            .subscribe((routeData: { pagePath?: string; pageType?: string, meta?: { [key: string]: string } }) => {
                 this.isHomePage = routeData && routeData.pageType === 'home-page' ? true : false;
-
-                if (routeData && routeData.screenName && routeData.pageType !== 'home-page') {
-                    pageTitleService.setTitle(routeData.screenName, '-');
-                } else {
-                    pageTitleService.setTitle(this.appTitleFull, undefined, true);
-                }
-
-                if (routeData && routeData.pagePath) {
-                    const urlAbs = this._urlHelper.toAbsoluteUrl(routeData.pagePath);
-
-                    // Set canonical link
-                    linkService.updateTag({
-                        rel: 'canonical',
-                        href: urlAbs
-                    });
-
-                    metaService.updateTag({
-                        property: 'og:url',
-                        content: urlAbs
-                    });
-                }
+                this.updateMeta(routeData);
 
                 if (routeData) {
                     this._pageClass = routeData.pageType;
                     this.updateComponentClass();
                 }
 
-                const currentTitle = pageTitleService.title;
-
                 this._logService.trackPageView({
-                    name: currentTitle,
+                    name: this._pageTitleService.title,
                     uri: !this._isFirstNavigation && routeData && routeData.pagePath ? routeData.pagePath : undefined,
                     page_type: routeData && routeData.pageType ? routeData.pageType : undefined,
                     properties: {
@@ -302,6 +280,57 @@ export class AppComponent implements OnInit, OnDestroy {
         } else {
             this.shareTofacebook();
         }
+    }
+
+    private updateMeta(routeData: { pagePath?: string; pageType?: string; meta?: { [key: string]: string } }): void {
+        if (routeData.pagePath) {
+            const url = this._urlHelper.toAbsoluteUrl(routeData.pagePath);
+
+            this._linkService.updateTag({
+                rel: 'canonical',
+                href: url
+            });
+
+            this._metaService.updateTag({
+                property: 'og:url',
+                content: url
+            });
+        }
+
+        const pageTitle = routeData.meta && routeData.meta.title ? routeData.meta.title : this.appTitleFull;
+        this._pageTitleService.setTitle(pageTitle, undefined, true);
+
+        const socialTitle = routeData.meta && routeData.meta.socialTitle ? routeData.meta.socialTitle : pageTitle;
+        this._metaService.updateTag({
+            name: 'twitter:title',
+            content: socialTitle
+        });
+        this._metaService.updateTag({
+            property: 'og:title',
+            content: socialTitle
+        });
+
+        const metaDescription = routeData.meta && routeData.meta.description ? routeData.meta.description : this._appConfig.appDescription;
+        this._metaService.updateTag({
+            name: 'description',
+            content: metaDescription
+        });
+
+        const socialDescription = routeData.meta && routeData.meta.socialDescription ? routeData.meta.socialDescription : metaDescription;
+        this._metaService.updateTag({
+            name: 'twitter:description',
+            content: socialDescription
+        });
+        this._metaService.updateTag({
+            property: 'og:description',
+            content: socialDescription
+        });
+
+        const keywords = routeData.meta && routeData.meta.keywords ? routeData.meta.keywords : this._appConfig.appName;
+        this._metaService.updateTag({
+            name: 'keywords',
+            content: keywords
+        });
     }
 
     private shareTofacebook(): void {
