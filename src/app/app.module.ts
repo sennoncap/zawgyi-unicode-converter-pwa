@@ -118,8 +118,8 @@ export const appRoutes: Routes = [
 
 export const settings: { app: AppConfig } = {
     app: {
-        appVersion: '3.2.0',
-        releaseDateUtc: '2019-11-20T17:18:57Z',
+        appVersion: '3.3.0',
+        releaseDateUtc: '2019-11-21T16:11:55Z',
         appName: 'Zawgyi Unicode Converter',
         appDescription: 'Zawgyi Unicode Converter is a free & open source Zawgyi to Unicode or Unicode to Zawgyi online / offline font converter by DagonMetric Myanmar Tools team.',
         baseUrl: 'https://zawgyi-unicode-converter.myanmartools.org/',
