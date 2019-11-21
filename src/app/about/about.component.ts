@@ -8,8 +8,10 @@
 
 import { Component, ViewEncapsulation } from '@angular/core';
 
+import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { CacheService } from '@dagonmetric/ng-cache';
 import { ConfigService } from '@dagonmetric/ng-config';
 import { LogService } from '@dagonmetric/ng-log';
 
@@ -58,7 +60,9 @@ export class AboutComponent {
     private readonly _appConfig: AppConfig;
 
     constructor(
+        private readonly _dialogRef: MatDialogRef<AboutComponent>,
         private readonly _logService: LogService,
+        private readonly _cacheService: CacheService,
         private readonly _snackBar: MatSnackBar,
         private readonly _urlHelper: UrlHelper,
         configService: ConfigService) {
@@ -88,7 +92,7 @@ export class AboutComponent {
                         app_platform: 'web'
                     }
                 });
-                this.showThankYouMessage();
+                this.closeDialogAndShowThankYouMessage();
             }).catch((err: Error) => {
                 const errMsg = err && err.message ? ` ${err.message}` : '';
                 this._logService.error(`An error occurs when sharing via Web API.${errMsg}`, {
@@ -137,10 +141,14 @@ export class AboutComponent {
             }
         });
 
-        this.showThankYouMessage();
+        this.closeDialogAndShowThankYouMessage();
     }
 
-    private showThankYouMessage(): void {
+    private closeDialogAndShowThankYouMessage(): void {
+        this._cacheService.setItem('socialSharingYesButtonPressed', true);
+
+        this._dialogRef.close();
+
         this._snackBar.open('Thank you for sharing 😄.', undefined, {
             duration: 3000
         });
