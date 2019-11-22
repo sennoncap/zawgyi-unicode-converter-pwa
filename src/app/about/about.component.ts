@@ -45,10 +45,6 @@ export class AboutComponent {
         return new Date(this._appConfig.releaseDateUtc);
     }
 
-    get appDescription(): string | undefined {
-        return this._appConfig.appDescription;
-    }
-
     get navLinks(): NavLinkItem[] {
         return this._appConfig.navLinks;
     }
