@@ -82,8 +82,8 @@ export const appRoutes: Routes = [
                     pageType: 'about-page',
                     meta: {
                         title: 'Zawgyi Unicode Converter - About',
-                        description: 'The world’s most intelligent accurate free and opensource Zawgyi Unicode converter is here!',
-                        keywords: 'zawgyi unicode converter,intelligent,accurate,free and opensource'
+                        description: "The world's most intelligent and accurate Zawgyi Unicode converter like never before!",
+                        keywords: 'zawgyi unicode converter,intelligent,accurate,about'
                     }
                 }
             },
