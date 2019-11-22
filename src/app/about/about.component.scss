@@ -1,15 +1,9 @@
-$mat-card-padding: 16px !default;
-$mat-card-border-radius: 4px !default;
-$mat-card-header-size: 40px !default;
-
+.about-dialog-container .mat-dialog-container {
+    padding: 0;
+}
 
 .about-card {
     max-width: 620px;
-}
-
-.about-dialog-container .mat-dialog-container {
-    padding: 0;
-    // overflow-x: hidden;
 }
 
 .mat-dialog-title {
@@ -28,20 +22,16 @@ $mat-card-header-size: 40px !default;
 .mat-dialog-content {
     margin: 0 -16px;
     padding: 0 16px;
-}
 
-.mat-grid-tile .mat-figure {
-    justify-content: left;
-    background: rgba(0, 0, 0, 0.05);
-}
-
-.dark {
-    .mat-grid-tile .mat-figure {
-        background: rgba(255, 255, 255, 0.05);
+    h2 {
+        font-weight: 600;
+        font-size: 15px;
     }
-}
 
-.about-features {
+    .mat-grid-tile .mat-figure {
+        justify-content: left;
+    }
+
     ul {
         padding: 0;
         margin: 0;
@@ -76,5 +66,15 @@ $mat-card-header-size: 40px !default;
                 color: #000000 !important;
               }
         }
+    }
+}
+
+.mat-grid-tile .mat-figure {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.dark {
+    .mat-grid-tile .mat-figure {
+        background: rgba(255, 255, 255, 0.05);
     }
 }
