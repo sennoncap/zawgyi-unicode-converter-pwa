@@ -11,6 +11,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { ConfigService } from '@dagonmetric/ng-config';
 
 import { AppConfig } from '../shared/app-config';
+
 /**
  * App privacy statement component.
  */
