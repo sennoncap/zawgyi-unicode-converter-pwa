@@ -400,6 +400,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
         let foundOldVer = false;
         const oldVersions = [
+            '3.3.0',
+            '3.2.0',
             '3.1.0',
             '3.0.0',
             '2.0.7',
