@@ -83,7 +83,7 @@ export const appRoutes: Routes = [
                     meta: {
                         title: 'Zawgyi Unicode Converter - About',
                         description: "The world's most intelligent and accurate Zawgyi Unicode converter like never before!",
-                        keywords: 'zawgyi unicode converter,intelligent,accurate,about'
+                        keywords: 'zawgyi unicode converter,free,open source,intelligent,accurate,about'
                     }
                 }
             },
@@ -106,7 +106,7 @@ export const appRoutes: Routes = [
                     pageType: 'privacy-page',
                     meta: {
                         title: 'Zawgyi Unicode Converter - Privacy',
-                        description: 'Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect or otherwise handle your Personally Identifiable Information in accordance with this app - Zawgyi Unicode Converter.',
+                        description: 'Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect or handle your Personally Identifiable Information with this app - Zawgyi Unicode Converter.',
                         keywords: 'zawgyi unicode converter,privacy'
                     }
                 }
