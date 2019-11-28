@@ -60,4 +60,17 @@ $footer-section-ani-duration: 2s;
     .app-footer {
         color: mat-color($foreground, secondary-text);
     }
+
+    a.see-more-btn {
+        color: inherit;
+        text-decoration: none;
+        outline: none;
+
+        .mat-icon {
+            width: 14px;
+            height: 14px;
+            line-height: 14px;
+            margin-left: 5px;
+        }
+    }
 }
