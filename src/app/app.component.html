@@ -1,9 +1,8 @@
 <mat-toolbar color="primary" class="app-header" role="banner">
     <a mat-icon-button class="app-header-logo" routerLink="/" [attr.aria-label]="appTitleFull">
-        <!-- <mat-icon svgIcon="logo-app"></mat-icon> -->
         <img [src]="logoUrl" alt="appTitleFull" role="presentation" aria-hidden="true">
     </a>
-    <h1 role="presentation" aria-hidden="true" *ngIf="isHomePage">{{(isScreenSmall | async) ? appTitle : appTitleFull}}
+    <h1 role="presentation" aria-hidden="true" *ngIf="isHomePage">{{appTitle}}
     </h1>
     <div class="flex-spacer" fxFlex="1 1 auto"></div>
     <button type="button" mat-icon-button (click)="toggleSideNav()" aria-label="Toggle drawer menu">
@@ -68,7 +67,7 @@
         <router-outlet></router-outlet>
         <div class="container about-section">
             <div class="description" fxLayout="column" role="presentation" *ngIf="aboutSectionVisible">
-                <h2>Convert Zawgyi to Unicode or Unicode to Zawgyi effortlessly!</h2>
+                <h2>Intelligent Accurate Cross Platform App</h2>
                 <p>{{appDescription}}</p>
                 <div>Version: {{appVersion}}</div>
                 <div lang="my-MM" class="myanmar-text my-uni">
