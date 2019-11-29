@@ -84,7 +84,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     get appTitleFull(): string {
-        return `${this.appTitle} | Myanmar Tools`;
+        return `${this.appTitle} - Intelligent Accurate Cross Platform App`;
     }
 
     get appVersion(): string {
@@ -100,7 +100,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     get communityLinks(): NavLinkItem[] {
-        if (this._isBrowser && this._appUsedCount > 0) {
+        if (this._isAppUsedBefore) {
             return this._appConfig.navLinks;
         } else {
             return this._appConfig.navLinks.filter(navLink => navLink.expanded === true);
@@ -108,15 +108,17 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     get aboutSectionVisible(): boolean {
-        return this._appUsedCount < 1 && this.isHomePage && !this._aboutPageNavigated ? true : false;
+        return this.isHomePage && !this._isAppUsedBefore && !this._aboutPageNavigated ? true : false;
     }
 
     private readonly _logoUrl = 'assets/appicons/logo.png';
     private readonly _isBrowser: boolean;
-    private readonly _appUsedCount: number = 0;
+    private readonly _curVerAppUsedCount: number = 0;
+    private readonly _isAppUsedBefore: boolean = false;
     private readonly _checkInterval = 1000 * 60 * 60 * 6;
     private readonly _appConfig: AppConfig;
     private readonly _onDestroy = new Subject<void>();
+
     private _isFirstNavigation = true;
     private _pageClass?: string;
     private _themeClass?: string;
@@ -144,10 +146,8 @@ export class AppComponent implements OnInit, OnDestroy {
         this._appConfig = configService.getValue<AppConfig>('app');
 
         if (this._isBrowser) {
-            const appUsedCountStr = this._cacheService.getItem<string>(`appUsedCount-v${this._appConfig.appVersion}`);
-            if (appUsedCountStr) {
-                this._appUsedCount = parseInt(appUsedCountStr, 10);
-            }
+            this._curVerAppUsedCount = this.getCurVerAppUsedCount();
+            this._isAppUsedBefore = this.checkAppUsedBefore();
 
             this.detectDarkTheme();
         }
@@ -198,18 +198,21 @@ export class AppComponent implements OnInit, OnDestroy {
                 }
 
                 if (this._isBrowser && this.isHomePage &&
-                    this._isFirstNavigation && this.isNewAppUpdated()) {
+                    this._isFirstNavigation &&
+                    this._curVerAppUsedCount === 0 &&
+                    this._isAppUsedBefore) {
                     this._isFirstNavigation = false;
                     this.increaseAppUsedCount();
 
                     // tslint:disable-next-line: no-floating-promises
                     this._router.navigate(['/about'], { relativeTo: this._activatedRoute });
                 } else if (this._isBrowser && this.isHomePage &&
-                    this._isFirstNavigation && this.shouldShowSocialSharingSheet()) {
+                    this._isFirstNavigation &&
+                    this.shouldShowSocialSharingSheet()) {
                     this._isFirstNavigation = false;
                     this.increaseAppUsedCount();
 
-                    this._cacheService.setItem('socialSharingSheetShownIn', this._appUsedCount);
+                    this._cacheService.setItem('socialSharingSheetShownIn', this._curVerAppUsedCount);
 
                     this._bottomSheet.open(SocialSharingSheetComponent);
                 } else if (this._isFirstNavigation) {
@@ -393,13 +396,32 @@ export class AppComponent implements OnInit, OnDestroy {
         this._overlayContainer.getContainerElement().classList.toggle('dark', isDark);
     }
 
-    private isNewAppUpdated(): boolean {
+    private getCurVerAppUsedCount(): number {
+        const appUsedCountStr = this._cacheService.getItem<string>(`appUsedCount-v${this._appConfig.appVersion}`);
+        if (appUsedCountStr) {
+            return parseInt(appUsedCountStr, 10);
+        }
+
+        return 0;
+    }
+
+    private checkAppUsedBefore(): boolean {
         if (!this._isBrowser) {
             return false;
         }
 
-        let foundOldVer = false;
+        if (this._curVerAppUsedCount > 0) {
+            return true;
+        }
+
+        const appUsed = this._cacheService.getItem<string>('appUsed');
+
+        if (appUsed === 'true') {
+            return true;
+        }
+
         const oldVersions = [
+            '3.3.3',
             '3.3.2',
             '3.3.1',
             '3.3.0',
@@ -428,14 +450,11 @@ export class AppComponent implements OnInit, OnDestroy {
         for (const ver of oldVersions) {
             const str = this._cacheService.getItem<string>(`appUsedCount-v${ver}`);
             if (str) {
-                foundOldVer = true;
-                break;
+                return true;
             }
         }
 
-        const cachedCurVer = this._cacheService.getItem<string>(`appUsedCount-v${this._appConfig.appVersion}`);
-
-        return foundOldVer && !cachedCurVer ? true : false;
+        return false;
     }
 
     private increaseAppUsedCount(): void {
@@ -443,11 +462,15 @@ export class AppComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this._cacheService.setItem(`appUsedCount-v${this._appConfig.appVersion}`, `${this._appUsedCount + 1}`);
+        this._cacheService.setItem(`appUsedCount-v${this._appConfig.appVersion}`, `${this._curVerAppUsedCount + 1}`);
+
+        if (!this._isAppUsedBefore) {
+            this._cacheService.setItem('appUsed', 'true');
+        }
     }
 
     private shouldShowSocialSharingSheet(): boolean {
-        if (this._appUsedCount < 3 || typeof navigator !== 'object' || !navigator.onLine) {
+        if (this._curVerAppUsedCount < 3 || typeof navigator !== 'object' || !navigator.onLine) {
             return false;
         }
 
@@ -463,34 +486,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
         const socialSharingSheetShownIn = this._cacheService.getItem<number>('socialSharingSheetShownIn');
 
-        if (socialSharingSheetShownIn && this._appUsedCount < socialSharingSheetShownIn + 7) {
+        if (socialSharingSheetShownIn && this._curVerAppUsedCount < socialSharingSheetShownIn + 7) {
             return false;
         }
 
         return true;
     }
-
-    // private shouldShowSponsorSheet(): boolean {
-    //     if (this._appUsedCount < 1000) {
-    //         return false;
-    //     }
-
-    //     const sponsoredLinkPressed = this._cacheService.getItem<boolean>('sponsoredLinkPressed');
-    //     if (sponsoredLinkPressed) {
-    //         return false;
-    //     }
-
-    //     const sponsoredLinkDismissed = this._cacheService.getItem<boolean>('sponsoredLinkDismissed');
-    //     if (sponsoredLinkDismissed) {
-    //         return false;
-    //     }
-
-    //     const sponsorSheetShownIn = this._cacheService.getItem<number>('sponsorSheetShownIn');
-
-    //     if (sponsorSheetShownIn && this._appUsedCount < sponsorSheetShownIn + 10) {
-    //         return false;
-    //     }
-
-    //     return true;
-    // }
 }
