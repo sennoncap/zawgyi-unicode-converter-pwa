@@ -69,7 +69,7 @@ export const appRoutes: Routes = [
         data: {
             pageType: 'home-page',
             meta: {
-                keywords: 'zawgyi unicode converter,zawgyi,unicode converter,zawgyi to unicode,unicode to zawgyi,zawgyi unicode,font converter,myanmar tools,myanmar,unicode,converter,dagonmetric',
+                keywords: 'zawgyi unicode converter,zawgyi unicode converter online,zawgyi,zawgyi to unicode,unicode to zawgyi,zawgyi unicode,myanmar font converter,myanmar tools,myanmar,unicode,converter,dagonmetric',
                 socialTitle: "Let's Convert Zawgyi / Unicode Effortlessly",
                 socialDescription: "Free, open source and the world's most intelligent accurate Zawgyi Unicode converter is here!"
             }
@@ -121,7 +121,7 @@ export const settings: { app: AppConfig } = {
         appVersion: '3.3.3',
         releaseDateUtc: '2019-11-28T14:08:41Z',
         appName: 'Zawgyi Unicode Converter',
-        appDescription: 'Zawgyi Unicode Converter is a free & open source Zawgyi to Unicode or Unicode to Zawgyi online / offline font converter by DagonMetric Myanmar Tools team.',
+        appDescription: 'Zawgyi Unicode Converter is a free & open source Zawgyi to Unicode or Unicode to Zawgyi online / offline Myanmar font converter by DagonMetric Myanmar Tools.',
         baseUrl: 'https://zawgyi-unicode-converter.myanmartools.org/',
         navLinks: [
             {
