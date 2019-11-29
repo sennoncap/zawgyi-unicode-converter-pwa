@@ -1,4 +1,4 @@
-# Zawgyi Unicode Converter Web (Angular PWA)
+# Zawgyi Unicode Converter (Angular PWA)
 
 [![Build Status](https://github.com/myanmartools/zawgyi-unicode-converter-web/workflows/Build/badge.svg)](https://github.com/myanmartools/zawgyi-unicode-converter-web/actions)
 [![Build Status](https://dev.azure.com/myanmartools/zawgyi-unicode-converter-web/_apis/build/status/myanmartools.zawgyi-unicode-converter-web?branchName=master)](https://dev.azure.com/myanmartools/zawgyi-unicode-converter-web/_build/latest?definitionId=8&branchName=master)
