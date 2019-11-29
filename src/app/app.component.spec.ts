@@ -33,10 +33,4 @@ describe('AppComponent', () => {
         const app = fixture.debugElement.componentInstance as AppComponent;
         expect(app.appTitle).toEqual('Zawgyi Unicode Converter');
     });
-
-    it("should have 'appTitleFull'", () => {
-        const fixture = TestBed.createComponent(AppComponent);
-        const app = fixture.debugElement.componentInstance as AppComponent;
-        expect(app.appTitleFull).toEqual('Zawgyi Unicode Converter | Myanmar Tools');
-    });
 });
