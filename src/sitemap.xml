@@ -3,22 +3,22 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
     <loc>https://zawgyi-unicode-converter.myanmartools.org/</loc>
-    <lastmod>2019-11-29T07:20:00+00:00</lastmod>
+    <lastmod>2019-11-29T07:30:00+00:00</lastmod>
     <priority>1.00</priority>
   </url>
   <url>
     <loc>https://zawgyi-unicode-converter.myanmartools.org/about</loc>
-    <lastmod>2019-11-29T07:20:00+00:00</lastmod>
+    <lastmod>2019-11-29T07:30:00+00:00</lastmod>
     <priority>0.50</priority>
   </url>
   <url>
     <loc>https://zawgyi-unicode-converter.myanmartools.org/support</loc>
-    <lastmod>2019-11-29T07:20:00+00:00</lastmod>
+    <lastmod>2019-11-29T07:30:00+00:00</lastmod>
     <priority>0.50</priority>
   </url>
   <url>
     <loc>https://zawgyi-unicode-converter.myanmartools.org/privacy</loc>
-    <lastmod>2019-11-29T07:20:00+00:00</lastmod>
+    <lastmod>2019-11-29T07:30:00+00:00</lastmod>
     <priority>0.20</priority>
   </url>
 </urlset>
