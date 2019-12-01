@@ -11,7 +11,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule, BrowserTransferStateModule } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ServerModule, ServerTransferStateModule } from '@angular/platform-server';
-import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { FlexLayoutServerModule } from '@angular/flex-layout/server';
 import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader';
@@ -35,9 +34,7 @@ import { appId, AppModule } from './app.module';
         ModuleMapLoaderModule,
         NoopAnimationsModule,
 
-        FlexLayoutServerModule,
-
-        ServiceWorkerModule.register('ngsw-worker.js', { enabled: false })
+        FlexLayoutServerModule
     ],
     bootstrap: [AppComponent]
 })
