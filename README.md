@@ -1,7 +1,7 @@
 # Zawgyi Unicode Converter (Angular PWA)
 
-[![Build Status](https://github.com/myanmartools/zawgyi-unicode-converter-web/workflows/Build/badge.svg)](https://github.com/myanmartools/zawgyi-unicode-converter-web/actions)
-[![Build Status](https://dev.azure.com/myanmartools/zawgyi-unicode-converter-web/_apis/build/status/myanmartools.zawgyi-unicode-converter-web?branchName=master)](https://dev.azure.com/myanmartools/zawgyi-unicode-converter-web/_build/latest?definitionId=8&branchName=master)
+[![Build Status](https://github.com/myanmartools/zawgyi-unicode-converter-pwa/workflows/Build/badge.svg)](https://github.com/myanmartools/zawgyi-unicode-converter-pwa/actions)
+[![Build Status](https://dev.azure.com/myanmartools/zawgyi-unicode-converter-pwa/_apis/build/status/myanmartools.zawgyi-unicode-converter-pwa?branchName=master)](https://dev.azure.com/myanmartools/zawgyi-unicode-converter-pwa/_build/latest?definitionId=8&branchName=master)
 [![Gitter](https://badges.gitter.im/myanmartools/community.svg)](https://gitter.im/myanmartools/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Zawgyi Unicode Converter (Myanmar Tools) is a progressive web application (PWA) designed to automatically detect and convert Zawgyi-One and standard Myanmar Unicode written in Angular and Typescript powered by DagonMetric Myanmar Tools team.
@@ -64,8 +64,8 @@ Contact us: opensource@dagonmetric.com
 
 ## Feedback and Contributing
 
-Check out the [Contributing](https://github.com/myanmartools/zawgyi-unicode-converter-web/blob/master/CONTRIBUTING.md) page to see the best places to log issues and start discussions.
+Check out the [Contributing](https://github.com/myanmartools/zawgyi-unicode-converter-pwa/blob/master/CONTRIBUTING.md) page to see the best places to log issues and start discussions.
 
 ## License
 
-This repository is licensed with the [MIT](https://github.com/myanmartools/zawgyi-unicode-converter-web/blob/master/LICENSE) license.
+This repository is licensed with the [MIT](https://github.com/myanmartools/zawgyi-unicode-converter-pwa/blob/master/LICENSE) license.

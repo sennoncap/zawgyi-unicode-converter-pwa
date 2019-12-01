@@ -59,7 +59,7 @@ import { SupportComponent, SupportDialogHandlerComponent } from './support';
 import { AppComponent } from './app.component';
 import { appSvgIconProviders } from './app.svg-icons';
 
-export const appId = 'zawgyi-unicode-converter-web';
+export const appId = 'zawgyi-unicode-converter-pwa';
 
 export const appRoutes: Routes = [
     {
@@ -150,7 +150,7 @@ export const settings: { app: AppConfig } = {
                 iconName: 'logo-medium'
             },
             {
-                url: 'https://github.com/myanmartools/zawgyi-unicode-converter-web',
+                url: 'https://github.com/myanmartools/zawgyi-unicode-converter-pwa',
                 label: 'GitHub',
                 title: 'Source code on GitHub',
                 iconName: 'logo-github'
