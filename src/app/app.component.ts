@@ -18,7 +18,7 @@ import {
     ViewChild,
     ViewEncapsulation
 } from '@angular/core';
-import { Meta } from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 
@@ -40,7 +40,6 @@ import { LinkService } from '../modules/seo';
 
 import { AppConfig } from './shared/app-config';
 import { NavLinkItem } from './shared/nav-link-item';
-import { PageTitleService } from './shared/page-title';
 import { SocialSharingSheetComponent } from './shared/social-sharing-sheet';
 import { UrlHelper } from './shared/url-helper';
 
@@ -134,7 +133,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private readonly _cacheService: CacheService,
         private readonly _overlayContainer: OverlayContainer,
         private readonly _urlHelper: UrlHelper,
-        private readonly _pageTitleService: PageTitleService,
+        private readonly _titleService: Title,
         private readonly _linkService: LinkService,
         private readonly _metaService: Meta,
         private readonly _router: Router,
@@ -164,7 +163,11 @@ export class AppComponent implements OnInit, OnDestroy {
                     }
 
                     if (!child) {
-                        return {};
+                        return {
+                            pagePath: event.urlAfterRedirects,
+                            pageType: undefined,
+                            meta: undefined
+                        };
                     }
 
                     return {
@@ -175,7 +178,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 }),
                 takeUntil(this._onDestroy)
             )
-            .subscribe((routeData: { pagePath?: string; pageType?: string; meta?: { [key: string]: string } }) => {
+            .subscribe((routeData: { pagePath: string; pageType?: string; meta?: { [key: string]: string } }) => {
                 this.isHomePage = routeData.pageType === 'home-page' ? true : false;
                 this.updateMeta(routeData);
 
@@ -185,7 +188,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 }
 
                 this._logService.trackPageView({
-                    name: this._pageTitleService.title,
+                    name: this._titleService.getTitle(),
                     uri: !this._isFirstNavigation && routeData.pagePath ? routeData.pagePath : undefined,
                     page_type: routeData.pageType ? routeData.pageType : undefined,
                     properties: {
@@ -256,23 +259,21 @@ export class AppComponent implements OnInit, OnDestroy {
         });
     }
 
-    private updateMeta(routeData: { pagePath?: string; pageType?: string; meta?: { [key: string]: string } }): void {
-        if (routeData.pagePath) {
-            const url = this._urlHelper.toAbsoluteUrl(routeData.pagePath);
+    private updateMeta(routeData: { pagePath: string; pageType?: string; meta?: { [key: string]: string } }): void {
+        const url = this._urlHelper.toAbsoluteUrl(routeData.pagePath);
 
-            this._linkService.updateTag({
-                rel: 'canonical',
-                href: url
-            });
+        this._linkService.updateTag({
+            rel: 'canonical',
+            href: url
+        });
 
-            this._metaService.updateTag({
-                property: 'og:url',
-                content: url
-            });
-        }
+        this._metaService.updateTag({
+            property: 'og:url',
+            content: url
+        });
 
         const pageTitle = routeData.meta && routeData.meta.title ? routeData.meta.title : this.appTitleFull;
-        this._pageTitleService.setTitle(pageTitle, undefined, true);
+        this._titleService.setTitle(pageTitle);
 
         const socialTitle = routeData.meta && routeData.meta.socialTitle ? routeData.meta.socialTitle : pageTitle;
         this._metaService.updateTag({
