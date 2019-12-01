@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "modules",
   "projects": {
-    "zawgyi-unicode-converter-web": {
+    "app": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -77,18 +77,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "zawgyi-unicode-converter-web:build"
+            "browserTarget": "app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "zawgyi-unicode-converter-web:build:production"
+              "browserTarget": "app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "zawgyi-unicode-converter-web:build"
+            "browserTarget": "app:build"
           }
         },
         "test": {
@@ -144,11 +144,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "zawgyi-unicode-converter-web:serve"
+            "devServerTarget": "app:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "zawgyi-unicode-converter-web:serve:production"
+              "devServerTarget": "app:serve:production"
             }
           }
         },
@@ -181,5 +181,5 @@
       }
     }
   },
-  "defaultProject": "zawgyi-unicode-converter-web"
+  "defaultProject": "app"
 }
