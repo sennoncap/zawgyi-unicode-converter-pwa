@@ -84,7 +84,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     get appTitleFull(): string {
-        return `${this.appTitle} - Intelligent Accurate Cross Platform App`;
+        return `${this.appTitle} | Myanmar Tools`;
     }
 
     get appVersion(): string {
