@@ -9,7 +9,7 @@
 export const environment = {
     production: true,
     firebase: {
-        apiKey: 'AIzaSyDU7Ty6y3DK4i49pJRm8vgICnIbMBv457E',
+        apiKey: 'AIzaSyC7auLbD1vMdARYS_pwY2U-HGNcdr88UYo',
         authDomain: 'myanmartools.firebaseapp.com',
         databaseURL: 'https://myanmartools.firebaseio.com',
         projectId: 'myanmartools',
