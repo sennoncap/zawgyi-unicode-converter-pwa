@@ -2,7 +2,7 @@ import { AppConfig } from './shared/app-config';
 
 export const appSettings: { app: AppConfig } = {
     app: {
-        appVersion: '3.4.0',
+        appVersion: '3.5.0',
         releaseDateUtc: '2019-11-29T07:30:00Z',
         appName: 'Zawgyi Unicode Converter',
         appDescription: 'Zawgyi Unicode Converter is a free & open source Zawgyi to Unicode or Unicode to Zawgyi online / offline Myanmar font converter by DagonMetric Myanmar Tools.',
