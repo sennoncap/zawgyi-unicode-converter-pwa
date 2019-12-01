@@ -8,8 +8,8 @@
         "files": [
           "/index.html",
           "/manifest.json",
-          "/assets/appicons/favicon.ico",
-          "/assets/appicons/logo.png",
+          "/assets/images/appicons/v1/favicon.ico",
+          "/assets/images/appicons/v1/logo.png",
           "/*.css",
           "/*.js",
           "/*.woff2"
@@ -34,7 +34,7 @@
       "updateMode": "prefetch",
       "resources": {
         "files": [
-          "/assets/appicons/**",
+          "/assets/images/appicons/v1/**",
           "/*.woff",
           "/*.ttf",
           "/*.eot"

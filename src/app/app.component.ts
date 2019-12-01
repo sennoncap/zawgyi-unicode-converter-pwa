@@ -111,7 +111,7 @@ export class AppComponent implements OnInit, OnDestroy {
         return this.isHomePage && !this._isAppUsedBefore && !this._aboutPageNavigated ? true : false;
     }
 
-    private readonly _logoUrl = 'assets/appicons/logo.png';
+    private readonly _logoUrl = 'assets/images/appicons/v1/logo.png';
     private readonly _isBrowser: boolean;
     private readonly _curVerAppUsedCount: number = 0;
     private readonly _isAppUsedBefore: boolean = false;
