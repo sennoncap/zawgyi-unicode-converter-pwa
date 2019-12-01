@@ -44,11 +44,9 @@ import { CustomIconRegistry } from '../modules/mat-extensions';
 import { LinkService } from '../modules/seo';
 import { ZgUniTranslitRuleLoaderModule } from '../modules/zg-uni-translit-rule-loader';
 
-import { PageTitleService } from './shared/page-title';
 import { UrlHelper } from './shared/url-helper';
 
 import { SocialSharingSheetComponent } from './shared/social-sharing-sheet';
-import { SponsorBannerSheetComponent } from './shared/sponsor-banner-sheet';
 
 import { AboutComponent, AboutDialogHandlerComponent } from './about';
 import { HomeComponent } from './home';
@@ -143,8 +141,7 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
         PrivacyDialogHandlerComponent,
         SupportComponent,
         SupportDialogHandlerComponent,
-        SocialSharingSheetComponent,
-        SponsorBannerSheetComponent
+        SocialSharingSheetComponent
     ],
     imports: [
         CommonModule,
@@ -208,15 +205,13 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
             provide: MatIconRegistry,
             useClass: CustomIconRegistry
         },
-        appSvgIconProviders,
-        PageTitleService
+        appSvgIconProviders
     ],
     entryComponents: [
         AboutComponent,
         PrivacyComponent,
         SupportComponent,
-        SocialSharingSheetComponent,
-        SponsorBannerSheetComponent
+        SocialSharingSheetComponent
     ],
     bootstrap: [AppComponent]
 })
