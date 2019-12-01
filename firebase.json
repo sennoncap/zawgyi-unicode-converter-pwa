@@ -22,13 +22,13 @@
         ]
       },
       {
-        "source": "**/assets/images/appicons/v1/logo.png",
+        "source": "**/assets/images/appicons/v+([0-9])/logo.png",
         "headers": [
           {"key": "Cache-Control", "value": "max-age=2592000"}
         ]
       },
       {
-        "source": "**/*.+([0-9a-f]).@(css|js|woff2)",
+        "source": "**/*.+([0-9a-f]).@(css|js|eot|ttf|woff|woff2)",
         "headers": [
           {"key": "Cache-Control", "value": "max-age=2592000"}
         ]
