@@ -11,8 +11,15 @@ export const appSettings: { app: AppConfig } = {
             {
                 url: 'https://myanmartools.org',
                 label: 'Myanmar Tools',
-                title: 'Explore more Myanmar Tools',
+                title: 'Explore Myanmar Tools',
                 iconName: 'logo-myanmartools',
+                expanded: true
+            },
+            {
+                url: 'https://github.com/myanmartools/zawgyi-unicode-converter-pwa',
+                label: 'GitHub',
+                title: 'Source code on GitHub',
+                iconName: 'logo-github',
                 expanded: true
             },
             {
@@ -32,12 +39,6 @@ export const appSettings: { app: AppConfig } = {
                 label: 'Medium',
                 title: 'Articles on Medium',
                 iconName: 'logo-medium'
-            },
-            {
-                url: 'https://github.com/myanmartools/zawgyi-unicode-converter-pwa',
-                label: 'GitHub',
-                title: 'Source code on GitHub',
-                iconName: 'logo-github'
             }
         ],
         socialSharing: {
