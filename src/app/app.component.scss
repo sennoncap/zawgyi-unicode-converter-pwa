@@ -6,7 +6,12 @@
  * found under the LICENSE file in the root directory of this source tree.
  */
 
-@import "variables";
+ @import "shared/style-variables";
+
+.flex-spacer {
+    flex: 1 1 auto;
+    box-sizing: border-box;
+}
 
 // SideNav container
 // ------------------------------------------------------------

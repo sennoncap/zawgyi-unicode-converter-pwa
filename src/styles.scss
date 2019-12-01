@@ -10,10 +10,10 @@
 @import '~@angular/material/theming';
 @import "~@dagonmetric/app-styles-base/core";
 
+@import "app/shared/style-variables";
 @import "app/app.theme";
-@import "modules/cdk-extensions/cdk-textarea-syncsize";
 
-@import "variables";
+@import "modules/cdk-extensions/cdk-textarea-syncsize";
 
 $app-styles-config: app-styles-config(
     $font-family-base: $font-family-base,
@@ -98,15 +98,6 @@ app-root {
     bottom: 0;
     left: 0;
     right: 0;
-}
-
-.page {
-    padding-top: $default-gap-width;
-}
-
-.flex-spacer {
-    flex: 1 1 auto;
-    box-sizing: border-box;
 }
 
 // Font assets
