@@ -32,12 +32,6 @@
             "styles": [
               "src/styles.scss"
             ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/theme",
-                "node_modules/normalize.css"
-              ]
-            },
             "scripts": [],
             "es5BrowserSupport": true
           },
@@ -105,12 +99,6 @@
             "styles": [
               "src/styles.scss"
             ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/theme",
-                "node_modules/normalize.css"
-              ]
-            },
             "scripts": [],
             "assets": [
               "src/favicon.ico",
@@ -157,13 +145,7 @@
           "options": {
             "outputPath": "dist/server",
             "main": "src/main.server.ts",
-            "tsConfig": "tsconfig.server.json",
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/theme",
-                "node_modules/normalize.css"
-              ]
-            }
+            "tsConfig": "tsconfig.server.json"
           },
           "configurations": {
             "production": {
