@@ -174,16 +174,7 @@
     ],
     "contextual-lifecycle": true,
 
-    "directive-class-suffix": true,
-    "directive-selector": [
-      true,
-      "attribute",
-      "app",
-      "camelCase"
-    ],
-
     "no-conflicting-lifecycle": true,
-    "no-host-metadata-property": true,
     "no-input-rename": true,
     "no-inputs-metadata-property": true,
 
