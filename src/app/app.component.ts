@@ -125,6 +125,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private _aboutPageNavigated = false;
 
     constructor(
+        // tslint:disable-next-line: ban-types
         @Inject(PLATFORM_ID) platformId: Object,
         private readonly _logService: LogService,
         private readonly _snackBar: MatSnackBar,
@@ -324,7 +325,7 @@ export class AppComponent implements OnInit, OnDestroy {
             .pipe(
                 takeUntil(this._onDestroy),
             )
-            .subscribe((evt) => {
+            .subscribe(evt => {
                 const snackBarRef = this._snackBar.open('Update available.', 'RELOAD');
                 snackBarRef
                     .onAction()
@@ -376,7 +377,7 @@ export class AppComponent implements OnInit, OnDestroy {
             }
 
             if (darkModeMediaQuery.addEventListener) {
-                darkModeMediaQuery.addEventListener('change', (mediaQuery) => {
+                darkModeMediaQuery.addEventListener('change', mediaQuery => {
                     this.setDarkMode(mediaQuery.matches);
                 });
             }

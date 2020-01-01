@@ -113,6 +113,7 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
     private _targetPlaceholderText = '';
 
     constructor(
+        // tslint:disable-next-line: ban-types
         @Inject(PLATFORM_ID) platformId: Object,
         private readonly _translitService: TranslitService,
         private readonly _zawgyiDetector: ZawgyiDetector,
