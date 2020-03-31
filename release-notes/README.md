@@ -2,6 +2,7 @@
 
 | Date (UTC) | Version |  |  |
 | :-- | :-- | :--: | :-- |
+| 2020-03-31 | 3.7.0 | [release notes](v3.7.0/README.md) | - |
 | 2020-01-01 | 3.6.1 | [release notes](v3.6.1/README.md) | - |
 | 2020-01-01 | 3.6.0 | [release notes](v3.6.0/README.md) | - |
 | 2019-12-01 | 3.5.0 | [release notes](v3.5.0/README.md) | - |
