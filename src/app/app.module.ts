@@ -51,6 +51,7 @@ import { SocialSharingSheetComponent } from './shared/social-sharing-sheet';
 import { AboutComponent, AboutDialogHandlerComponent } from './about';
 import { HomeComponent } from './home';
 import { PrivacyComponent, PrivacyDialogHandlerComponent } from './privacy';
+import { SponsorComponent, SponsorDialogHandlerComponent } from './sponsor';
 import { SupportComponent, SupportDialogHandlerComponent } from './support';
 
 import { AppComponent } from './app.component';
@@ -108,6 +109,17 @@ export const appRoutes: Routes = [
                         keywords: 'zawgyi unicode converter,privacy'
                     }
                 }
+            },
+            {
+                path: 'vac-jobsearch',
+                component: SponsorDialogHandlerComponent,
+                data: {
+                    pageType: 'sponsor-page',
+                    meta: {
+                        title: 'Zawgyi Unicode Converter - Sponsored by VAC Jobsearch',
+                        noindex: true
+                    }
+                }
             }
         ]
     },
@@ -141,7 +153,9 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
         PrivacyDialogHandlerComponent,
         SupportComponent,
         SupportDialogHandlerComponent,
-        SocialSharingSheetComponent
+        SocialSharingSheetComponent,
+        SponsorComponent,
+        SponsorDialogHandlerComponent
     ],
     imports: [
         CommonModule,
@@ -211,7 +225,8 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
         AboutComponent,
         PrivacyComponent,
         SupportComponent,
-        SocialSharingSheetComponent
+        SocialSharingSheetComponent,
+        SponsorComponent
     ],
     bootstrap: [AppComponent]
 })

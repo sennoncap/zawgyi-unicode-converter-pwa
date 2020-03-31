@@ -77,8 +77,11 @@ $app-color-mat-palette: (
 $primary: mat-palette($app-color-mat-palette, 500);
 $accent: mat-palette($app-color-mat-palette, A200, A100, A400);
 
-$dark-theme: mat-dark-theme($primary, $accent);
-$light-theme: mat-light-theme($primary, $accent);
+$dark-warn: mat-palette($mat-yellow, A200);
+$light-warn: mat-palette($mat-amber, 900);
+
+$dark-theme: mat-dark-theme($primary, $accent, $dark-warn);
+$light-theme: mat-light-theme($primary, $accent, $light-warn);
 
 @include angular-material-theme($light-theme);
 @include app-theme($light-theme);

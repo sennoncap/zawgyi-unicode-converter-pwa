@@ -208,8 +208,16 @@ export class AppComponent implements OnInit, OnDestroy {
                     this._isFirstNavigation = false;
                     this.increaseAppUsedCount();
 
-                    // tslint:disable-next-line: no-floating-promises
-                    this._router.navigate(['/about'], { relativeTo: this._activatedRoute });
+                    this._cacheService.setItem('sponsorDialogShownIn', this._curVerAppUsedCount);
+                    this._router.navigate(['/vac-jobsearch'], { relativeTo: this._activatedRoute });
+                } else if (this._isBrowser && this.isHomePage &&
+                    this._isFirstNavigation &&
+                    this.shouldShowSponsorDialog()) {
+                    this._isFirstNavigation = false;
+                    this.increaseAppUsedCount();
+
+                    this._cacheService.setItem('sponsorDialogShownIn', this._curVerAppUsedCount);
+                    this._router.navigate(['/vac-jobsearch'], { relativeTo: this._activatedRoute });
                 } else if (this._isBrowser && this.isHomePage &&
                     this._isFirstNavigation &&
                     this.shouldShowSocialSharingSheet()) {
@@ -285,6 +293,15 @@ export class AppComponent implements OnInit, OnDestroy {
             property: 'og:title',
             content: socialTitle
         });
+
+        if (routeData.meta && routeData.meta.noindex) {
+            this._metaService.updateTag({
+                name: 'robots',
+                content: 'noindex'
+            });
+        } else {
+            this._metaService.removeTag('name="robots"');
+        }
 
         const metaDescription = routeData.meta && routeData.meta.description ? routeData.meta.description : this._appConfig.appDescription;
         this._metaService.updateTag({
@@ -472,7 +489,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     private shouldShowSocialSharingSheet(): boolean {
-        if (this._curVerAppUsedCount < 3 || typeof navigator !== 'object' || !navigator.onLine) {
+        if (this._curVerAppUsedCount < 5 || typeof navigator !== 'object' || !navigator.onLine) {
             return false;
         }
 
@@ -488,7 +505,21 @@ export class AppComponent implements OnInit, OnDestroy {
 
         const socialSharingSheetShownIn = this._cacheService.getItem<number>('socialSharingSheetShownIn');
 
-        if (socialSharingSheetShownIn && this._curVerAppUsedCount < socialSharingSheetShownIn + 7) {
+        if (socialSharingSheetShownIn && this._curVerAppUsedCount < socialSharingSheetShownIn + 15) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private shouldShowSponsorDialog(): boolean {
+        if (this._curVerAppUsedCount < 3 || typeof navigator !== 'object' || !navigator.onLine) {
+            return false;
+        }
+
+        const sponsorDialogShownIn = this._cacheService.getItem<number>('sponsorDialogShownIn');
+
+        if (sponsorDialogShownIn && this._curVerAppUsedCount < sponsorDialogShownIn + 3) {
             return false;
         }
 
