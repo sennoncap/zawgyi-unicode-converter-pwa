@@ -52,10 +52,6 @@
     {
       "packagePatterns": ["^protractor.*"],
       "groupName": "protractor"
-    },
-    {
-      "packageNames": ["typescript"],
-      "automerge": false
     }
   ]
 }
