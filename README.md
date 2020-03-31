@@ -27,7 +27,7 @@ The mobile project repo is at [github.com/myanmartools/zawgyi-unicode-converter-
 
 ## Programming Languages & Frameworks
 
-* Latest version of Angular (v8)
+* Latest version of Angular
 * Typescript
 * SCSS
 * Angular Material
