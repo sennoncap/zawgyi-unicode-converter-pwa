@@ -25,6 +25,7 @@ import { SwUpdate } from '@angular/service-worker';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -37,6 +38,8 @@ import { LogService } from '@dagonmetric/ng-log';
 
 import { environment } from '../environments/environment';
 import { LinkService } from '../modules/seo';
+
+import { SponsorComponent } from './sponsor';
 
 import { AppConfig } from './shared/app-config';
 import { NavLinkItem } from './shared/nav-link-item';
@@ -148,6 +151,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private readonly _router: Router,
         private readonly _activatedRoute: ActivatedRoute,
         private readonly _bottomSheet: MatBottomSheet,
+        private readonly _dialog: MatDialog,
         configService: ConfigService,
         breakpointObserver: BreakpointObserver) {
         this._isBrowser = isPlatformBrowser(platformId);
@@ -264,6 +268,15 @@ export class AppComponent implements OnInit, OnDestroy {
                     app_platform: 'web'
                 }
             });
+        });
+    }
+
+    openSponsorDialog(): void {
+        const dialogRef = this._dialog.open(SponsorComponent);
+
+        dialogRef.afterClosed().subscribe(() => {
+            // tslint:disable-next-line: no-floating-promises
+            this._router.navigate(['../'], { relativeTo: this._activatedRoute });
         });
     }
 

@@ -51,6 +51,7 @@ import { SocialSharingSheetComponent } from './shared/social-sharing-sheet';
 import { AboutComponent, AboutDialogHandlerComponent } from './about';
 import { HomeComponent } from './home';
 import { PrivacyComponent, PrivacyDialogHandlerComponent } from './privacy';
+import { SponsorComponent } from './sponsor';
 import { SupportComponent, SupportDialogHandlerComponent } from './support';
 
 import { AppComponent } from './app.component';
@@ -141,7 +142,8 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
         PrivacyDialogHandlerComponent,
         SupportComponent,
         SupportDialogHandlerComponent,
-        SocialSharingSheetComponent
+        SocialSharingSheetComponent,
+        SponsorComponent
     ],
     imports: [
         CommonModule,
@@ -211,6 +213,7 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
         AboutComponent,
         PrivacyComponent,
         SupportComponent,
+        SponsorComponent,
         SocialSharingSheetComponent
     ],
     bootstrap: [AppComponent]
