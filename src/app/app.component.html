@@ -81,23 +81,36 @@
                 </div>
             </div>
         </div>
-        <div class="container sponsor-section">
-            <div class="sponsor-card" role="presentation" *ngIf="sponsorSectionVisible">
-                <p lang="my-MM" class="myanmar-text my-uni">
-                    ဤ Zawgyi Unicode Converter ကို <strong>VAC
-                        ပြည်တွင်းအလုပ်အကိုင်ရှာဖွေရေးလုပ်ငန်း</strong> မှ အဓိကကူညီပံ့ပိုး ပေးထားပါသည်။
-                </p>
-                <p lang="my-MM" class="myanmar-text my-uni">
-                    အလုပ်အကိုင်ကောင်းများစွာအတွက် အခုပဲ <strong>VAC</strong> နှင့် ချိတ်ဆက်လိုက်ပါ။
-                </p>
-                <div class="sponsor-logo">
-                    <a mat-icon-button class="sponsor-button" href="http://vacjobsearch.com/" target="_blank"
-                        rel="noopener" title="VAC Jobsearch - Top Paid Jobs in Yangon Myanmar">
-                        <mat-icon svgIcon="logo-vac"></mat-icon>
-                    </a>
+        <div class="container sponsor-section" *ngIf="sponsorSectionVisible">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="24px">
+                <div fxLayout="column" fxFlex="1 1 100%">
+                    <mat-card class="sponsor-card">
+                        <mat-card-header>
+                            <mat-icon mat-card-avatar svgIcon="logo-vac"></mat-icon>
+                            <mat-card-title>VAC Jobsearch</mat-card-title>
+                            <mat-card-subtitle>Many good jobs await you</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <p lang="my-MM" class="myanmar-text my-uni">
+                                အလုပ်အကိုင်ကောင်းများစွာက သင့်ကိုစောင့်ကြိုနေပါသည်။
+                            </p>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <a mat-button color="warn" href="http://vacjobsearch.com/" target="_blank"
+                                rel="noopener">VISIT
+                                VACJOBSEARCH.COM</a>
+                        </mat-card-actions>
+                    </mat-card>
                 </div>
-                <a mat-button color="warn" href="http://vacjobsearch.com/" target="_blank" rel="noopener">VISIT
-                    VACJOBSEARCH.COM</a>
+                <div fxLayout="column" fxFlex="1 1 100%">
+                    <div>
+                        <button type="button" class="add-sponsor-button" mat-icon-button disabled>
+                            <mat-icon svgIcon="add"></mat-icon> BECOME A SPONSOR
+                        </button>
+                    </div>
+                </div>
+                <div fxLayout="column" fxFlex="1 1 100%">
+                </div>
             </div>
         </div>
     </mat-sidenav-content>
