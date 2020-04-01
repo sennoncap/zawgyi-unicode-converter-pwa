@@ -110,6 +110,13 @@ export class AppComponent implements OnInit, OnDestroy {
         return this.isHomePage && !this._isAppUsedBefore && !this._aboutPageNavigated ? true : false;
     }
 
+    get sponsorSectionVisible(): boolean {
+        return this._sponsorSectionVisible &&
+            this.isHomePage &&
+            this._isAppUsedBefore &&
+            !this.aboutSectionVisible ? true : false;
+    }
+
     private readonly _logoUrl = 'assets/images/appicons/v1/logo.png';
     private readonly _isBrowser: boolean;
     private readonly _curVerAppUsedCount: number = 0;
@@ -123,6 +130,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private _themeClass?: string;
     private _isDarkMode?: boolean | null = null;
     private _aboutPageNavigated = false;
+    private _sponsorSectionVisible = true;
 
     constructor(
         // tslint:disable-next-line: ban-types
@@ -207,29 +215,20 @@ export class AppComponent implements OnInit, OnDestroy {
                     this._isAppUsedBefore) {
                     this._isFirstNavigation = false;
                     this.increaseAppUsedCount();
-
-                    this._cacheService.setItem('sponsorDialogShownIn', this._curVerAppUsedCount);
-                    this._router.navigate(['/vac-jobsearch'], { relativeTo: this._activatedRoute });
-                } else if (this._isBrowser && this.isHomePage &&
-                    this._isFirstNavigation &&
-                    this.shouldShowSponsorDialog()) {
-                    this._isFirstNavigation = false;
-                    this.increaseAppUsedCount();
-
-                    this._cacheService.setItem('sponsorDialogShownIn', this._curVerAppUsedCount);
-                    this._router.navigate(['/vac-jobsearch'], { relativeTo: this._activatedRoute });
+                    this._sponsorSectionVisible = false;
+                    this._router.navigate(['/about'], { relativeTo: this._activatedRoute });
                 } else if (this._isBrowser && this.isHomePage &&
                     this._isFirstNavigation &&
                     this.shouldShowSocialSharingSheet()) {
                     this._isFirstNavigation = false;
                     this.increaseAppUsedCount();
-
+                    this._sponsorSectionVisible = false;
                     this._cacheService.setItem('socialSharingSheetShownIn', this._curVerAppUsedCount);
-
                     this._bottomSheet.open(SocialSharingSheetComponent);
                 } else if (this._isFirstNavigation) {
                     this._isFirstNavigation = false;
                     this.increaseAppUsedCount();
+                    this._sponsorSectionVisible = true;
                 }
             });
 
@@ -505,21 +504,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
         const socialSharingSheetShownIn = this._cacheService.getItem<number>('socialSharingSheetShownIn');
 
-        if (socialSharingSheetShownIn && this._curVerAppUsedCount < socialSharingSheetShownIn + 15) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private shouldShowSponsorDialog(): boolean {
-        if (this._curVerAppUsedCount < 3 || typeof navigator !== 'object' || !navigator.onLine) {
-            return false;
-        }
-
-        const sponsorDialogShownIn = this._cacheService.getItem<number>('sponsorDialogShownIn');
-
-        if (sponsorDialogShownIn && this._curVerAppUsedCount < sponsorDialogShownIn + 3) {
+        if (socialSharingSheetShownIn && this._curVerAppUsedCount < socialSharingSheetShownIn + 7) {
             return false;
         }
 

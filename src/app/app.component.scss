@@ -102,6 +102,41 @@
     }
 }
 
+
+.sponsor-section {
+    .sponsor-card {
+        justify-content: center;
+        text-align: center;
+        margin-top: $default-gap-width * 2;
+        margin-bottom: $default-gap-width / 2;
+
+        .sponsor-button.mat-icon-button {
+            border-radius: 50%;
+            width: 76px;
+            height: 76px;
+            line-height: 76px;
+
+            .mat-icon {
+                color: #000000 !important;
+                width: 76px;
+                height: 76px;
+                line-height: 76px;
+
+                &.mat-primary {
+                    color: #000000 !important;
+                  }
+
+                  &.mat-accent {
+                    color: #000000 !important;
+                  }
+
+                  &.mat-warn {
+                    color: #000000 !important;
+                  }
+            }
+        }
+    }
+}
 // Footer
 // ------------------------------------------------------------
 .app-footer {

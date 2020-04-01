@@ -36,16 +36,6 @@
                     Support
                 </p>
             </a>
-
-            <mat-divider></mat-divider>
-
-            <h3 mat-subheader>Sponsors</h3>
-            <a mat-list-item routerLink="vac-jobsearch">
-                <mat-icon mat-list-icon svgIcon="logo-vacjobsearch"></mat-icon>
-                <p matLine>
-                    VAC Jobsearch
-                </p>
-            </a>
         </mat-nav-list>
         <mat-list>
             <mat-divider></mat-divider>
@@ -59,7 +49,7 @@
             <h3 mat-subheader>Mobile Apps</h3>
             <mat-list-item>
                 <a mat-icon-button class="app-badge-button"
-                    href='https://play.google.com/store/apps/details?id=com.dagonmetric.zawgyiunicodeconverter&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'
+                    href="https://play.google.com/store/apps/details?id=com.dagonmetric.zawgyiunicodeconverter&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"
                     title="Get the mobile app on Google Play">
                     <mat-icon svgIcon="logo-google-play-badge"></mat-icon>
                 </a>
@@ -89,6 +79,25 @@
                         <a mat-button routerLink="/about" class="myanmar-text my-uni">ထူးခြားချက်များ ဆက်ဖတ်ရန်</a>
                     </p>
                 </div>
+            </div>
+        </div>
+        <div class="container sponsor-section">
+            <div class="sponsor-card" role="presentation" *ngIf="sponsorSectionVisible">
+                <p lang="my-MM" class="myanmar-text my-uni">
+                    ဤ Zawgyi Unicode Converter ကို <strong>VAC
+                        ပြည်တွင်းအလုပ်အကိုင်ရှာဖွေရေးလုပ်ငန်း</strong> မှ အဓိကကူညီပံ့ပိုး ပေးထားပါသည်။
+                </p>
+                <p lang="my-MM" class="myanmar-text my-uni">
+                    အလုပ်အကိုင်ကောင်းများစွာအတွက် အခုပဲ <strong>VAC</strong> နှင့် ချိတ်ဆက်လိုက်ပါ။
+                </p>
+                <div class="sponsor-logo">
+                    <a mat-icon-button class="sponsor-button" href="http://vacjobsearch.com/" target="_blank"
+                        rel="noopener" title="VAC Jobsearch - Top Paid Jobs in Yangon Myanmar">
+                        <mat-icon svgIcon="logo-vac"></mat-icon>
+                    </a>
+                </div>
+                <a mat-button color="warn" href="http://vacjobsearch.com/" target="_blank" rel="noopener">VISIT
+                    VACJOBSEARCH.COM</a>
             </div>
         </div>
     </mat-sidenav-content>
