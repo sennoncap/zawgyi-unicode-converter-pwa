@@ -77,11 +77,8 @@ $app-color-mat-palette: (
 $primary: mat-palette($app-color-mat-palette, 500);
 $accent: mat-palette($app-color-mat-palette, A200, A100, A400);
 
-$dark-warn: mat-palette($mat-yellow, A200);
-$light-warn: mat-palette($mat-amber, 900);
-
-$dark-theme: mat-dark-theme($primary, $accent, $dark-warn);
-$light-theme: mat-light-theme($primary, $accent, $light-warn);
+$dark-theme: mat-dark-theme($primary, $accent);
+$light-theme: mat-light-theme($primary, $accent);
 
 @include angular-material-theme($light-theme);
 @include app-theme($light-theme);
@@ -90,6 +87,19 @@ $light-theme: mat-light-theme($primary, $accent, $light-warn);
     @include angular-material-theme($dark-theme);
     @include app-theme($dark-theme);
 }
+
+// Custom button colors
+// ------------------------------------------------------------
+
+.mat-button.mat-yellow {
+    color: mat-color($mat-amber, 900);
+ }
+
+ .dark {
+    .mat-button.mat-yellow {
+        color: mat-color($mat-yellow, A200);
+     }
+ }
 
 // app-root
 // ------------------------------------------------------------
