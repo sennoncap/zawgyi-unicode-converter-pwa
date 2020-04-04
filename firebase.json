@@ -18,19 +18,28 @@
       {
         "source": "**/*.@(gif|jpg|jpeg|png|svg|webp|eot|otf|ttf|ttc|woff|woff2)",
         "headers": [
-          {"key": "Cache-Control", "value": "max-age=86400"}
+          {
+            "key": "Cache-Control",
+            "value": "max-age=86400"
+          }
         ]
       },
       {
         "source": "**/assets/images/appicons/v+([0-9])/logo.png",
         "headers": [
-          {"key": "Cache-Control", "value": "max-age=2592000"}
+          {
+            "key": "Cache-Control",
+            "value": "max-age=2592000"
+          }
         ]
       },
       {
         "source": "**/*.+([0-9a-f]).@(css|js|eot|ttf|woff|woff2)",
         "headers": [
-          {"key": "Cache-Control", "value": "max-age=2592000"}
+          {
+            "key": "Cache-Control",
+            "value": "max-age=2592000"
+          }
         ]
       }
     ]
