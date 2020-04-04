@@ -83,33 +83,33 @@
         </div>
         <div class="container sponsor-section" *ngIf="sponsorSectionVisible">
             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="24px">
-                <div fxLayout="column" fxFlex="1 1 100%">
+                <div fxLayout="column" fxFlex="1 1 100%" *ngFor="let sponsor of sponsors">
                     <mat-card class="sponsor-card">
                         <mat-card-header>
-                            <mat-icon mat-card-avatar svgIcon="logo-vac"></mat-icon>
-                            <mat-card-title>VAC Jobsearch</mat-card-title>
-                            <mat-card-subtitle>Many good jobs await you</mat-card-subtitle>
+                            <img mat-card-avatar [src]="sponsor.logoUrl">
+                            <mat-card-title>{{sponsor.title}}</mat-card-title>
+                            <mat-card-subtitle>{{sponsor.subTitle}}</mat-card-subtitle>
                         </mat-card-header>
+                        <img mat-card-image *ngIf="sponsor.imageUrl" [src]="sponsor.imageUrl"
+                            [attr.alt]="sponsor.title">
                         <mat-card-content>
-                            <p lang="my-MM" class="myanmar-text my-uni">
-                                အလုပ်အကိုင်ကောင်းများစွာက သင့်ကိုစောင့်ကြိုနေပါသည်။
-                            </p>
+                            <p lang="my-MM" class="myanmar-text my-uni" [innerHTML]="sponsor.description"></p>
                         </mat-card-content>
                         <mat-card-actions>
-                            <a mat-button color="warn" href="http://vacjobsearch.com/" target="_blank"
-                                rel="noopener">VISIT
-                                VACJOBSEARCH.COM</a>
+                            <a mat-button [color]="sponsor.themeColor" [href]="sponsor.detailUrlForWeb" target="_blank"
+                                rel="noopener">{{sponsor.detailUrlLabelForWeb}}</a>
                         </mat-card-actions>
                     </mat-card>
                 </div>
                 <div fxLayout="column" fxFlex="1 1 100%">
                     <div>
-                        <button type="button" class="add-sponsor-button" mat-icon-button (click)="openSponsorDialog()" disabled>
+                        <button type="button" class="add-sponsor-button" mat-icon-button (click)="openSponsorDialog()"
+                            disabled>
                             <mat-icon svgIcon="add_circle"></mat-icon> BECOME A SPONSOR
                         </button>
                     </div>
                 </div>
-                <div fxLayout="column" fxFlex="1 1 100%">
+                <div fxLayout="column" fxFlex="1 1 100%" *ngIf="sponsors.length">
                 </div>
             </div>
         </div>

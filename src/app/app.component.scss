@@ -104,26 +104,15 @@
 
 
 .sponsor-section {
-    // justify-content: center;
-    // text-align: center;
     margin-top: $default-gap-width * 2;
     margin-bottom: $default-gap-width / 2;
 
     .sponsor-card {
         max-width: 240px;
-        min-width: 240px;
-    }
-
-    .mat-icon-button.add-sponsor-button {
-        min-width: auto;
-        width: auto;
-        border-radius: 0;
-        padding: 0 20px;
-        .mat-icon {
-            margin-top: -3px;
-        }
+        width: 240px;
     }
 }
+
 // Footer
 // ------------------------------------------------------------
 .app-footer {

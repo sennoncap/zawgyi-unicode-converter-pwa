@@ -29,6 +29,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { AngularFireRemoteConfig, filterFresh, scanToObject } from '@angular/fire/remote-config';
+
 import { concat, interval, Observable, Subject } from 'rxjs';
 import { filter, first, map, takeUntil } from 'rxjs/operators';
 
@@ -44,6 +46,7 @@ import { SponsorComponent } from './sponsor';
 import { AppConfig } from './shared/app-config';
 import { NavLinkItem } from './shared/nav-link-item';
 import { SocialSharingSheetComponent } from './shared/social-sharing-sheet';
+import { Sponsor } from './shared/sponsor';
 import { UrlHelper } from './shared/url-helper';
 
 const SMALL_WIDTH_BREAKPOINT = 720;
@@ -114,10 +117,14 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     get sponsorSectionVisible(): boolean {
-        return this._sponsorSectionVisible &&
-            this.isHomePage &&
-            this._isAppUsedBefore &&
-            !this.aboutSectionVisible ? true : false;
+        return this._hideSponsorSection ||
+            !this._isBrowser ||
+            !this.isHomePage ||
+            this.aboutSectionVisible ? false : true;
+    }
+
+    get sponsors(): Sponsor[] {
+        return this._sponsors.filter(s => !s.inactive && (s.expiresIn == null || s.expiresIn >= Date.now()));
     }
 
     private readonly _logoUrl = 'assets/images/appicons/v1/logo.png';
@@ -133,7 +140,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private _themeClass?: string;
     private _isDarkMode?: boolean | null = null;
     private _aboutPageNavigated = false;
-    private _sponsorSectionVisible = true;
+    private _hideSponsorSection = false;
+    private _sponsors: Sponsor[] = [];
 
     constructor(
         // tslint:disable-next-line: ban-types
@@ -152,16 +160,56 @@ export class AppComponent implements OnInit, OnDestroy {
         private readonly _activatedRoute: ActivatedRoute,
         private readonly _bottomSheet: MatBottomSheet,
         private readonly _dialog: MatDialog,
+        private readonly _remoteConfig: AngularFireRemoteConfig,
         configService: ConfigService,
         breakpointObserver: BreakpointObserver) {
         this._isBrowser = isPlatformBrowser(platformId);
         this._appConfig = configService.getValue<AppConfig>('app');
 
         if (this._isBrowser) {
+            this._remoteConfig.changes
+                .pipe(
+                    filterFresh(172_800_000),
+                    first(),
+                    scanToObject({
+                        sponsors: '',
+                        sponsorSectionVisible: false,
+                        colorMode: 'auto'
+                    }),
+                    takeUntil(this._onDestroy)
+                ).subscribe();
+
+            this._remoteConfig.strings.colorMode.subscribe(colorMode => {
+                if (colorMode === 'dark') {
+                    this.setDarkMode(true);
+                } else if (colorMode === 'light') {
+                    this.setDarkMode(false);
+                }
+            });
+
+            this._remoteConfig.booleans.sponsorSectionVisible.subscribe(v => {
+                this._hideSponsorSection = !v;
+            });
+
+            this._remoteConfig.strings.sponsors
+                .subscribe(sponsorStr => {
+                    if (!sponsorStr) {
+                        this._sponsors = [];
+                    }
+
+                    try {
+                        this._sponsors = JSON.parse(sponsorStr) as Sponsor[];
+                    } catch (err) {
+                        this._sponsors = [];
+                    }
+                });
+
             this._curVerAppUsedCount = this.getCurVerAppUsedCount();
             this._isAppUsedBefore = this.checkAppUsedBefore();
 
-            this.detectDarkTheme();
+            if (this._isDarkMode == null) {
+                this.detectDarkTheme();
+            }
         }
 
         this.checkUpdate();
@@ -219,20 +267,19 @@ export class AppComponent implements OnInit, OnDestroy {
                     this._isAppUsedBefore) {
                     this._isFirstNavigation = false;
                     this.increaseAppUsedCount();
-                    this._sponsorSectionVisible = false;
+                    this._hideSponsorSection = true;
                     this._router.navigate(['/about'], { relativeTo: this._activatedRoute });
                 } else if (this._isBrowser && this.isHomePage &&
                     this._isFirstNavigation &&
                     this.shouldShowSocialSharingSheet()) {
                     this._isFirstNavigation = false;
                     this.increaseAppUsedCount();
-                    this._sponsorSectionVisible = false;
+                    this._hideSponsorSection = true;
                     this._cacheService.setItem('socialSharingSheetShownIn', this._curVerAppUsedCount);
                     this._bottomSheet.open(SocialSharingSheetComponent);
                 } else if (this._isFirstNavigation) {
                     this._isFirstNavigation = false;
                     this.increaseAppUsedCount();
-                    this._sponsorSectionVisible = true;
                 }
             });
 
