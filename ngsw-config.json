@@ -8,6 +8,7 @@
         "files": [
           "/index.html",
           "/manifest.json",
+          "/sponsors.json",
           "/assets/images/appicons/v1/favicon.ico",
           "/assets/images/appicons/v1/logo.png",
           "/*.css",
