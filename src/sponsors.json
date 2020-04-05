@@ -1,0 +1,13 @@
+[
+  {
+    "title": "VAC Jobsearch",
+    "subTitle": "Many good jobs await you",
+    "logoUrl": "https://assets.vacjobsearch.com/images/logo-circle-96.svg",
+    "themeColor": "yellow",
+    "description": "အလုပ်အကိုင်ကောင်းများစွာက<br/>သင့်ကိုစောင့်ကြိုနေပါသည်။",
+    "detailUrlForMobile": "https://link.vacjobsearch.com/zucandroidapp",
+    "detailUrlForWeb": "https://link.vacjobsearch.com/zucweb",
+    "detailUrlLabelForMobile": "www.vacjobsearch.com",
+    "detailUrlLabelForWeb": "VISIT VACJOBSEARCH.COM"
+  }
+]
