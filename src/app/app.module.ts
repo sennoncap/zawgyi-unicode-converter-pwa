@@ -28,8 +28,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireRemoteConfigModule, DEFAULTS, SETTINGS } from '@angular/fire/remote-config';
+// import { AngularFireModule } from '@angular/fire';
+// import { AngularFireRemoteConfigModule, DEFAULTS, SETTINGS } from '@angular/fire/remote-config';
 
 import { CacheModule, MemoryCacheModule } from '@dagonmetric/ng-cache';
 import { ConfigModule } from '@dagonmetric/ng-config';
@@ -152,8 +152,8 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
         CommonModule,
         FormsModule,
 
-        AngularFireModule.initializeApp(environment.firebase),
-        AngularFireRemoteConfigModule,
+        // AngularFireModule.initializeApp(environment.firebase),
+        // AngularFireRemoteConfigModule,
 
         RouterModule.forRoot(appRoutes),
 
@@ -208,18 +208,18 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
             useFactory: baseHrefFactory,
             deps: [DOCUMENT]
         },
-        {
-            provide: DEFAULTS,
-            useValue: {
-                sponsors: '',
-                sponsorSectionVisible: false,
-                colorMode: 'auto'
-            }
-        },
-        {
-            provide: SETTINGS,
-            useFactory: () => environment.production ? {} : { minimumFetchIntervalMillis: 20_000 }
-        },
+        // {
+        //     provide: DEFAULTS,
+        //     useValue: {
+        //         sponsors: '',
+        //         sponsorSectionVisible: false,
+        //         colorMode: 'auto'
+        //     }
+        // },
+        // {
+        //     provide: SETTINGS,
+        //     useFactory: () => environment.production ? {} : { minimumFetchIntervalMillis: 20_000 }
+        // },
         LinkService,
         UrlHelper,
         {
