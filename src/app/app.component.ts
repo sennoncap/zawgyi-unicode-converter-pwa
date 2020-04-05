@@ -7,6 +7,7 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import {
     ApplicationRef,
     Component,
@@ -29,10 +30,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { AngularFireRemoteConfig, filterFresh, scanToObject } from '@angular/fire/remote-config';
+// import { AngularFireRemoteConfig, filterFresh, scanToObject } from '@angular/fire/remote-config';
 
 import { concat, interval, Observable, Subject } from 'rxjs';
-import { filter, first, map, takeUntil } from 'rxjs/operators';
+import { catchError, filter, first, map, takeUntil } from 'rxjs/operators';
 
 import { CacheService } from '@dagonmetric/ng-cache';
 import { ConfigService } from '@dagonmetric/ng-config';
@@ -123,8 +124,8 @@ export class AppComponent implements OnInit, OnDestroy {
             this.aboutSectionVisible ? false : true;
     }
 
-    get sponsors(): Sponsor[] {
-        return this._sponsors.filter(s => !s.inactive && (s.expiresIn == null || s.expiresIn >= Date.now()));
+    get sponsors(): Observable<Sponsor[]> {
+        return this._sponsors;
     }
 
     private readonly _logoUrl = 'assets/images/appicons/v1/logo.png';
@@ -141,7 +142,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private _isDarkMode?: boolean | null = null;
     private _aboutPageNavigated = false;
     private _hideSponsorSection = false;
-    private _sponsors: Sponsor[] = [];
+    private _sponsors: Observable<Sponsor[]>;
 
     constructor(
         // tslint:disable-next-line: ban-types
@@ -160,56 +161,63 @@ export class AppComponent implements OnInit, OnDestroy {
         private readonly _activatedRoute: ActivatedRoute,
         private readonly _bottomSheet: MatBottomSheet,
         private readonly _dialog: MatDialog,
-        private readonly _remoteConfig: AngularFireRemoteConfig,
+        private readonly _httpClient: HttpClient,
+        // private readonly _remoteConfig: AngularFireRemoteConfig,
         configService: ConfigService,
         breakpointObserver: BreakpointObserver) {
         this._isBrowser = isPlatformBrowser(platformId);
         this._appConfig = configService.getValue<AppConfig>('app');
 
         if (this._isBrowser) {
-            this._remoteConfig.changes
-                .pipe(
-                    filterFresh(172_800_000),
-                    first(),
-                    scanToObject({
-                        sponsors: '',
-                        sponsorSectionVisible: false,
-                        colorMode: 'auto'
-                    }),
-                    takeUntil(this._onDestroy)
-                ).subscribe();
+            // this._remoteConfig.changes
+            //     .pipe(
+            //         filterFresh(172_800_000),
+            //         first(),
+            //         scanToObject({
+            //             sponsors: '',
+            //             sponsorSectionVisible: false,
+            //             colorMode: 'auto'
+            //         }),
+            //         takeUntil(this._onDestroy)
+            //     ).subscribe();
 
-            this._remoteConfig.strings.colorMode.subscribe(colorMode => {
-                if (colorMode === 'dark') {
-                    this.setDarkMode(true);
-                } else if (colorMode === 'light') {
-                    this.setDarkMode(false);
-                }
-            });
+            // this._remoteConfig.strings.colorMode.subscribe(colorMode => {
+            //     if (colorMode === 'dark') {
+            //         this.setDarkMode(true);
+            //     } else if (colorMode === 'light') {
+            //         this.setDarkMode(false);
+            //     }
+            // });
 
-            this._remoteConfig.booleans.sponsorSectionVisible.subscribe(v => {
-                this._hideSponsorSection = !v;
-            });
+            // this._remoteConfig.booleans.sponsorSectionVisible.subscribe(v => {
+            //     this._hideSponsorSection = !v;
+            // });
 
-            this._remoteConfig.strings.sponsors
-                .subscribe(sponsorStr => {
-                    if (!sponsorStr) {
-                        this._sponsors = [];
-                    }
+            // this._remoteConfig.strings.sponsors
+            //     .subscribe(sponsorStr => {
+            //         if (!sponsorStr) {
+            //             this._sponsors = [];
+            //         }
 
-                    try {
-                        this._sponsors = JSON.parse(sponsorStr) as Sponsor[];
-                    } catch (err) {
-                        this._sponsors = [];
-                    }
-                });
+            //         try {
+            //             this._sponsors = JSON.parse(sponsorStr) as Sponsor[];
+            //         } catch (err) {
+            //             this._sponsors = [];
+            //         }
+            //     });
 
             this._curVerAppUsedCount = this.getCurVerAppUsedCount();
             this._isAppUsedBefore = this.checkAppUsedBefore();
 
-            if (this._isDarkMode == null) {
-                this.detectDarkTheme();
-            }
+            this.detectDarkTheme();
+
+            this._sponsors = this._httpClient.get<Sponsor[]>('sponsors.json').pipe(
+                catchError(err => {
+                    this._hideSponsorSection = true;
+
+                    return [];
+                })
+            );
         }
 
         this.checkUpdate();
