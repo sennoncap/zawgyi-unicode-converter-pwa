@@ -8,9 +8,7 @@
 
 import { Component, ViewEncapsulation } from '@angular/core';
 
-import { ConfigService } from '@dagonmetric/ng-config';
-
-import { AppConfig } from '../shared/app-config';
+import { appSettings } from '../shared/app-settings';
 
 /**
  * App privacy statement component.
@@ -23,12 +21,6 @@ import { AppConfig } from '../shared/app-config';
 })
 export class PrivacyComponent {
     get privacyUrl(): string | undefined {
-        return this._appConfig.privacyUrl;
-    }
-
-    private readonly _appConfig: AppConfig;
-
-    constructor(configService: ConfigService) {
-        this._appConfig = configService.getValue<AppConfig>('app');
-    }
+        return appSettings.privacyUrl;
+    }    
 }
