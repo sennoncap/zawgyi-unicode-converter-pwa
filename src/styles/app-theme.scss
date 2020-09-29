@@ -1,0 +1,152 @@
+/**
+ * @license
+ * Copyright DagonMetric. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found under the LICENSE file in the root directory of this source tree.
+ */
+
+ // @import '~@angular/material/theming';
+ @import '../../node_modules/@angular/material/theming';
+
+@import "variables";
+@import "core";
+
+@import "../modules/cdk-extensions/cdk-textarea-syncsize";
+
+$about-description-ani-delay: 4s;
+$about-description-ani-duration: 1s;
+
+$total-feature-items: 12;
+$feature-item-ani-duration: 5s;
+
+$footer-section-ani-duration: 2s;
+
+ @mixin app-theme($theme) {
+    $primary: map-get($theme, primary);
+    $background: map-get($theme, background);
+    $foreground: map-get($theme, foreground);
+
+    body {
+        color: mat-color($foreground, text);
+        background: mat-color($background, background); // #f1f1f1
+    }
+
+    .myanmar-text,
+    textarea.myanmar-text,
+    textarea.mat-input-element.myanmar-text {
+        font-size: 1.1em;
+        line-height: 1.6;
+        font-weight: 400;
+    }
+
+    .my-zg,
+    textarea.mat-input-element.my-zg {
+        font-family: Zawgyi-One, sans-serif;
+    }
+
+    .my-uni,
+    textarea.mat-input-element.my-uni {
+        font-family: "Noto Sans Myanmar UI", "Myanmar Text", Pyidaungsu, Padauk, Myanmar3, sans-serif;
+    }
+
+    .app-header {
+        &.mat-toolbar {
+            font-size: 18px;
+
+            h1 {
+                font-size: inherit;
+                font-weight: 400;
+            }
+        }
+    }
+
+    .about-section {
+        color: mat-color($foreground, secondary-text);
+    }
+
+    .app-footer {
+        color: mat-color($foreground, secondary-text);
+    }
+
+    a.see-more-btn {
+        color: inherit;
+        text-decoration: none;
+        outline: none;
+
+        .mat-icon {
+            width: 14px;
+            height: 14px;
+            line-height: 14px;
+            margin-left: 5px;
+        }
+    }
+}
+
+$typography-config: mat-typography-config($font-family: $font-family-base, $body-1: mat-typography-level($font-size-base, $line-height-base, $font-weight-base));
+
+$app-color-mat-palette: (
+    50: #F1ECF6,
+    100: #DBD1EA,
+    200: #C3B2DC,
+    300: #AB93CD,
+    400:  #997BC3,
+    500: #8764B8,
+
+    600:  #7F5CB1,
+    700: #7452A8,
+    800:  #6A48A0,
+    900:  #573691,
+    // 900:  #583988,
+
+    A100: #E9DEFF,
+    A200: #C8ABFF,
+    A400: #A678FF,
+    A700: #965EFF,
+
+    contrast: (
+      50: $dark-primary-text,
+      100: $dark-primary-text,
+      200: $dark-primary-text,
+      300: $dark-primary-text,
+
+      400: $light-primary-text,
+      500: $light-primary-text,
+      600: $light-primary-text,
+      700: $light-primary-text,
+      800: $light-primary-text,
+      900: $light-primary-text,
+
+      A100: $dark-primary-text,
+      A200: $dark-primary-text,
+      A400: $dark-primary-text,
+      A700: $dark-primary-text,
+  )
+);
+
+// Default app light theme
+$primary: mat-palette($app-color-mat-palette, 500);
+$accent: mat-palette($app-color-mat-palette, A200, A100, A400);
+
+$dark-theme: mat-dark-theme($primary, $accent);
+$light-theme: mat-light-theme($primary, $accent);
+
+$styles-config: styles-config(
+   $font-family-base: $font-family-base,
+   $font-size-base: $font-size-base,
+   $line-height-base: $line-height-base,
+   $font-weight-base: $font-weight-base,
+   $default-gap-width: $default-gap-width,
+   $mat-typography-config: $typography-config,
+   $mat-light-theme: $light-theme);
+
+@include mat-core($typography-config);
+@include styles-core($styles-config);
+@include angular-material-theme($light-theme);
+
+@include app-theme($light-theme);
+
+.dark {
+    @include angular-material-theme($dark-theme);
+    @include app-theme($dark-theme);
+}
