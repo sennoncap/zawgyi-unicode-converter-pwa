@@ -12,12 +12,11 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CacheService } from '@dagonmetric/ng-cache';
-import { ConfigService } from '@dagonmetric/ng-config';
 import { LogService } from '@dagonmetric/ng-log';
 
 import { environment } from '../../environments/environment';
 
-import { AppConfig } from '../shared/app-config';
+import { appSettings } from '../shared/app-settings';
 import { NavLinkItem } from '../shared/nav-link-item';
 import { UrlHelper } from '../shared/url-helper';
 
@@ -34,43 +33,38 @@ export class AboutComponent {
     private readonly _imageUrl = 'assets/images/social-image.jpg';
 
     get appName(): string | undefined {
-        return this._appConfig.appName;
+        return appSettings.appName;
     }
 
     get appVersion(): string | undefined {
-        return this._appConfig.appVersion;
+        return appSettings.appVersion;
     }
 
     get releaseDate(): Date | undefined {
-        return new Date(this._appConfig.releaseDateUtc);
+        return new Date(appSettings.releaseDateUtc);
     }
 
     get navLinks(): NavLinkItem[] {
-        return this._appConfig.navLinks;
+        return appSettings.navLinks;
     }
 
     get imageUrl(): string {
         return environment.production ? this._urlHelper.toAbsoluteUrl(this._imageUrl) : this._imageUrl;
     }
 
-    private readonly _appConfig: AppConfig;
-
     constructor(
         private readonly _dialogRef: MatDialogRef<AboutComponent>,
         private readonly _logService: LogService,
         private readonly _cacheService: CacheService,
         private readonly _snackBar: MatSnackBar,
-        private readonly _urlHelper: UrlHelper,
-        configService: ConfigService) {
-        this._appConfig = configService.getValue<AppConfig>('app');
-    }
+        private readonly _urlHelper: UrlHelper) {}
 
     openSharing(): void {
-        this._appConfig.socialSharing = this._appConfig.socialSharing || {};
+        appSettings.socialSharing = appSettings.socialSharing || {};
 
-        const socialSharingSubject = this._appConfig.socialSharing.subject;
-        const socialSharingLink = this._appConfig.socialSharing.linkUrl;
-        const socialSharingMessage = this._appConfig.socialSharing.message;
+        const socialSharingSubject = appSettings.socialSharing.subject;
+        const socialSharingLink = appSettings.socialSharing.linkUrl;
+        const socialSharingMessage = appSettings.socialSharing.message;
 
         // tslint:disable-next-line: no-any
         if (typeof navigator === 'object' && (navigator as any).share) {
@@ -84,7 +78,7 @@ export class AboutComponent {
                     name: 'share',
                     properties: {
                         method: 'Web Share API',
-                        app_version: this._appConfig.appVersion,
+                        app_version: appSettings.appVersion,
                         app_platform: 'web'
                     }
                 });
@@ -93,7 +87,7 @@ export class AboutComponent {
                 const errMsg = err && err.message ? ` ${err.message}` : '';
                 this._logService.error(`An error occurs when sharing via Web API.${errMsg}`, {
                     properties: {
-                        app_version: this._appConfig.appVersion
+                        app_version: appSettings.appVersion
                     }
                 });
 
@@ -105,11 +99,11 @@ export class AboutComponent {
     }
 
     private shareTofacebook(): void {
-        this._appConfig.socialSharing = this._appConfig.socialSharing || {};
+        appSettings.socialSharing = appSettings.socialSharing || {};
 
-        const appId = this._appConfig.facebookAppId || '';
-        const socialSharingLink = this._appConfig.socialSharing.linkUrl || '';
-        const socialSharingMessage = this._appConfig.socialSharing.message || '';
+        const appId = appSettings.facebookAppId || '';
+        const socialSharingLink = appSettings.socialSharing.linkUrl || '';
+        const socialSharingMessage = appSettings.socialSharing.message || '';
 
         let urlString = 'https://www.facebook.com/dialog/share?';
         urlString += `&app_id=${encodeURIComponent(appId)}`;
@@ -132,7 +126,7 @@ export class AboutComponent {
             name: 'share',
             properties: {
                 method: 'Facebook Share Dialog',
-                app_version: this._appConfig.appVersion,
+                app_version: appSettings.appVersion,
                 app_platform: 'web'
             }
         });
