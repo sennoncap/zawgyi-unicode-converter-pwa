@@ -14,7 +14,6 @@ import { of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 
 import { CacheService } from '@dagonmetric/ng-cache';
-import { ConfigService } from '@dagonmetric/ng-config';
 import { LogService } from '@dagonmetric/ng-log';
 import { TranslitResult, TranslitService } from '@dagonmetric/ng-translit';
 
@@ -22,7 +21,7 @@ import { DetectedEnc, ZawgyiDetector } from '@myanmartools/ng-zawgyi-detector';
 
 import { CdkTextareaSyncSize } from '../../modules/cdk-extensions';
 
-import { AppConfig } from '../shared/app-config';
+import { appSettings } from '../shared/app-settings';
 
 export type SourceEnc = 'auto' | DetectedEnc;
 
@@ -80,7 +79,7 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         this._logService.trackEvent({
             name: value ? 'turn_auto_save_on' : 'turn_auto_save_off',
             properties: {
-                app_version: this._appConfig.appVersion,
+                app_version: appSettings.appVersion,
                 app_platform: 'web'
             }
         });
@@ -98,7 +97,6 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         return this._targetPlaceholderText || this._targetPlaceholderAuto;
     }
 
-    private readonly _appConfig: AppConfig;
     private readonly _sourcePlaceholderAuto = 'Enter Zawgyi or Unicode text here';
     private readonly _sourcePlaceholderZg = 'Enter Zawgyi text here';
     private readonly _sourcePlaceholderUni = 'Enter Unicode text here';
@@ -118,10 +116,8 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         private readonly _translitService: TranslitService,
         private readonly _zawgyiDetector: ZawgyiDetector,
         private readonly _logService: LogService,
-        private readonly _cacheService: CacheService,
-        configService: ConfigService) {
-        this._isBrowser = isPlatformBrowser(platformId);
-        this._appConfig = configService.getValue<AppConfig>('app');
+        private readonly _cacheService: CacheService) {
+        this._isBrowser = isPlatformBrowser(platformId);        
     }
 
     ngOnInit(): void {
@@ -192,7 +188,7 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
                     properties: {
                         input_length: this._sourceText.length,
                         duration_msec: result.duration,
-                        app_version: this._appConfig.appVersion,
+                        app_version: appSettings.appVersion,
                         app_platform: 'web'
                     }
                 });
@@ -254,7 +250,7 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         this._logService.trackEvent({
             name: `change_input_font_${this.sourceEnc}`,
             properties: {
-                app_version: this._appConfig.appVersion,
+                app_version: appSettings.appVersion,
                 app_platform: 'web'
             }
         });
@@ -284,7 +280,7 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         this._logService.trackEvent({
             name: `change_output_font_${this.targetEnc}`,
             properties: {
-                app_version: this._appConfig.appVersion,
+                app_version: appSettings.appVersion,
                 app_platform: 'web'
             }
         });
