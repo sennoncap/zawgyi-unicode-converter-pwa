@@ -12,10 +12,9 @@ import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CacheService } from '@dagonmetric/ng-cache';
-import { ConfigService } from '@dagonmetric/ng-config';
 import { LogService } from '@dagonmetric/ng-log';
 
-import { AppConfig } from '../app-config';
+import { appSettings } from '../app-settings';
 
 /**
  * App social sharing sheet component.
@@ -25,24 +24,20 @@ import { AppConfig } from '../app-config';
     templateUrl: './social-sharing-sheet.component.html',
     styleUrls: ['./social-sharing-sheet.component.scss']
 })
-export class SocialSharingSheetComponent {
-    private readonly _appConfig: AppConfig;
+export class SocialSharingSheetComponent {    
 
     constructor(
         private readonly _bottomSheetRef: MatBottomSheetRef<SocialSharingSheetComponent>,
         private readonly _logService: LogService,
         private readonly _cacheService: CacheService,
-        private readonly _snackBar: MatSnackBar,
-        configService: ConfigService) {
-        this._appConfig = configService.getValue<AppConfig>('app');
-    }
+        private readonly _snackBar: MatSnackBar) {}
 
     openSharing(): void {
-        this._appConfig.socialSharing = this._appConfig.socialSharing || {};
+        appSettings.socialSharing = appSettings.socialSharing || {};
 
-        const socialSharingSubject = this._appConfig.socialSharing.subject;
-        const socialSharingLink = this._appConfig.socialSharing.linkUrl;
-        const socialSharingMessage = this._appConfig.socialSharing.message;
+        const socialSharingSubject = appSettings.socialSharing.subject;
+        const socialSharingLink = appSettings.socialSharing.linkUrl;
+        const socialSharingMessage = appSettings.socialSharing.message;
 
         // tslint:disable-next-line: no-any
         if (typeof navigator === 'object' && (navigator as any).share) {
@@ -56,7 +51,7 @@ export class SocialSharingSheetComponent {
                     name: 'share',
                     properties: {
                         method: 'Web Share API',
-                        app_version: this._appConfig.appVersion,
+                        app_version: appSettings.appVersion,
                         app_platform: 'web'
                     }
                 });
@@ -65,7 +60,7 @@ export class SocialSharingSheetComponent {
                 const errMsg = err && err.message ? ` ${err.message}` : '';
                 this._logService.error(`An error occurs when sharing via Web API.${errMsg}`, {
                     properties: {
-                        app_version: this._appConfig.appVersion
+                        app_version: appSettings.appVersion
                     }
                 });
 
@@ -83,11 +78,11 @@ export class SocialSharingSheetComponent {
     }
 
     private shareTofacebook(): void {
-        this._appConfig.socialSharing = this._appConfig.socialSharing || {};
+        appSettings.socialSharing = appSettings.socialSharing || {};
 
-        const appId = this._appConfig.facebookAppId || '';
-        const socialSharingLink = this._appConfig.socialSharing.linkUrl || '';
-        const socialSharingMessage = this._appConfig.socialSharing.message || '';
+        const appId = appSettings.facebookAppId || '';
+        const socialSharingLink = appSettings.socialSharing.linkUrl || '';
+        const socialSharingMessage = appSettings.socialSharing.message || '';
 
         let urlString = 'https://www.facebook.com/dialog/share?';
         urlString += `&app_id=${encodeURIComponent(appId)}`;
@@ -110,7 +105,7 @@ export class SocialSharingSheetComponent {
             name: 'share',
             properties: {
                 method: 'Facebook Share Dialog',
-                app_version: this._appConfig.appVersion,
+                app_version: appSettings.appVersion,
                 app_platform: 'web'
             }
         });
