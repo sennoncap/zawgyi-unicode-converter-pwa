@@ -32,8 +32,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 // import { AngularFireRemoteConfigModule, DEFAULTS, SETTINGS } from '@angular/fire/remote-config';
 
 import { CacheModule, MemoryCacheModule } from '@dagonmetric/ng-cache';
-import { ConfigModule } from '@dagonmetric/ng-config';
-import { StaticConfigLoaderModule } from '@dagonmetric/ng-config/static-loader';
 import { LogModule } from '@dagonmetric/ng-log';
 import { ConsoleLoggerModule } from '@dagonmetric/ng-log/console';
 import { TranslitModule } from '@dagonmetric/ng-translit';
@@ -58,7 +56,6 @@ import { SponsorComponent } from './sponsor';
 import { SupportComponent, SupportDialogHandlerComponent } from './support';
 
 import { AppComponent } from './app.component';
-import { appSettings } from './app.settings';
 import { appSvgIconProviders } from './app.svg-icons';
 
 export const appId = 'zawgyi-unicode-converter-pwa';
@@ -173,12 +170,8 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
         MatSnackBarModule,
         MatToolbarModule,
 
-        CdkTextareaSyncSizeModule,
-
-        // ng-config modules
-        ConfigModule.init(),
-        StaticConfigLoaderModule.withSettings(appSettings),
-
+        CdkTextareaSyncSizeModule,        
+        
         // ng-log modules
         LogModule.withConfig({
             minLevel: environment.production ? 'warn' : 'trace'
