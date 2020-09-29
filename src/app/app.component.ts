@@ -36,7 +36,6 @@ import { concat, interval, Observable, Subject } from 'rxjs';
 import { catchError, filter, first, map, takeUntil } from 'rxjs/operators';
 
 import { CacheService } from '@dagonmetric/ng-cache';
-import { ConfigService } from '@dagonmetric/ng-config';
 import { LogService } from '@dagonmetric/ng-log';
 
 import { environment } from '../environments/environment';
@@ -44,7 +43,7 @@ import { LinkService } from '../modules/seo';
 
 import { SponsorComponent } from './sponsor';
 
-import { AppConfig } from './shared/app-config';
+import { appSettings } from './shared/app-settings';
 import { NavLinkItem } from './shared/nav-link-item';
 import { SocialSharingSheetComponent } from './shared/social-sharing-sheet';
 import { Sponsor } from './shared/sponsor';
@@ -79,14 +78,14 @@ export class AppComponent implements OnInit, OnDestroy {
         this._logService.trackEvent({
             name: value ? 'change_dark_mode' : 'change_light_mode',
             properties: {
-                app_version: this._appConfig.appVersion,
+                app_version: appSettings.appVersion,
                 app_platform: 'web'
             }
         });
     }
 
     get appTitle(): string {
-        return this._appConfig.appName;
+        return appSettings.appName;
     }
 
     get appTitleFull(): string {
@@ -94,11 +93,11 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     get appVersion(): string {
-        return this._appConfig.appVersion;
+        return appSettings.appVersion;
     }
 
     get appDescription(): string {
-        return this._appConfig.appDescription;
+        return appSettings.appDescription;
     }
 
     get logoUrl(): string {
@@ -107,9 +106,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
     get communityLinks(): NavLinkItem[] {
         if (this._isAppUsedBefore) {
-            return this._appConfig.navLinks;
+            return appSettings.navLinks;
         } else {
-            return this._appConfig.navLinks.filter(navLink => navLink.expanded === true);
+            return appSettings.navLinks.filter(navLink => navLink.expanded === true);
         }
     }
 
@@ -132,8 +131,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly _isBrowser: boolean;
     private readonly _curVerAppUsedCount: number = 0;
     private readonly _isAppUsedBefore: boolean = false;
-    private readonly _checkInterval = 1000 * 60 * 60 * 6;
-    private readonly _appConfig: AppConfig;
+    private readonly _checkInterval = 1000 * 60 * 60 * 6;    
     private readonly _onDestroy = new Subject<void>();
 
     private _isFirstNavigation = true;
@@ -162,12 +160,10 @@ export class AppComponent implements OnInit, OnDestroy {
         private readonly _bottomSheet: MatBottomSheet,
         private readonly _dialog: MatDialog,
         private readonly _httpClient: HttpClient,
-        // private readonly _remoteConfig: AngularFireRemoteConfig,
-        configService: ConfigService,
+        // private readonly _remoteConfig: AngularFireRemoteConfig,        
         breakpointObserver: BreakpointObserver) {
         this._isBrowser = isPlatformBrowser(platformId);
-        this._appConfig = configService.getValue<AppConfig>('app');
-
+        
         if (this._isBrowser) {
             // this._remoteConfig.changes
             //     .pipe(
@@ -261,7 +257,7 @@ export class AppComponent implements OnInit, OnDestroy {
                     uri: !this._isFirstNavigation && routeData.pagePath ? routeData.pagePath : undefined,
                     page_type: routeData.pageType ? routeData.pageType : undefined,
                     properties: {
-                        app_version: this._appConfig.appVersion
+                        app_version: appSettings.appVersion
                     }
                 });
 
@@ -319,7 +315,7 @@ export class AppComponent implements OnInit, OnDestroy {
             this._logService.trackEvent({
                 name: drawerResult === 'open' ? 'open_drawer_menu' : 'close_drawer_menu',
                 properties: {
-                    app_version: this._appConfig.appVersion,
+                    app_version: appSettings.appVersion,
                     app_platform: 'web'
                 }
             });
@@ -370,7 +366,7 @@ export class AppComponent implements OnInit, OnDestroy {
             this._metaService.removeTag('name="robots"');
         }
 
-        const metaDescription = routeData.meta && routeData.meta.description ? routeData.meta.description : this._appConfig.appDescription;
+        const metaDescription = routeData.meta && routeData.meta.description ? routeData.meta.description : appSettings.appDescription;
         this._metaService.updateTag({
             name: 'description',
             content: metaDescription
@@ -386,7 +382,7 @@ export class AppComponent implements OnInit, OnDestroy {
             content: socialDescription
         });
 
-        const keywords = routeData.meta && routeData.meta.keywords ? routeData.meta.keywords : this._appConfig.appName;
+        const keywords = routeData.meta && routeData.meta.keywords ? routeData.meta.keywords : appSettings.appName;
         this._metaService.updateTag({
             name: 'keywords',
             content: keywords
@@ -417,7 +413,7 @@ export class AppComponent implements OnInit, OnDestroy {
                         this._logService.trackEvent({
                             name: 'reload_update',
                             properties: {
-                                app_version: this._appConfig.appVersion,
+                                app_version: appSettings.appVersion,
                                 app_platform: 'web',
                                 current_hash: evt.current.hash,
                                 available_hash: evt.available.hash
@@ -483,7 +479,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     private getCurVerAppUsedCount(): number {
-        const appUsedCountStr = this._cacheService.getItem<string>(`appUsedCount-v${this._appConfig.appVersion}`);
+        const appUsedCountStr = this._cacheService.getItem<string>(`appUsedCount-v${appSettings.appVersion}`);
         if (appUsedCountStr) {
             return parseInt(appUsedCountStr, 10);
         }
@@ -548,7 +544,7 @@ export class AppComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this._cacheService.setItem(`appUsedCount-v${this._appConfig.appVersion}`, `${this._curVerAppUsedCount + 1}`);
+        this._cacheService.setItem(`appUsedCount-v${appSettings.appVersion}`, `${this._curVerAppUsedCount + 1}`);
 
         if (!this._isAppUsedBefore) {
             this._cacheService.setItem('appUsed', 'true');
