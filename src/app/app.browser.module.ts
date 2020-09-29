@@ -14,10 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '../environments/environment';
 
 import { CacheLocalStorageModule } from '@dagonmetric/ng-cache';
-// import { FacebookAnalyticsLoggerModule } from '@dagonmetric/ng-log-facebook-analytics';
-
-// import { FirebaseAnalyticsLoggerModule } from '@dagonmetric/ng-log-firebase-analytics';
-import { FirebaseAnalyticsLoggerModule } from '../modules/ng-log-firebase-analytics';
+import { FirebaseAnalyticsLoggerModule } from '@dagonmetric/ng-log-firebase-analytics';
 
 import { AppComponent } from './app.component';
 import { appId, AppModule } from './app.module';
@@ -31,16 +28,12 @@ import { appId, AppModule } from './app.module';
         BrowserModule.withServerTransition({ appId }),
         BrowserTransferStateModule,
         HttpClientModule,
-
         AppModule,
-
         BrowserAnimationsModule,
 
         CacheLocalStorageModule,
-
-        // FacebookAnalyticsLoggerModule,
-        FirebaseAnalyticsLoggerModule.config({
-            firebase: environment.firebase
+        FirebaseAnalyticsLoggerModule.configure({
+            firebaseConfig: environment.firebase
         })
     ]
 })
