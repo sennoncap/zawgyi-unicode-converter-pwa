@@ -32,10 +32,9 @@
             ],
             "styles": [
               "src/styles.scss"
-            ],
+            ],            
             "scripts": [],
-            "aot": true,
-            "es5BrowserSupport": true
+            "aot": true
           },
           "configurations": {
             "production": {
