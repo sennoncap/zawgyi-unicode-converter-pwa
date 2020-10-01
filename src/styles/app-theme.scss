@@ -138,7 +138,8 @@ $styles-config: styles-config(
    $font-weight-base: $font-weight-base,
    $default-gap-width: $default-gap-width,
    $mat-typography-config: $typography-config,
-   $mat-light-theme: $light-theme);
+   $mat-light-theme: $light-theme,
+   $container-max-widths: $container-max-widths);
 
 @include mat-core($typography-config);
 @include styles-core($styles-config);
