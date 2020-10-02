@@ -15,7 +15,7 @@ import { ServerModule, ServerTransferStateModule } from '@angular/platform-serve
 import { FlexLayoutServerModule } from '@angular/flex-layout/server';
 
 import { AppComponent } from './app.component';
-import { appId, AppModule } from './app.module';
+import { AppModule, appId } from './app.module';
 
 /**
  * App server module for node platform.
@@ -36,4 +36,4 @@ import { appId, AppModule } from './app.module';
     ],
     bootstrap: [AppComponent]
 })
-export class AppServerModule { }
+export class AppServerModule {}
