@@ -22,5 +22,5 @@ import { appSettings } from '../shared/app-settings';
 export class PrivacyComponent {
     get privacyUrl(): string | undefined {
         return appSettings.privacyUrl;
-    }    
+    }
 }
