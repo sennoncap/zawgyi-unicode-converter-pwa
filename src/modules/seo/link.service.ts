@@ -18,11 +18,7 @@ import { Inject, Injectable, Renderer2, RendererFactory2, ViewEncapsulation } fr
 export class LinkService {
     private readonly _document: HTMLDocument;
 
-    constructor(
-        private readonly _rendererFactory: RendererFactory2,
-        // tslint:disable-next-line:no-any
-        @Inject(DOCUMENT) doc: Document
-    ) {
+    constructor(private readonly _rendererFactory: RendererFactory2, @Inject(DOCUMENT) doc: Document) {
         this._document = doc;
     }
 
@@ -133,7 +129,6 @@ export class LinkService {
             throw new Error('<head> not found within DOCUMENT.');
         }
 
-        // tslint:disable-next-line: no-unsafe-any
         this.setLinkElementAttributes(tag, element, renderer);
         renderer.appendChild(head, element);
 
