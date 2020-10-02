@@ -23,7 +23,8 @@ export class AboutDialogHandlerComponent {
     constructor(
         private readonly _dialog: MatDialog,
         private readonly _router: Router,
-        private readonly _route: ActivatedRoute) {
+        private readonly _route: ActivatedRoute
+    ) {
         this.openDialog();
     }
 
@@ -33,8 +34,7 @@ export class AboutDialogHandlerComponent {
         });
 
         dialogRef.afterClosed().subscribe(() => {
-            // tslint:disable-next-line: no-floating-promises
-            this._router.navigate(['../'], { relativeTo: this._route });
+            void this._router.navigate(['../'], { relativeTo: this._route });
         });
     }
 }
