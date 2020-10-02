@@ -17,7 +17,7 @@ import { CacheLocalStorageModule } from '@dagonmetric/ng-cache';
 import { FirebaseAnalyticsLoggerModule } from '@dagonmetric/ng-log-firebase-analytics';
 
 import { AppComponent } from './app.component';
-import { appId, AppModule } from './app.module';
+import { AppModule, appId } from './app.module';
 
 /**
  * App module for browser platform.
@@ -37,4 +37,4 @@ import { appId, AppModule } from './app.module';
         })
     ]
 })
-export class AppBrowserModule { }
+export class AppBrowserModule {}
