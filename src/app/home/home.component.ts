@@ -1,4 +1,3 @@
-
 /**
  * @license
  * Copyright DagonMetric. All Rights Reserved.
@@ -10,7 +9,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 
-import { of, Subject } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 
 import { CacheService } from '@dagonmetric/ng-cache';
@@ -34,15 +33,15 @@ export type SourceEnc = 'auto' | DetectedEnc;
     styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
-    autoEncText = 'AUTO';
-    sourceEnc?: SourceEnc;
-    targetEnc?: DetectedEnc;
-
     @ViewChild('sourceTextareaSyncSize', { static: false })
     sourceTextareaSyncSize?: CdkTextareaSyncSize;
 
     @ViewChild('outTextareaSyncSize', { static: false })
     outTextareaSyncSize?: CdkTextareaSyncSize;
+
+    autoEncText = 'AUTO';
+    sourceEnc?: SourceEnc;
+    targetEnc?: DetectedEnc;
 
     private readonly _translitSubject = new Subject<string>();
     private readonly _destroyed = new Subject<void>();
@@ -111,89 +110,89 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
     private _targetPlaceholderText = '';
 
     constructor(
-        // tslint:disable-next-line: ban-types
+        // eslint-disable-next-line @typescript-eslint/ban-types
         @Inject(PLATFORM_ID) platformId: Object,
         private readonly _translitService: TranslitService,
         private readonly _zawgyiDetector: ZawgyiDetector,
         private readonly _logService: LogService,
-        private readonly _cacheService: CacheService) {
-        this._isBrowser = isPlatformBrowser(platformId);        
+        private readonly _cacheService: CacheService
+    ) {
+        this._isBrowser = isPlatformBrowser(platformId);
     }
 
     ngOnInit(): void {
-        this._translitSubject.pipe(
-            debounceTime(100),
-            distinctUntilChanged(),
-            takeUntil(this._destroyed),
-            switchMap(formattedInput => {
-                const inputPart = formattedInput.substr(formattedInput.indexOf('|'));
-                const input = inputPart.length > 1 ? inputPart.substr(1) : '';
-                if (!input || !input.trim().length) {
-                    if (this.sourceEnc === 'auto' || !this.detectedEnc) {
-                        this.resetAutoEncText();
-                        this.sourceEnc = 'auto';
-                        this._detectedEnc = null;
-                    }
-
-                    return of({
-                        outputText: input,
-                        replaced: false,
-                        duration: 0
-                    });
-                }
-
-                if (this.sourceEnc === 'auto' || !this.detectedEnc) {
-                    const detectorResult = this._zawgyiDetector.detect(input, { detectMixType: false });
-
-                    if (detectorResult.detectedEnc === 'zg') {
-                        this.resetAutoEncText('ZAWGYI DETECTED');
-                        this.sourceEnc = 'auto';
-                        this._detectedEnc = 'zg';
-                        this.targetEnc = 'uni';
-                    } else if (detectorResult.detectedEnc === 'uni') {
-                        this.resetAutoEncText('UNICODE DETECTED');
-                        this.sourceEnc = 'auto';
-                        this._detectedEnc = 'uni';
-                        this.targetEnc = 'zg';
-                    } else {
-                        this.resetAutoEncText();
-                        this.sourceEnc = 'auto';
-                        this._detectedEnc = null;
+        this._translitSubject
+            .pipe(
+                debounceTime(100),
+                distinctUntilChanged(),
+                takeUntil(this._destroyed),
+                switchMap((formattedInput) => {
+                    const inputPart = formattedInput.substr(formattedInput.indexOf('|'));
+                    const input = inputPart.length > 1 ? inputPart.substr(1) : '';
+                    if (!input || !input.trim().length) {
+                        if (this.sourceEnc === 'auto' || !this.detectedEnc) {
+                            this.resetAutoEncText();
+                            this.sourceEnc = 'auto';
+                            this._detectedEnc = null;
+                        }
 
                         return of({
-                            replaced: false,
                             outputText: input,
+                            replaced: false,
                             duration: 0
                         });
                     }
+
+                    if (this.sourceEnc === 'auto' || !this.detectedEnc) {
+                        const detectorResult = this._zawgyiDetector.detect(input, { detectMixType: false });
+
+                        if (detectorResult.detectedEnc === 'zg') {
+                            this.resetAutoEncText('ZAWGYI DETECTED');
+                            this.sourceEnc = 'auto';
+                            this._detectedEnc = 'zg';
+                            this.targetEnc = 'uni';
+                        } else if (detectorResult.detectedEnc === 'uni') {
+                            this.resetAutoEncText('UNICODE DETECTED');
+                            this.sourceEnc = 'auto';
+                            this._detectedEnc = 'uni';
+                            this.targetEnc = 'zg';
+                        } else {
+                            this.resetAutoEncText();
+                            this.sourceEnc = 'auto';
+                            this._detectedEnc = null;
+
+                            return of({
+                                replaced: false,
+                                outputText: input,
+                                duration: 0
+                            });
+                        }
+                    }
+
+                    this._curRuleName = this.detectedEnc === 'zg' ? 'zg2uni' : 'uni2zg';
+
+                    return this._translitService.translit(input, this._curRuleName).pipe(takeUntil(this._destroyed));
+                })
+            )
+            .subscribe((result: TranslitResult) => {
+                this._outText = result.outputText || '';
+
+                if (this._isBrowser && this.autoSaveEnabled) {
+                    this._cacheService.setItem(this._lastInputTextKey, this._sourceText);
                 }
 
-                this._curRuleName = this.detectedEnc === 'zg' ? 'zg2uni' : 'uni2zg';
-
-                return this._translitService.translit(input, this._curRuleName)
-                    .pipe(
-                        takeUntil(this._destroyed)
-                    );
-            })
-        ).subscribe((result: TranslitResult) => {
-            this._outText = result.outputText || '';
-
-            if (this._isBrowser && this.autoSaveEnabled) {
-                this._cacheService.setItem(this._lastInputTextKey, this._sourceText);
-            }
-
-            if (this._isBrowser && this._sourceText.length && this._curRuleName && result.replaced) {
-                this._logService.trackEvent({
-                    name: `convert_${this._curRuleName}`,
-                    properties: {
-                        input_length: this._sourceText.length,
-                        duration_msec: result.duration,
-                        app_version: appSettings.appVersion,
-                        app_platform: 'web'
-                    }
-                });
-            }
-        });
+                if (this._isBrowser && this._sourceText.length && this._curRuleName && result.replaced) {
+                    this._logService.trackEvent({
+                        name: `convert_${this._curRuleName}`,
+                        properties: {
+                            input_length: this._sourceText.length,
+                            duration_msec: result.duration,
+                            app_version: appSettings.appVersion,
+                            app_platform: 'web'
+                        }
+                    });
+                }
+            });
 
         if (this._isBrowser && this.autoSaveEnabled) {
             const lastSavedText = this._cacheService.getItem<string>(this._lastInputTextKey);
@@ -272,7 +271,10 @@ export class HomeComponent implements AfterViewInit, OnInit, OnDestroy {
         if (this.targetEnc === 'zg' && (!this.sourceEnc || this.sourceEnc === 'auto' || this.sourceEnc === 'zg')) {
             this._detectedEnc = this.sourceEnc = 'uni';
             this.resetAutoEncText();
-        } else if (this.targetEnc === 'uni' && (!this.sourceEnc || this.sourceEnc === 'auto' || this.sourceEnc === 'uni')) {
+        } else if (
+            this.targetEnc === 'uni' &&
+            (!this.sourceEnc || this.sourceEnc === 'auto' || this.sourceEnc === 'uni')
+        ) {
             this._detectedEnc = this.sourceEnc = 'zg';
             this.resetAutoEncText();
         }
