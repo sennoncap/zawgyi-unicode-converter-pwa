@@ -16,4 +16,4 @@ import { Component } from '@angular/core';
     templateUrl: './sponsor.component.html',
     styleUrls: ['./sponsor.component.scss']
 })
-export class SponsorComponent { }
+export class SponsorComponent {}
