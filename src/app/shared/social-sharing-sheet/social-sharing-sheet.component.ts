@@ -24,13 +24,13 @@ import { appSettings } from '../app-settings';
     templateUrl: './social-sharing-sheet.component.html',
     styleUrls: ['./social-sharing-sheet.component.scss']
 })
-export class SocialSharingSheetComponent {    
-
+export class SocialSharingSheetComponent {
     constructor(
         private readonly _bottomSheetRef: MatBottomSheetRef<SocialSharingSheetComponent>,
         private readonly _logService: LogService,
         private readonly _cacheService: CacheService,
-        private readonly _snackBar: MatSnackBar) {}
+        private readonly _snackBar: MatSnackBar
+    ) {}
 
     openSharing(): void {
         appSettings.socialSharing = appSettings.socialSharing || {};
@@ -39,33 +39,34 @@ export class SocialSharingSheetComponent {
         const socialSharingLink = appSettings.socialSharing.linkUrl;
         const socialSharingMessage = appSettings.socialSharing.message;
 
-        // tslint:disable-next-line: no-any
-        if (typeof navigator === 'object' && (navigator as any).share) {
-            // tslint:disable-next-line: no-any no-unsafe-any
-            (navigator as any).share({
-                title: socialSharingSubject,
-                text: socialSharingMessage,
-                url: socialSharingLink
-            }).then(() => {
-                this._logService.trackEvent({
-                    name: 'share',
-                    properties: {
-                        method: 'Web Share API',
-                        app_version: appSettings.appVersion,
-                        app_platform: 'web'
-                    }
-                });
-                this.dismissSheetAndShowThankYouMessage();
-            }).catch((err: Error) => {
-                const errMsg = err && err.message ? ` ${err.message}` : '';
-                this._logService.error(`An error occurs when sharing via Web API.${errMsg}`, {
-                    properties: {
-                        app_version: appSettings.appVersion
-                    }
-                });
+        if (typeof navigator === 'object' && navigator.share) {
+            navigator
+                .share({
+                    title: socialSharingSubject,
+                    text: socialSharingMessage,
+                    url: socialSharingLink
+                })
+                .then(() => {
+                    this._logService.trackEvent({
+                        name: 'share',
+                        properties: {
+                            method: 'Web Share API',
+                            app_version: appSettings.appVersion,
+                            app_platform: 'web'
+                        }
+                    });
+                    this.dismissSheetAndShowThankYouMessage();
+                })
+                .catch((err: Error) => {
+                    const errMsg = err && err.message ? ` ${err.message}` : '';
+                    this._logService.error(`An error occurs when sharing via Web API.${errMsg}`, {
+                        properties: {
+                            app_version: appSettings.appVersion
+                        }
+                    });
 
-                this.shareTofacebook();
-            });
+                    this.shareTofacebook();
+                });
         } else {
             this.shareTofacebook();
         }
@@ -99,7 +100,8 @@ export class SocialSharingSheetComponent {
         window.open(
             urlString,
             'Facebook',
-            `toolbar=0,status=0,resizable=yes,width=${winWidth},height=${winHeight},top=${winTop},left=${winLeft}`);
+            `toolbar=0,status=0,resizable=yes,width=${winWidth},height=${winHeight},top=${winTop},left=${winLeft}`
+        );
 
         this._logService.trackEvent({
             name: 'share',
