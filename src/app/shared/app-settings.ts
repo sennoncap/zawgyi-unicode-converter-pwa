@@ -1,7 +1,7 @@
 import { AppConfig } from './app-config';
 
 export const appSettings: AppConfig = {
-    appVersion: '3.7.5',
+    appVersion: '3.7.6',
     releaseDateUtc: '2020-04-05T16:15:00Z',
     appName: 'Zawgyi Unicode Converter',
     appDescription:
