@@ -17,14 +17,14 @@ import { SupportComponent } from './support.component';
  * App Support dialog handler component.
  */
 @Component({
-    template: '',
-
+    template: ''
 })
 export class SupportDialogHandlerComponent {
     constructor(
         private readonly _dialog: MatDialog,
         private readonly _router: Router,
-        private readonly _route: ActivatedRoute) {
+        private readonly _route: ActivatedRoute
+    ) {
         this.openDialog();
     }
 
@@ -32,9 +32,7 @@ export class SupportDialogHandlerComponent {
         const dialogRef = this._dialog.open(SupportComponent);
 
         dialogRef.afterClosed().subscribe(() => {
-
-            // tslint:disable-next-line: no-floating-promises
-            this._router.navigate(['../'], { relativeTo: this._route });
+            void this._router.navigate(['../'], { relativeTo: this._route });
         });
     }
 }
