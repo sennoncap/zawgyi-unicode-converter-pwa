@@ -34,7 +34,12 @@
               "src/styles.scss"
             ],            
             "scripts": [],
-            "aot": true
+            "aot": true,
+            "allowedCommonJsDependencies": [
+              "firebase/app",
+              "@firebase/util",
+              "@firebase/component"
+           ]
           },
           "configurations": {
             "production": {
@@ -104,7 +109,7 @@
               "src/favicon.ico",
               "src/manifest.json",
               "src/assets"
-            ]
+            ]            
           },
           "configurations": {
             "ci": {
