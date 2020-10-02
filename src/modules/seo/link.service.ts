@@ -21,12 +21,12 @@ export class LinkService {
     constructor(
         private readonly _rendererFactory: RendererFactory2,
         // tslint:disable-next-line:no-any
-        @Inject(DOCUMENT) doc: any) {
-        // tslint:disable-next-line: no-unsafe-any
+        @Inject(DOCUMENT) doc: Document
+    ) {
         this._document = doc;
     }
 
-    addTag(tag: LinkDefinition, forceCreation: boolean = false): HTMLLinkElement | null | undefined {
+    addTag(tag: LinkDefinition, forceCreation = false): HTMLLinkElement | null | undefined {
         if (!tag) {
             return undefined;
         }
@@ -34,7 +34,7 @@ export class LinkService {
         return this.getOrCreateElement(tag, forceCreation);
     }
 
-    addTags(tags: LinkDefinition[], forceCreation: boolean = false): HTMLLinkElement[] {
+    addTags(tags: LinkDefinition[], forceCreation = false): HTMLLinkElement[] {
         if (!tags) {
             return [];
         }
@@ -76,7 +76,7 @@ export class LinkService {
 
         const selector = this.normalizeSelector(attrSelector);
 
-        return this._document.head.querySelector(selector) as HTMLLinkElement;
+        return this._document.head.querySelector(selector);
     }
 
     getTags(attrSelector: string): HTMLLinkElement[] {
@@ -92,12 +92,12 @@ export class LinkService {
 
         const nodeList = this._document.head.querySelectorAll<HTMLLinkElement>(selector);
 
-        // tslint:disable-next-line: no-unsafe-any
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return nodeList ? [].slice.call(nodeList) : [];
     }
 
     removeTag(attrSelector: string): void {
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.removeTagElement(this.getTag(attrSelector)!);
     }
 
@@ -108,11 +108,11 @@ export class LinkService {
         }
     }
 
-    private getOrCreateElement(tag: LinkDefinition, forceCreation: boolean = false):
-        HTMLLinkElement {
+    private getOrCreateElement(tag: LinkDefinition, forceCreation = false): HTMLLinkElement {
         if (!forceCreation) {
             const selector: string = this.parseSelector(tag);
-            // tslint:disable-next-line:no-non-null-assertion
+
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const elem: HTMLLinkElement = this.getTag(selector)!;
             // It's allowed to have multiple elements with the same name so it's not enough to
             // just check that element with the same name already present on the page. We also need to
@@ -124,6 +124,7 @@ export class LinkService {
 
         const renderer = this.createRenderer();
 
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const element = renderer.createElement('link');
         const head = this._document.head;
         // const selector = this._parseSelector(tag);
@@ -136,7 +137,7 @@ export class LinkService {
         this.setLinkElementAttributes(tag, element, renderer);
         renderer.appendChild(head, element);
 
-        // tslint:disable-next-line: no-unsafe-any
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         return element;
     }
 
@@ -150,14 +151,13 @@ export class LinkService {
     }
 
     private setLinkElementAttributes(tag: LinkDefinition, el: HTMLLinkElement, renderer?: Renderer2): HTMLLinkElement {
-        Object.keys(tag)
-            .forEach((prop: string) => {
-                if (renderer) {
-                    renderer.setAttribute(el, prop, tag[prop]);
-                } else {
-                    el.setAttribute(prop, tag[prop]);
-                }
-            });
+        Object.keys(tag).forEach((prop: string) => {
+            if (renderer) {
+                renderer.setAttribute(el, prop, tag[prop]);
+            } else {
+                el.setAttribute(prop, tag[prop]);
+            }
+        });
 
         return el;
     }
@@ -177,8 +177,7 @@ export class LinkService {
     }
 
     private containsAttributes(tag: LinkDefinition, elem: HTMLLinkElement): boolean {
-        return Object.keys(tag)
-            .every((key: string) => elem.getAttribute(key) === tag[key]);
+        return Object.keys(tag).every((key: string) => elem.getAttribute(key) === tag[key]);
     }
 }
 
@@ -192,7 +191,6 @@ export declare type LinkDefinition = {
     rev?: string;
     sizes?: string;
     target?: string;
-    // tslint:disable-next-line:no-reserved-keywords
     type?: string;
 } & {
     [prop: string]: string;
