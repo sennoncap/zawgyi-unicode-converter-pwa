@@ -6,37 +6,29 @@
  * found under the LICENSE file in the root directory of this source tree.
  */
 
-// import 'zone.js/dist/zone-node';
-
 import { mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
 async function _renderUniversal() {
-    const routes = [
-        '/',
-        '/about',
-        '/support',
-        '/privacy'
-    ];
+    const routes = ['/', '/about', '/support', '/privacy'];
 
     const serverBundlePath = './app/server/main';
-    const {
-        AppServerModule,
-        AppServerModuleNgFactory,
-        renderModule,
-        renderModuleFactory,
-    } = await import(serverBundlePath);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const { AppServerModule, AppServerModuleNgFactory, renderModule, renderModuleFactory } = await import(
+        serverBundlePath
+    );
 
-
-    let renderModuleFn: (module: unknown, options: {}) => Promise<string>;
+    let renderModuleFn: (module: unknown, options: unknown) => Promise<string>;
     let AppServerModuleDef: unknown;
 
     if (renderModuleFactory && AppServerModuleNgFactory) {
         // Happens when in ViewEngine mode.
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         renderModuleFn = renderModuleFactory;
         AppServerModuleDef = AppServerModuleNgFactory;
     } else if (renderModule && AppServerModule) {
         // Happens when in Ivy mode.
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         renderModuleFn = renderModule;
         AppServerModuleDef = AppServerModule;
     } else {
@@ -48,7 +40,7 @@ async function _renderUniversal() {
 
     const indexHtml = readFileSync(browserIndexOutputPath, 'utf8');
 
-    for (let route of routes) {
+    for (const route of routes) {
         const renderOpts = {
             document: indexHtml,
             url: route
@@ -65,13 +57,11 @@ async function _renderUniversal() {
             writeFileSync(browserIndexOutputPathOriginal, indexHtml);
         }
 
-
         // Make sure the directory structure is there
         mkdirSync(outputFolderPath, { recursive: true });
 
         writeFileSync(outputIndexPath, html);
-
     }
 }
 
-_renderUniversal();
+void _renderUniversal();
