@@ -67,8 +67,7 @@ export class AboutComponent {
         const socialSharingLink = appSettings.socialSharing.linkUrl;
         const socialSharingMessage = appSettings.socialSharing.message;
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-        if (typeof navigator === 'object' && (navigator as any).share) {
+        if (typeof navigator === 'object' && navigator.share) {
             navigator
                 .share({
                     title: socialSharingSubject,
