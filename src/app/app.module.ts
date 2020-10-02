@@ -28,9 +28,6 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
-// import { AngularFireModule } from '@angular/fire';
-// import { AngularFireRemoteConfigModule, DEFAULTS, SETTINGS } from '@angular/fire/remote-config';
-
 import { CacheModule, MemoryCacheModule } from '@dagonmetric/ng-cache';
 import { LogModule } from '@dagonmetric/ng-log';
 import { ConsoleLoggerModule } from '@dagonmetric/ng-log/console';
@@ -68,9 +65,11 @@ export const appRoutes: Routes = [
         data: {
             pageType: 'home-page',
             meta: {
-                keywords: 'zawgyi unicode converter,zawgyi unicode converter online,zawgyi,zawgyi to unicode,unicode to zawgyi,zawgyi unicode,myanmar font converter,myanmar tools,myanmar,unicode,converter,dagonmetric',
+                keywords:
+                    'zawgyi unicode converter,zawgyi unicode converter online,zawgyi,zawgyi to unicode,unicode to zawgyi,zawgyi unicode,myanmar font converter,myanmar tools,myanmar,unicode,converter,dagonmetric',
                 socialTitle: "Let's Convert Zawgyi / Unicode Effortlessly",
-                socialDescription: "Free, open source and the world's most intelligent accurate Zawgyi Unicode converter is here!"
+                socialDescription:
+                    "Free, open source and the world's most intelligent accurate Zawgyi Unicode converter is here!"
             }
         },
         children: [
@@ -81,7 +80,8 @@ export const appRoutes: Routes = [
                     pageType: 'about-page',
                     meta: {
                         title: 'Zawgyi Unicode Converter - About',
-                        description: "The world's most intelligent and accurate Zawgyi Unicode converter like never before!",
+                        description:
+                            "The world's most intelligent and accurate Zawgyi Unicode converter like never before!",
                         keywords: 'zawgyi unicode converter,free,open source,intelligent,accurate,about'
                     }
                 }
@@ -93,7 +93,8 @@ export const appRoutes: Routes = [
                     pageType: 'support-page',
                     meta: {
                         title: 'Zawgyi Unicode Converter - Support',
-                        description: 'We use the following channels for general feedback and discussions. Facebook Messenger Gitter GitHub Issues',
+                        description:
+                            'We use the following channels for general feedback and discussions. Facebook Messenger Gitter GitHub Issues',
                         keywords: 'zawgyi unicode converter,support,feedback'
                     }
                 }
@@ -105,7 +106,8 @@ export const appRoutes: Routes = [
                     pageType: 'privacy-page',
                     meta: {
                         title: 'Zawgyi Unicode Converter - Privacy',
-                        description: 'Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect or handle your Personally Identifiable Information with this app - Zawgyi Unicode Converter.',
+                        description:
+                            'Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect or handle your Personally Identifiable Information with this app - Zawgyi Unicode Converter.',
                         keywords: 'zawgyi unicode converter,privacy'
                     }
                 }
@@ -119,7 +121,7 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
     // return document.getElementsByTagName('base')[0].href;
 
     if (doc && doc.head) {
-        const baseEle = doc.head.querySelector('base') as HTMLBaseElement;
+        const baseEle = doc.head.querySelector('base');
 
         if (baseEle) {
             return baseEle.getAttribute('href');
@@ -149,9 +151,6 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
         CommonModule,
         FormsModule,
 
-        // AngularFireModule.initializeApp(environment.firebase),
-        // AngularFireRemoteConfigModule,
-
         RouterModule.forRoot(appRoutes),
 
         OverlayModule,
@@ -170,8 +169,8 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
         MatSnackBarModule,
         MatToolbarModule,
 
-        CdkTextareaSyncSizeModule,        
-        
+        CdkTextareaSyncSizeModule,
+
         // ng-log modules
         LogModule.withConfig({
             minLevel: environment.production ? 'warn' : 'trace'
@@ -201,18 +200,6 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
             useFactory: baseHrefFactory,
             deps: [DOCUMENT]
         },
-        // {
-        //     provide: DEFAULTS,
-        //     useValue: {
-        //         sponsors: '',
-        //         sponsorSectionVisible: false,
-        //         colorMode: 'auto'
-        //     }
-        // },
-        // {
-        //     provide: SETTINGS,
-        //     useFactory: () => environment.production ? {} : { minimumFetchIntervalMillis: 20_000 }
-        // },
         LinkService,
         UrlHelper,
         {
@@ -230,4 +217,4 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
