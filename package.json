@@ -15,9 +15,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "npm run build:prod",
-    "test": "ng test",
+    "lint": "eslint -c .eslintrc.json --ext .js,.ts .",
+    "test": "ng test -c=ci",
     "e2e": "ng e2e",
+    "build": "npm run build:prod",    
     "build:prod": "npm run build:universal:prod && npm run prerender:manual && npm run update:ngsw-config && npm run copy-files",
     "build:universal:prod": "ng build --prod && ng run app:server:production",
     "prerender:manual": "tsc -p tsconfig.prerender.json && node dist/prerender",
