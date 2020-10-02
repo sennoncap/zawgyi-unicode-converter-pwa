@@ -4,7 +4,8 @@ export const appSettings: AppConfig = {
     appVersion: '3.7.5',
     releaseDateUtc: '2020-04-05T16:15:00Z',
     appName: 'Zawgyi Unicode Converter',
-    appDescription: 'Zawgyi Unicode Converter is a free & open source Zawgyi to Unicode or Unicode to Zawgyi online / offline Myanmar font converter by DagonMetric Myanmar Tools.',
+    appDescription:
+        'Zawgyi Unicode Converter is a free & open source Zawgyi to Unicode or Unicode to Zawgyi online / offline Myanmar font converter by DagonMetric Myanmar Tools.',
     baseUrl: 'https://zawgyi-unicode-converter.myanmartools.org/',
     navLinks: [
         {
@@ -42,7 +43,8 @@ export const appSettings: AppConfig = {
     ],
     socialSharing: {
         subject: 'Zawgyi Unicode Converter app you may also like',
-        message: 'ဇော်ဂျီ ယူနီကုဒ် အခက်အခဲရှိနေသူများအတွက် ဇော်ဂျီကနေ ယူနီကုဒ်၊ ယူနီကုဒ်ကနေ ဇော်ဂျီ အပြန်အလှန် အလိုအလျောက် ပြောင်းပေးတဲ့ app တစ်ခု မျှဝေလိုက်ပါတယ်။',
+        message:
+            'ဇော်ဂျီ ယူနီကုဒ် အခက်အခဲရှိနေသူများအတွက် ဇော်ဂျီကနေ ယူနီကုဒ်၊ ယူနီကုဒ်ကနေ ဇော်ဂျီ အပြန်အလှန် အလိုအလျောက် ပြောင်းပေးတဲ့ app တစ်ခု မျှဝေလိုက်ပါတယ်။',
         linkUrl: 'https://myanmartools.org/apps/zawgyi-unicode-converter'
     },
     facebookAppId: '461163654621837',
