@@ -18,11 +18,7 @@ import { appSettings } from '../app-settings';
     providedIn: 'root'
 })
 export class UrlHelper {
-    
-    constructor(        
-        @Optional() @Inject(APP_BASE_HREF) private readonly _baseHref?: string) {
-        
-    }
+    constructor(@Optional() @Inject(APP_BASE_HREF) private readonly _baseHref?: string) {}
 
     toAbsoluteUrl(url: string): string {
         let formattedUrl = (url || '').trim();
@@ -47,6 +43,6 @@ export class UrlHelper {
     }
 
     private isAbsoluteUrl(url: string): boolean {
-        return /^https?\:\/\//i.test(url);
+        return /^https?:\/\//i.test(url);
     }
 }
