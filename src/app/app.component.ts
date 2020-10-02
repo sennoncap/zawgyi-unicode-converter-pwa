@@ -30,10 +30,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-// import { AngularFireRemoteConfig, filterFresh, scanToObject } from '@angular/fire/remote-config';
-
-import { concat, interval, Observable, Subject } from 'rxjs';
-import { catchError, filter, first, map, takeUntil } from 'rxjs/operators';
+import { Observable, Subject, concat, interval } from 'rxjs';
+import { filter, first, map, takeUntil } from 'rxjs/operators';
 
 import { CacheService } from '@dagonmetric/ng-cache';
 import { LogService } from '@dagonmetric/ng-log';
@@ -61,13 +59,13 @@ const SMALL_WIDTH_BREAKPOINT = 720;
     encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit, OnDestroy {
-    isScreenSmall?: Observable<boolean>;
-    isHomePage = true;
-
     @ViewChild('sidenav', { static: false })
     sidenav?: MatSidenav;
 
     @HostBinding('class') componentClass?: string;
+
+    isScreenSmall?: Observable<boolean>;
+    isHomePage = true;
 
     get isDarkMode(): boolean {
         return this._isDarkMode == null ? false : this._isDarkMode;
@@ -108,7 +106,7 @@ export class AppComponent implements OnInit, OnDestroy {
         if (this._isAppUsedBefore) {
             return appSettings.navLinks;
         } else {
-            return appSettings.navLinks.filter(navLink => navLink.expanded === true);
+            return appSettings.navLinks.filter((navLink) => navLink.expanded === true);
         }
     }
 
@@ -117,10 +115,9 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     get sponsorSectionVisible(): boolean {
-        return this._hideSponsorSection ||
-            !this._isBrowser ||
-            !this.isHomePage ||
-            this.aboutSectionVisible ? false : true;
+        return this._hideSponsorSection || !this._isBrowser || !this.isHomePage || this.aboutSectionVisible
+            ? false
+            : true;
     }
 
     get sponsors(): Observable<Sponsor[]> {
@@ -131,7 +128,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly _isBrowser: boolean;
     private readonly _curVerAppUsedCount: number = 0;
     private readonly _isAppUsedBefore: boolean = false;
-    private readonly _checkInterval = 1000 * 60 * 60 * 6;    
+    private readonly _checkInterval = 1000 * 60 * 60 * 6;
     private readonly _onDestroy = new Subject<void>();
 
     private _isFirstNavigation = true;
@@ -143,7 +140,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private _sponsors: Observable<Sponsor[]>;
 
     constructor(
-        // tslint:disable-next-line: ban-types
+        // eslint-disable-next-line @typescript-eslint/ban-types
         @Inject(PLATFORM_ID) platformId: Object,
         private readonly _logService: LogService,
         private readonly _snackBar: MatSnackBar,
@@ -160,67 +157,24 @@ export class AppComponent implements OnInit, OnDestroy {
         private readonly _bottomSheet: MatBottomSheet,
         private readonly _dialog: MatDialog,
         private readonly _httpClient: HttpClient,
-        // private readonly _remoteConfig: AngularFireRemoteConfig,        
-        breakpointObserver: BreakpointObserver) {
+        breakpointObserver: BreakpointObserver
+    ) {
         this._isBrowser = isPlatformBrowser(platformId);
-        
+
         if (this._isBrowser) {
-            // this._remoteConfig.changes
-            //     .pipe(
-            //         filterFresh(172_800_000),
-            //         first(),
-            //         scanToObject({
-            //             sponsors: '',
-            //             sponsorSectionVisible: false,
-            //             colorMode: 'auto'
-            //         }),
-            //         takeUntil(this._onDestroy)
-            //     ).subscribe();
-
-            // this._remoteConfig.strings.colorMode.subscribe(colorMode => {
-            //     if (colorMode === 'dark') {
-            //         this.setDarkMode(true);
-            //     } else if (colorMode === 'light') {
-            //         this.setDarkMode(false);
-            //     }
-            // });
-
-            // this._remoteConfig.booleans.sponsorSectionVisible.subscribe(v => {
-            //     this._hideSponsorSection = !v;
-            // });
-
-            // this._remoteConfig.strings.sponsors
-            //     .subscribe(sponsorStr => {
-            //         if (!sponsorStr) {
-            //             this._sponsors = [];
-            //         }
-
-            //         try {
-            //             this._sponsors = JSON.parse(sponsorStr) as Sponsor[];
-            //         } catch (err) {
-            //             this._sponsors = [];
-            //         }
-            //     });
-
             this._curVerAppUsedCount = this.getCurVerAppUsedCount();
             this._isAppUsedBefore = this.checkAppUsedBefore();
 
             this.detectDarkTheme();
 
-            this._sponsors = this._httpClient.get<Sponsor[]>('sponsors.json').pipe(
-                catchError(err => {
-                    this._hideSponsorSection = true;
-
-                    return [];
-                })
-            );
+            this._sponsors = this._httpClient.get<Sponsor[]>('sponsors.json');
         }
 
         this.checkUpdate();
 
         this._router.events
             .pipe(
-                filter(event => event instanceof NavigationEnd),
+                filter((event) => event instanceof NavigationEnd),
                 map((event: NavigationEnd) => {
                     let child = this._activatedRoute.firstChild;
                     while (child && child.firstChild) {
@@ -237,7 +191,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
                     return {
                         pagePath: event.urlAfterRedirects,
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         pageType: child.snapshot.data.pageType,
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         meta: child.snapshot.data.meta
                     };
                 }),
@@ -265,17 +221,23 @@ export class AppComponent implements OnInit, OnDestroy {
                     this._aboutPageNavigated = true;
                 }
 
-                if (this._isBrowser && this.isHomePage &&
+                if (
+                    this._isBrowser &&
+                    this.isHomePage &&
                     this._isFirstNavigation &&
                     this._curVerAppUsedCount === 0 &&
-                    this._isAppUsedBefore) {
+                    this._isAppUsedBefore
+                ) {
                     this._isFirstNavigation = false;
                     this.increaseAppUsedCount();
                     this._hideSponsorSection = true;
-                    this._router.navigate(['/about'], { relativeTo: this._activatedRoute });
-                } else if (this._isBrowser && this.isHomePage &&
+                    void this._router.navigate(['/about'], { relativeTo: this._activatedRoute });
+                } else if (
+                    this._isBrowser &&
+                    this.isHomePage &&
                     this._isFirstNavigation &&
-                    this.shouldShowSocialSharingSheet()) {
+                    this.shouldShowSocialSharingSheet()
+                ) {
                     this._isFirstNavigation = false;
                     this.increaseAppUsedCount();
                     this._hideSponsorSection = true;
@@ -287,11 +249,9 @@ export class AppComponent implements OnInit, OnDestroy {
                 }
             });
 
-        this.isScreenSmall = breakpointObserver.observe(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`)
-            .pipe(
-                // tslint:disable-next-line: no-unsafe-any
-                map(breakpoint => breakpoint.matches)
-            );
+        this.isScreenSmall = breakpointObserver
+            .observe(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`)
+            .pipe(map((breakpoint) => breakpoint.matches));
     }
 
     ngOnInit(): void {
@@ -310,8 +270,7 @@ export class AppComponent implements OnInit, OnDestroy {
             return;
         }
 
-        // tslint:disable-next-line: no-floating-promises
-        this.sidenav.toggle().then(drawerResult => {
+        void this.sidenav.toggle().then((drawerResult) => {
             this._logService.trackEvent({
                 name: drawerResult === 'open' ? 'open_drawer_menu' : 'close_drawer_menu',
                 properties: {
@@ -326,8 +285,7 @@ export class AppComponent implements OnInit, OnDestroy {
         const dialogRef = this._dialog.open(SponsorComponent);
 
         dialogRef.afterClosed().subscribe(() => {
-            // tslint:disable-next-line: no-floating-promises
-            this._router.navigate(['../'], { relativeTo: this._activatedRoute });
+            void this._router.navigate(['../'], { relativeTo: this._activatedRoute });
         });
     }
 
@@ -366,13 +324,15 @@ export class AppComponent implements OnInit, OnDestroy {
             this._metaService.removeTag('name="robots"');
         }
 
-        const metaDescription = routeData.meta && routeData.meta.description ? routeData.meta.description : appSettings.appDescription;
+        const metaDescription =
+            routeData.meta && routeData.meta.description ? routeData.meta.description : appSettings.appDescription;
         this._metaService.updateTag({
             name: 'description',
             content: metaDescription
         });
 
-        const socialDescription = routeData.meta && routeData.meta.socialDescription ? routeData.meta.socialDescription : metaDescription;
+        const socialDescription =
+            routeData.meta && routeData.meta.socialDescription ? routeData.meta.socialDescription : metaDescription;
         this._metaService.updateTag({
             name: 'twitter:description',
             content: socialDescription
@@ -394,39 +354,31 @@ export class AppComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const appIsStable = this._appRef.isStable.pipe(first(isStable => isStable === true));
+        const appIsStable = this._appRef.isStable.pipe(first((isStable) => isStable === true));
         concat(appIsStable, interval(this._checkInterval))
-            .pipe(
-                takeUntil(this._onDestroy),
-            )
-            .subscribe(() => this._swUpdate.checkForUpdate());
-
-        this._swUpdate.available
-            .pipe(
-                takeUntil(this._onDestroy),
-            )
-            .subscribe(evt => {
-                const snackBarRef = this._snackBar.open('Update available.', 'RELOAD');
-                snackBarRef
-                    .onAction()
-                    .subscribe(() => {
-                        this._logService.trackEvent({
-                            name: 'reload_update',
-                            properties: {
-                                app_version: appSettings.appVersion,
-                                app_platform: 'web',
-                                current_hash: evt.current.hash,
-                                available_hash: evt.available.hash
-                            }
-                        });
-
-                        // tslint:disable-next-line: no-floating-promises
-                        this._swUpdate.activateUpdate()
-                            .then(() => {
-                                document.location.reload();
-                            });
-                    });
+            .pipe(takeUntil(this._onDestroy))
+            .subscribe(() => {
+                void this._swUpdate.checkForUpdate();
             });
+
+        this._swUpdate.available.pipe(takeUntil(this._onDestroy)).subscribe((evt) => {
+            const snackBarRef = this._snackBar.open('Update available.', 'RELOAD');
+            snackBarRef.onAction().subscribe(() => {
+                this._logService.trackEvent({
+                    name: 'reload_update',
+                    properties: {
+                        app_version: appSettings.appVersion,
+                        app_platform: 'web',
+                        current_hash: evt.current.hash,
+                        available_hash: evt.available.hash
+                    }
+                });
+
+                void this._swUpdate.activateUpdate().then(() => {
+                    document.location.reload();
+                });
+            });
+        });
     }
 
     private updateComponentClass(): void {
@@ -457,7 +409,7 @@ export class AppComponent implements OnInit, OnDestroy {
             }
 
             if (darkModeMediaQuery.addEventListener) {
-                darkModeMediaQuery.addEventListener('change', mediaQuery => {
+                darkModeMediaQuery.addEventListener('change', (mediaQuery) => {
                     this.setDarkMode(mediaQuery.matches);
                 });
             }
@@ -526,7 +478,6 @@ export class AppComponent implements OnInit, OnDestroy {
             '1.1.1',
             '1.0.1',
             '1.0.0'
-
         ];
 
         for (const ver of oldVersions) {
