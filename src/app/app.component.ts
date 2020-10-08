@@ -7,7 +7,6 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import {
     ApplicationRef,
     Component,
@@ -26,7 +25,6 @@ import { SwUpdate } from '@angular/service-worker';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -34,12 +32,11 @@ import { Observable, Subject, concat, interval } from 'rxjs';
 import { filter, first, map, takeUntil } from 'rxjs/operators';
 
 import { CacheService } from '@dagonmetric/ng-cache';
-import { LogService } from '@dagonmetric/ng-log';
+import { ConfigService } from '@dagonmetric/ng-config';
+import { LogService, Logger } from '@dagonmetric/ng-log';
 
 import { environment } from '../environments/environment';
 import { LinkService } from '../modules/seo';
-
-import { SponsorComponent } from './sponsor';
 
 import { appSettings } from './shared/app-settings';
 import { NavLinkItem } from './shared/nav-link-item';
@@ -66,6 +63,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     isScreenSmall?: Observable<boolean>;
     isHomePage = true;
+    sponsors: Sponsor[] = [];
 
     get isDarkMode(): boolean {
         return this._isDarkMode == null ? false : this._isDarkMode;
@@ -73,7 +71,7 @@ export class AppComponent implements OnInit, OnDestroy {
     set isDarkMode(value: boolean) {
         this.setDarkMode(value);
 
-        this._logService.trackEvent({
+        this._logger.trackEvent({
             name: value ? 'change_dark_mode' : 'change_light_mode',
             properties: {
                 app_version: appSettings.appVersion,
@@ -115,13 +113,14 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     get sponsorSectionVisible(): boolean {
-        return this._hideSponsorSection || !this._isBrowser || !this.isHomePage || this.aboutSectionVisible
+        return this._hideSponsorSection ||
+            !this.sponsors ||
+            !this.sponsors.length ||
+            !this._isBrowser ||
+            !this.isHomePage ||
+            this.aboutSectionVisible
             ? false
             : true;
-    }
-
-    get sponsors(): Observable<Sponsor[]> {
-        return this._sponsors;
     }
 
     private readonly _logoUrl = 'assets/images/appicons/v1/logo.png';
@@ -130,19 +129,21 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly _isAppUsedBefore: boolean = false;
     private readonly _checkInterval = 1000 * 60 * 60 * 6;
     private readonly _onDestroy = new Subject<void>();
+    private readonly _logger: Logger;
 
     private _isFirstNavigation = true;
     private _pageClass?: string;
     private _themeClass?: string;
-    private _isDarkMode?: boolean | null = null;
     private _aboutPageNavigated = false;
     private _hideSponsorSection = false;
-    private _sponsors: Observable<Sponsor[]>;
+    private _colorMode?: string;
+    private _isDarkMode?: boolean | null = null;
 
     constructor(
         // eslint-disable-next-line @typescript-eslint/ban-types
         @Inject(PLATFORM_ID) platformId: Object,
-        private readonly _logService: LogService,
+        logService: LogService,
+        private readonly _configService: ConfigService,
         private readonly _snackBar: MatSnackBar,
         private readonly _appRef: ApplicationRef,
         private readonly _swUpdate: SwUpdate,
@@ -155,19 +156,21 @@ export class AppComponent implements OnInit, OnDestroy {
         private readonly _router: Router,
         private readonly _activatedRoute: ActivatedRoute,
         private readonly _bottomSheet: MatBottomSheet,
-        private readonly _dialog: MatDialog,
-        private readonly _httpClient: HttpClient,
         breakpointObserver: BreakpointObserver
     ) {
+        this._logger = logService.createLogger('app');
         this._isBrowser = isPlatformBrowser(platformId);
 
         if (this._isBrowser) {
             this._curVerAppUsedCount = this.getCurVerAppUsedCount();
             this._isAppUsedBefore = this.checkAppUsedBefore();
 
+            this.updateConfigValues();
             this.detectDarkTheme();
 
-            this._sponsors = this._httpClient.get<Sponsor[]>('sponsors.json');
+            this._configService.valueChanges.pipe(takeUntil(this._onDestroy)).subscribe(() => {
+                this.updateConfigValues();
+            });
         }
 
         this.checkUpdate();
@@ -208,7 +211,7 @@ export class AppComponent implements OnInit, OnDestroy {
                     this.updateComponentClass();
                 }
 
-                this._logService.trackPageView({
+                this._logger.trackPageView({
                     name: this._titleService.getTitle(),
                     uri: !this._isFirstNavigation && routeData.pagePath ? routeData.pagePath : undefined,
                     page_type: routeData.pageType ? routeData.pageType : undefined,
@@ -262,7 +265,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this._onDestroy.next();
         this._onDestroy.complete();
 
-        this._logService.flush();
+        this._logger.flush();
     }
 
     toggleSideNav(): void {
@@ -271,21 +274,13 @@ export class AppComponent implements OnInit, OnDestroy {
         }
 
         void this.sidenav.toggle().then((drawerResult) => {
-            this._logService.trackEvent({
+            this._logger.trackEvent({
                 name: drawerResult === 'open' ? 'open_drawer_menu' : 'close_drawer_menu',
                 properties: {
                     app_version: appSettings.appVersion,
                     app_platform: 'web'
                 }
             });
-        });
-    }
-
-    openSponsorDialog(): void {
-        const dialogRef = this._dialog.open(SponsorComponent);
-
-        dialogRef.afterClosed().subscribe(() => {
-            void this._router.navigate(['../'], { relativeTo: this._activatedRoute });
         });
     }
 
@@ -364,7 +359,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this._swUpdate.available.pipe(takeUntil(this._onDestroy)).subscribe((evt) => {
             const snackBarRef = this._snackBar.open('Update available.', 'RELOAD');
             snackBarRef.onAction().subscribe(() => {
-                this._logService.trackEvent({
+                this._logger.trackEvent({
                     name: 'reload_update',
                     properties: {
                         app_version: appSettings.appVersion,
@@ -395,8 +390,17 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     private detectDarkTheme(): void {
-        const isDarkModeStr = this._cacheService.getItem('isDarkMode');
-        this.detectDarkThemeChange(isDarkModeStr == null ? true : isDarkModeStr === 'true', true);
+        let defaultValue = true;
+        if (this._colorMode && this._colorMode.toLocaleLowerCase() === 'dark') {
+            defaultValue = true;
+        } else if (this._colorMode && this._colorMode.toLowerCase() === 'light') {
+            defaultValue = false;
+        } else {
+            const cacheDarkModeStr = this._cacheService.getItem('isDarkMode');
+            defaultValue = cacheDarkModeStr == null ? true : cacheDarkModeStr === 'true';
+        }
+
+        this.detectDarkThemeChange(defaultValue, true);
     }
 
     private detectDarkThemeChange(defaultValue: boolean, forceDefaultValue?: boolean): void {
@@ -524,5 +528,22 @@ export class AppComponent implements OnInit, OnDestroy {
         }
 
         return true;
+    }
+
+    private updateConfigValues(): void {
+        this._colorMode = this._configService.getValue('colorMode') as string;
+        const sponsorSectionVisibleStr = this._configService.getValue('sponsorSectionVisible') as string;
+        if (sponsorSectionVisibleStr && sponsorSectionVisibleStr.toLowerCase() === 'false') {
+            this._hideSponsorSection = true;
+        }
+
+        const sponsorsStr = this._configService.getValue('sponsors') as string;
+        if (sponsorsStr) {
+            try {
+                this.sponsors = JSON.parse(sponsorsStr) as Sponsor[];
+            } catch (err) {
+                this.sponsors = [];
+            }
+        }
     }
 }

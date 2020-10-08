@@ -83,7 +83,7 @@
         </div>
         <div class="container sponsor-section" *ngIf="sponsorSectionVisible">
             <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="24px">
-                <div fxLayout="column" fxFlex="1 1 100%" *ngFor="let sponsor of sponsors | async">
+                <div fxLayout="column" fxFlex="1 1 100%" *ngFor="let sponsor of sponsors">
                     <mat-card class="sponsor-card">
                         <mat-card-header>
                             <img mat-card-avatar [src]="sponsor.logoUrl">
