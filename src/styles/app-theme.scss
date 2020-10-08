@@ -146,6 +146,7 @@ $styles-config: styles-config(
 @include angular-material-theme($light-theme);
 
 @include app-theme($light-theme);
+@include cdk-textarea-syncsize();
 
 .dark {
     @include angular-material-theme($dark-theme);
