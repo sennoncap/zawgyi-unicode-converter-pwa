@@ -30,6 +30,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { CacheModule, MemoryCacheModule } from '@dagonmetric/ng-cache';
 import { ConfigModule } from '@dagonmetric/ng-config';
+import { FirebaseRemoteConfigProviderModule } from '@dagonmetric/ng-config-firebase-remote-config';
 import { LogModule } from '@dagonmetric/ng-log';
 import { ConsoleLoggerModule } from '@dagonmetric/ng-log/console';
 import { TranslitModule } from '@dagonmetric/ng-translit';
@@ -173,6 +174,14 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
         // ng-config modules
         ConfigModule.configure(true, {
             debug: !environment.production
+        }),
+        FirebaseRemoteConfigProviderModule.configure({
+            firebaseConfig: environment.firebase,
+            remoteConfigSettings: {
+                minimumFetchIntervalMillis: environment.production ? 43200000 : 30000,
+                fetchTimeoutMillis: environment.production ? 30000 : 60000
+            },
+            throwIfLoadError: environment.production ? false : true
         }),
 
         // ng-log modules
