@@ -81,6 +81,10 @@ $footer-section-ani-duration: 2s;
             margin-left: 5px;
         }
     }
+
+    .ad-label {
+        color: mat-color($primary);
+    }
 }
 
 $typography-config: mat-typography-config($font-family: $font-family-base, $body-1: mat-typography-level($font-size-base, $line-height-base, $font-weight-base));
