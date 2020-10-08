@@ -268,6 +268,12 @@
     {
       "src": "assets/images/appicons/v1/windows/SplashScreen.scale-100.png",
       "sizes": "620x300"
+    },
+    {
+      "src": "assets/images/appicons/v1/maskable_icon.png",
+      "sizes": "1066x1066",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
