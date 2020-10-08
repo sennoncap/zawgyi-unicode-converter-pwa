@@ -29,6 +29,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { CacheModule, MemoryCacheModule } from '@dagonmetric/ng-cache';
+import { ConfigModule } from '@dagonmetric/ng-config';
 import { LogModule } from '@dagonmetric/ng-log';
 import { ConsoleLoggerModule } from '@dagonmetric/ng-log/console';
 import { TranslitModule } from '@dagonmetric/ng-translit';
@@ -49,7 +50,6 @@ import { SocialSharingSheetComponent } from './shared/social-sharing-sheet';
 import { AboutComponent, AboutDialogHandlerComponent } from './about';
 import { HomeComponent } from './home';
 import { PrivacyComponent, PrivacyDialogHandlerComponent } from './privacy';
-import { SponsorComponent } from './sponsor';
 import { SupportComponent, SupportDialogHandlerComponent } from './support';
 
 import { AppComponent } from './app.component';
@@ -144,8 +144,7 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
         PrivacyDialogHandlerComponent,
         SupportComponent,
         SupportDialogHandlerComponent,
-        SocialSharingSheetComponent,
-        SponsorComponent
+        SocialSharingSheetComponent
     ],
     imports: [
         CommonModule,
@@ -170,6 +169,11 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
         MatToolbarModule,
 
         CdkTextareaSyncSizeModule,
+
+        // ng-config modules
+        ConfigModule.configure(true, {
+            debug: !environment.production
+        }),
 
         // ng-log modules
         LogModule.withConfig({
@@ -208,13 +212,7 @@ export function baseHrefFactory(doc: Document): string | null | undefined {
         },
         appSvgIconProviders
     ],
-    entryComponents: [
-        AboutComponent,
-        PrivacyComponent,
-        SupportComponent,
-        SponsorComponent,
-        SocialSharingSheetComponent
-    ],
+    entryComponents: [AboutComponent, PrivacyComponent, SupportComponent, SocialSharingSheetComponent],
     bootstrap: [AppComponent]
 })
 export class AppModule {}
