@@ -8,10 +8,32 @@
 
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Platform } from '@angular/cdk/platform';
-import { AfterViewInit, Directive, DoCheck, ElementRef, Input, NgZone, OnDestroy } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import {
+    AfterViewInit,
+    Directive,
+    DoCheck,
+    ElementRef,
+    HostListener,
+    Inject,
+    Input,
+    NgZone,
+    OnDestroy,
+    Optional
+} from '@angular/core';
 
 import { Subject, fromEvent } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';
+
+export function coerceNumberProperty(value: unknown): number;
+export function coerceNumberProperty<D>(value: unknown, fallback: D): number | D;
+export function coerceNumberProperty(value: unknown, fallbackValue = 0): number {
+    return _isNumberValue(value) ? Number(value) : fallbackValue;
+}
+
+export function _isNumberValue(value: unknown): boolean {
+    return !isNaN(parseFloat(value as string)) && !isNaN(Number(value));
+}
 
 /**
  * Directive for Syncing two text area.
@@ -21,12 +43,13 @@ import { auditTime, takeUntil } from 'rxjs/operators';
     exportAs: 'cdkTextareaSyncSize',
     host: {
         class: 'cdk-textarea-syncsize',
-        rows: '1',
-        '(input)': '_noopInputHandler()'
+        rows: '1'
     }
 })
 export class CdkTextareaSyncSize implements AfterViewInit, DoCheck, OnDestroy {
     _cachedHeight = -1;
+
+    protected _document?: Document;
 
     private _previousValue?: string;
     private _initialHeight?: string | null;
@@ -45,7 +68,7 @@ export class CdkTextareaSyncSize implements AfterViewInit, DoCheck, OnDestroy {
         return this._minRows != null ? this._minRows : this.getMinRowsAutoHeight();
     }
     set minRows(value: number) {
-        this._minRows = value;
+        this._minRows = coerceNumberProperty(value);
         this.setMinHeight();
     }
 
@@ -54,7 +77,7 @@ export class CdkTextareaSyncSize implements AfterViewInit, DoCheck, OnDestroy {
         return this._maxRows != null ? this._maxRows : 0;
     }
     set maxRows(value: number) {
-        this._maxRows = value;
+        this._maxRows = coerceNumberProperty(value);
         this.setMaxHeight();
     }
 
@@ -87,15 +110,24 @@ export class CdkTextareaSyncSize implements AfterViewInit, DoCheck, OnDestroy {
         this._secondCdkTextareaSyncSize = value;
     }
 
+    private _measuringClass: string;
+    private readonly _lineHeightMeasuringClass: 'cdk-textarea-syncsize-lineheight-measuring';
     private _cachedLineHeight?: number;
     private _secondCdkTextareaSyncSize?: CdkTextareaSyncSize;
 
     constructor(
         private readonly _elementRef: ElementRef<HTMLElement>,
         private readonly _platform: Platform,
-        private readonly _ngZone: NgZone
+        private readonly _ngZone: NgZone,
+        /** 11.0.0 make document required */
+        @Optional() @Inject(DOCUMENT) document?: Document
     ) {
+        this._document = document;
+
         this._textareaElement = this._elementRef.nativeElement as HTMLTextAreaElement;
+        this._measuringClass = _platform.FIREFOX
+            ? 'cdk-textarea-autosize-measuring-firefox'
+            : 'cdk-textarea-autosize-measuring';
     }
 
     ngAfterViewInit(): void {
@@ -106,6 +138,8 @@ export class CdkTextareaSyncSize implements AfterViewInit, DoCheck, OnDestroy {
             this.resizeToFitContent();
 
             this._ngZone.runOutsideAngular(() => {
+                const window = this.getWindow();
+
                 fromEvent(window, 'resize')
                     .pipe(auditTime(16), takeUntil(this._destroyed))
                     .subscribe(() => {
@@ -113,6 +147,7 @@ export class CdkTextareaSyncSize implements AfterViewInit, DoCheck, OnDestroy {
                     });
             });
         } else {
+            // Custom
             this.cacheTextareaLineHeightNonBrowser();
         }
     }
@@ -147,10 +182,13 @@ export class CdkTextareaSyncSize implements AfterViewInit, DoCheck, OnDestroy {
         }
 
         const placeholderText = textarea.placeholder;
-        textarea.classList.add('cdk-textarea-syncsize-measuring');
+        textarea.classList.add(this._measuringClass);
         textarea.placeholder = '';
 
+        // The measuring class includes a 2px padding to workaround an issue with Chrome,
+        // so we account for that extra space here by subtracting 4 (2px top + 2px bottom).
         let height = textarea.scrollHeight - 4;
+
         if (height < suggestedMinHeight) {
             height = suggestedMinHeight;
         }
@@ -162,7 +200,7 @@ export class CdkTextareaSyncSize implements AfterViewInit, DoCheck, OnDestroy {
             heightChanged = true;
         }
 
-        textarea.classList.remove('cdk-textarea-syncsize-measuring');
+        textarea.classList.remove(this._measuringClass);
         textarea.placeholder = placeholderText;
 
         if (heightChanged && this.secondCdkTextareaSyncSize && suggestedMinHeight <= 0) {
@@ -180,7 +218,7 @@ export class CdkTextareaSyncSize implements AfterViewInit, DoCheck, OnDestroy {
 
         if (heightChanged) {
             this._ngZone.runOutsideAngular(() => {
-                if (requestAnimationFrame != null) {
+                if (typeof requestAnimationFrame !== 'undefined') {
                     requestAnimationFrame(() => {
                         this.scrollToCaretPosition(textarea);
                     });
@@ -203,7 +241,8 @@ export class CdkTextareaSyncSize implements AfterViewInit, DoCheck, OnDestroy {
         this._textareaElement.style.height = this._initialHeight;
     }
 
-    _noopInputHandler(): void {
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    @HostListener('input') noopInputHandler(): void {
         // Do nothing
     }
 
@@ -217,13 +256,13 @@ export class CdkTextareaSyncSize implements AfterViewInit, DoCheck, OnDestroy {
 
     private scrollToCaretPosition(textarea: HTMLTextAreaElement): void {
         const { selectionStart, selectionEnd } = textarea;
+        const document = this.getDocument();
 
         if (!this._destroyed.isStopped && document.activeElement === textarea) {
             textarea.setSelectionRange(selectionStart, selectionEnd);
         }
     }
 
-    // To fix not working when setting height values in css class
     private cacheTextareaLineHeight(): void {
         if (this._cachedLineHeight) {
             return;
@@ -244,11 +283,11 @@ export class CdkTextareaSyncSize implements AfterViewInit, DoCheck, OnDestroy {
 
         if (this._textareaElement.parentNode) {
             this._textareaElement.parentNode.appendChild(textareaClone);
-            textareaClone.classList.add('cdk-textarea-syncsize-lineheight-measuring');
+            textareaClone.classList.add(this._lineHeightMeasuringClass);
         }
 
         this._cachedLineHeight = textareaClone.clientHeight;
-        textareaClone.classList.remove('cdk-textarea-syncsize-lineheight-measuring');
+        textareaClone.classList.remove(this._lineHeightMeasuringClass);
 
         if (this._textareaElement.parentNode) {
             this._textareaElement.parentNode.removeChild(textareaClone);
@@ -284,5 +323,15 @@ export class CdkTextareaSyncSize implements AfterViewInit, DoCheck, OnDestroy {
         if (maxHeight) {
             this._textareaElement.style.maxHeight = maxHeight;
         }
+    }
+
+    private getWindow(): Window {
+        const doc = this.getDocument();
+
+        return doc.defaultView || window;
+    }
+
+    private getDocument(): Document {
+        return this._document || document;
     }
 }
