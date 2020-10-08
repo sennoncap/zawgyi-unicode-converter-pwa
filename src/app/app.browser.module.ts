@@ -14,7 +14,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from '../environments/environment';
 
 import { CacheLocalStorageModule } from '@dagonmetric/ng-cache';
-import { FirebaseRemoteConfigProviderModule } from '@dagonmetric/ng-config-firebase-remote-config';
 import { FirebaseAnalyticsLoggerModule } from '@dagonmetric/ng-log-firebase-analytics';
 
 import { AppComponent } from './app.component';
@@ -33,14 +32,6 @@ import { AppModule, appId } from './app.module';
         BrowserAnimationsModule,
 
         CacheLocalStorageModule,
-        FirebaseRemoteConfigProviderModule.configure({
-            firebaseConfig: environment.firebase,
-            remoteConfigSettings: {
-                minimumFetchIntervalMillis: environment.production ? 43200000 : 30000,
-                fetchTimeoutMillis: environment.production ? 30000 : 60000
-            },
-            throwIfLoadError: environment.production ? false : true
-        }),
         FirebaseAnalyticsLoggerModule.configure({
             firebaseConfig: environment.firebase
         })
