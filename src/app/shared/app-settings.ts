@@ -44,7 +44,7 @@ export const appSettings: AppConfig = {
     socialSharing: {
         subject: 'Zawgyi Unicode Converter app you may also like',
         message:
-            'ဇော်ဂျီ ယူနီကုဒ် အခက်အခဲရှိနေသူများအတွက် ဇော်ဂျီကနေ ယူနီကုဒ်၊ ယူနီကုဒ်ကနေ ဇော်ဂျီ အပြန်အလှန် အလိုအလျောက် ပြောင်းပေးတဲ့ app တစ်ခု မျှဝေလိုက်ပါတယ်။',
+            'ဇော်ဂျီ ယူနီကုတ် အခက်အခဲရှိနေသူများအတွက် ဇော်ဂျီကနေ ယူနီကုတ်၊ ယူနီကုတ်ကနေ ဇော်ဂျီ အပြန်အလှန် အလိုအလျောက် ပြောင်းပေးတဲ့ app တစ်ခု မျှဝေလိုက်ပါတယ်။',
         linkUrl: 'https://myanmartools.org/apps/zawgyi-unicode-converter'
     },
     facebookAppId: '461163654621837',
