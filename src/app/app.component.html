@@ -88,7 +88,7 @@
                         <mat-card-header>
                             <img mat-card-avatar [src]="sponsor.logoUrl">
                             <mat-card-title>{{sponsor.title}}</mat-card-title>
-                            <mat-card-subtitle>{{sponsor.subTitle}}</mat-card-subtitle>
+                            <mat-card-subtitle class="ad-label">Ad</mat-card-subtitle>
                         </mat-card-header>
                         <img mat-card-image *ngIf="sponsor.imageUrl" [src]="sponsor.imageUrl"
                             [attr.alt]="sponsor.title">
@@ -101,13 +101,7 @@
                         </mat-card-actions>
                     </mat-card>
                 </div>
-                <div fxLayout="column" fxFlex="1 1 100%">
-                    <div>
-                        <button type="button" class="add-sponsor-button" mat-icon-button (click)="openSponsorDialog()"
-                            disabled>
-                            <mat-icon svgIcon="add_circle"></mat-icon> BECOME A SPONSOR
-                        </button>
-                    </div>
+                <div fxLayout="column" fxFlex="1 1 100%">                    
                 </div>
                 <div fxLayout="column" fxFlex="1 1 100%">
                 </div>
